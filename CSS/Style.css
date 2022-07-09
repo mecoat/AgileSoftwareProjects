@@ -1,0 +1,36 @@
+/* main details */
+
+*{
+	margin:0;
+	padding:0;
+}
+
+body{
+	background-color:#99FFF5;
+	font-size:150%;
+	margin:1vw;
+	font-family:Arial, calibri, helvetica, "gill sans", "sans-serif";
+}
+
+button{
+    background-color:#FFFFFF;
+    color: #150578;
+	font-size:100%;
+    min-width: 5%;
+    padding:5px;
+    font-weight: bold;
+    margin: 5px;
+    border-color: #150578;
+}
+
+button.active {
+    color:#FFFFFF;
+    background-color: #150578;
+    border-color: #FFFFFF;
+
+}
+
+button:hover{
+    font-size: 110%;
+    border-width: 5px;
+}
