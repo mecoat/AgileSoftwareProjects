@@ -1,0 +1,86 @@
+/* main details */
+
+*{
+	margin:0;
+	padding:0;
+}
+
+body{
+	background-color:#99FFF5;
+	font-size:150%;
+	margin:1vw;
+	font-family:Arial, calibri, helvetica, "gill sans", "sans-serif";
+}
+
+/* nav{
+    font-size: 0;
+} */
+
+nav ul {
+    list-style: none;
+}
+
+nav ul li {
+    text-align: center;
+    display:inline-block;
+    margin-inline-end: -7px;
+    /* normalize look of nav buttons */
+    width: 20%;
+}
+
+nav ul li a {
+    color: #FFFFFF;
+    background-color: #150578;
+    text-decoration: none;
+    /* make nav bar taller than just the text */
+    line-height: 3rem;
+    /* make a tag fill parent li so that the entire */
+    /* area within the button is clickable */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* margin-right: -5%; */
+
+}
+
+nav ul li#navActive, nav ul li#navActive a {
+    /* indicate which page visitor is viewing by inverting */
+    /* colors for corresponding nav button */
+    background-color: #FFFFFF;
+    color: #150578;
+}
+
+nav ul li:hover, nav ul li#navActive:hover, 
+nav ul li:focus, nav ul li#navActive:focus, 
+nav ul li a:hover, nav ul li#navActive a:hover,
+nav ul li a:focus, nav ul li#navActive a:focus{
+    background-color: #3083DC;
+    color:#FFFFFF;
+}
+
+div.mainPage{
+    margin-top: 3rem;
+}
+
+button{
+    background-color:#FFFFFF;
+    color: #150578;
+	font-size:100%;
+    min-width: 5%;
+    padding:5px;
+    font-weight: bold;
+    margin: 5px;
+    border-color: #150578;
+}
+
+button.active {
+    color:#FFFFFF;
+    background-color: #150578;
+    border-color: #FFFFFF;
+}
+
+button:hover, button:focus{
+    background-color: #3083DC;
+    color:#FFFFFF;
+}
+
