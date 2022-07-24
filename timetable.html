@@ -18,7 +18,7 @@
 	  <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0">
 	  <meta name="description" content="Coates Consultancy provides D&amp;TA accredited Health and Safety training for Design &amp; Technology (DT) Departments in secondary schools in London and South-East England." /> -->
 </head>
-<body id="top" onload="drawTimetable()">
+<body id="top" onload="ttStart()">
     <nav class="nav" id="nav">
 		<ul>
 			<li id="navActive">
@@ -42,105 +42,107 @@
     <div class="timetablePage mainPage">
         <form>
             <label for="upload">Upload previous File : </label>
-            <button type="button" id="upload" name="upload" value="Upload" onclick="function1()">Upload</button>
+            <button type="button" id="upload" name="upload" value="Upload">Upload</button>
 			<br>
 			<br>
 			<p>How many Weeks in your timetable?</p>
-			<button type="button" id="1week" name="weeks" value="1" onclick="activateButton('weeks', 1)">1</button>
-			<button type="button" id="2week" name="weeks" value="2" class="active" onclick="activateButton('weeks', 2)">2</button>
+			<!-- <button type="button" id="1week" name="weeks" value="1" class = "timetableBtn" onclick="activateButton('weeks', 1)">1</button> -->
+			<button type="button" id="1week" name="weeks" value="1" class="timetableBtn">1</button>
+			<button type="button" id="2week" name="weeks" value="2" class="timetableBtn active">2</button>
+			<!-- <button type="button" id="2week" name="weeks" value="2" class="timetableBtn active" onclick="activateButton('weeks', 2)">2</button> -->
 			<br>
 			<br>
 			<p>How many Periods in a Day?</p>
-			<button type="button" id="5periods" name="periods" value="5" class="active" onclick="function1()">5</button>
-			<button type="button" id="6periods" name="periods" value="6" onclick="function1()">6</button>
-			<button type="button" id="7periods" name="periods" value="7" onclick="function1()">7</button>
-			<button type="button" id="8periods" name="periods" value="8" onclick="function1()">8</button>
+			<button type="button" id="5periods" name="periods" value="5" class="timetableBtn active">5</button>
+			<button type="button" id="6periods" name="periods" value="6" class="timetableBtn">6</button>
+			<button type="button" id="7periods" name="periods" value="7" class="timetableBtn">7</button>
+			<button type="button" id="8periods" name="periods" value="8" class="timetableBtn">8</button>
 			<br>
 			<br>
 			<p>When is Lunch?</p>
-			<button type="button" id="lunch1to2" name="lunch" value="1" onclick="function1()">Between P1 & P2</button>
-			<button type="button" id="lunch2to3" name="lunch" value="2" onclick="function1()">Between P2 & P3</button>
-			<button type="button" id="lunch3to4" name="lunch" value="3" onclick="function1()">Between P3 & P4</button>
-			<button type="button" id="lunch4to5" name="lunch" value="4" class="active" onclick="function1()">Between P4 & P5</button>
-			<button type="button" id="lunch5to6" name="lunch" value="5" onclick="function1()">Between P5 & P6</button>
-			<button type="button" id="lunch6to7" name="lunch" value="6" onclick="function1()">Between P6 & P7</button>						
-			<button type="button" id="lunch7to8" name="lunch" value="7" onclick="function1()">Between P7 & P8</button>						
+			<button type="button" id="lunch1to2" name="lunch" value="1" class="timetableBtn">Between P1 & P2</button>
+			<button type="button" id="lunch2to3" name="lunch" value="2" class="timetableBtn">Between P2 & P3</button>
+			<button type="button" id="lunch3to4" name="lunch" value="3" class="timetableBtn">Between P3 & P4</button>
+			<button type="button" id="lunch4to5" name="lunch" value="4" class="timetableBtn active">Between P4 & P5</button>
+			<button type="button" id="lunch5to6" name="lunch" value="5" class="timetableBtn">Between P5 & P6</button>
+			<button type="button" id="lunch6to7" name="lunch" value="6" class="timetableBtn">Between P6 & P7</button>						
+			<button type="button" id="lunch7to8" name="lunch" value="7" class="timetableBtn">Between P7 & P8</button>						
 			<br>
 			<br>
 			<p>How many Breaks do you have?</p>
-			<button type="button" id="0breaks" name="breaks" value="0" onclick="function1()">0</button>
-			<button type="button" id="1breaks" name="breaks" value="1" class="active" onclick="function1()">1</button>
-			<button type="button" id="2breaks" name="breaks" value="2" onclick="function1()">2</button>
+			<button type="button" id="0breaks" name="breaks" value="0" class="timetableBtn">0</button>
+			<button type="button" id="1breaks" name="breaks" value="1" class="timetableBtn active">1</button>
+			<button type="button" id="2breaks" name="breaks" value="2" class="timetableBtn">2</button>
 			<br>
 			<br>
 			<p>When is the First?</p>
-			<button type="button" id="1break1to2" name="break1" value="1" onclick="function1()">Between P1 & P2</button>
-			<button type="button" id="1break2to3" name="break1" value="2" class="active" onclick="function1()">Between P2 & P3</button>
-			<button type="button" id="1break3to4" name="break1" value="3" onclick="function1()">Between P3 & P4</button>
-			<button type="button" id="1break4to5" name="break1" value="4" onclick="function1()">Between P4 & P5</button>
-			<button type="button" id="1break5to6" name="break1" value="5" onclick="function1()">Between P5 & P6</button>
-			<button type="button" id="1break6to7" name="break1" value="6" onclick="function1()">Between P6 & P7</button>						
-			<button type="button" id="1break7to8" name="break1" value="7" onclick="function1()">Between P7 & P8</button>						
+			<button type="button" id="1break1to2" name="break1" value="1" class="timetableBtn">Between P1 & P2</button>
+			<button type="button" id="1break2to3" name="break1" value="2" class="timetableBtn active">Between P2 & P3</button>
+			<button type="button" id="1break3to4" name="break1" value="3" class="timetableBtn">Between P3 & P4</button>
+			<button type="button" id="1break4to5" name="break1" value="4" class="timetableBtn">Between P4 & P5</button>
+			<button type="button" id="1break5to6" name="break1" value="5" class="timetableBtn">Between P5 & P6</button>
+			<button type="button" id="1break6to7" name="break1" value="6" class="timetableBtn">Between P6 & P7</button>						
+			<button type="button" id="1break7to8" name="break1" value="7" class="timetableBtn">Between P7 & P8</button>						
 			<br>
 			<br>
 			<p>When is the Second?</p>
-			<button type="button" id="2break1to2" name="break2" value="1" onclick="function1()">Between P1 & P2</button>
-			<button type="button" id="2break2to3" name="break2" value="2" onclick="function1()">Between P2 & P3</button>
-			<button type="button" id="2break3to4" name="break2" value="3" onclick="function1()">Between P3 & P4</button>
-			<button type="button" id="2break4to5" name="break2" value="4" onclick="function1()">Between P4 & P5</button>
-			<button type="button" id="2break5to6" name="break2" value="5" onclick="function1()">Between P5 & P6</button>
-			<button type="button" id="2break6to7" name="break2" value="6" class="active" onclick="function1()">Between P6 & P7</button>						
-			<button type="button" id="2break7to8" name="break2" value="7" onclick="function1()">Between P7 & P8</button>						
+			<button type="button" id="2break1to2" name="break2" value="1" class="timetableBtn">Between P1 & P2</button>
+			<button type="button" id="2break2to3" name="break2" value="2" class="timetableBtn">Between P2 & P3</button>
+			<button type="button" id="2break3to4" name="break2" value="3" class="timetableBtn">Between P3 & P4</button>
+			<button type="button" id="2break4to5" name="break2" value="4" class="timetableBtn">Between P4 & P5</button>
+			<button type="button" id="2break5to6" name="break2" value="5" class="timetableBtn">Between P5 & P6</button>
+			<button type="button" id="2break6to7" name="break2" value="6" class="timetableBtn active">Between P6 & P7</button>						
+			<button type="button" id="2break7to8" name="break2" value="7" class="timetableBtn">Between P7 & P8</button>						
             <br>
             <br>
 			<p>How many Registration Periods in a Day?</p>
-			<button type="button" id="0periods" name="regPeriods" value="0" onclick="function1()">0</button>
-			<button type="button" id="1periods" name="regPeriods" value="1" class="active" onclick="function1()">1</button>
-			<button type="button" id="2periods" name="regPeriods" value="2" onclick="function1()">2</button>
+			<button type="button" id="0periods" name="regPeriods" value="0" class="timetableBtn">0</button>
+			<button type="button" id="1periods" name="regPeriods" value="1" class="timetableBtn active">1</button>
+			<button type="button" id="2periods" name="regPeriods" value="2" class="timetableBtn">2</button>
 			<br>
 			<br>
 			<p>When is the First?</p>
-			<button type="button" id="1regBefore1" name="regPeriods1" value="0" class="active" onclick="function1()">Before P1</button>
-			<button type="button" id="1reg1to2" name="regPeriods1" value="1" onclick="function1()">Between P1 & P2</button>
-			<button type="button" id="1reg2to3" name="regPeriods1" value="2" onclick="function1()">Between P2 & P3</button>
-			<button type="button" id="1reg3to4" name="regPeriods1" value="3" onclick="function1()">Between P3 & P4</button>
-			<button type="button" id="1reg4to5" name="regPeriods1" value="4" onclick="function1()">Between P4 & P5</button>
-			<button type="button" id="1reg5to6" name="regPeriods1" value="5" onclick="function1()">Between P5 & P6</button>
-			<button type="button" id="1reg6to7" name="regPeriods1" value="6" onclick="function1()">Between P6 & P7</button>						
-			<button type="button" id="1reg7to8" name="regPeriods1" value="7" onclick="function1()">Between P7 & P8</button>						
-			<button type="button" id="1regAfterLast" name="regPeriods1" value="Last" onclick="function1()">After Last Period</button>	
+			<button type="button" id="1regBefore1" name="regPeriods1" value="0" class="timetableBtn active">Before P1</button>
+			<button type="button" id="1reg1to2" name="regPeriods1" value="1" class="timetableBtn">Between P1 & P2</button>
+			<button type="button" id="1reg2to3" name="regPeriods1" value="2" class="timetableBtn">Between P2 & P3</button>
+			<button type="button" id="1reg3to4" name="regPeriods1" value="3" class="timetableBtn">Between P3 & P4</button>
+			<button type="button" id="1reg4to5" name="regPeriods1" value="4" class="timetableBtn">Between P4 & P5</button>
+			<button type="button" id="1reg5to6" name="regPeriods1" value="5" class="timetableBtn">Between P5 & P6</button>
+			<button type="button" id="1reg6to7" name="regPeriods1" value="6" class="timetableBtn">Between P6 & P7</button>						
+			<button type="button" id="1reg7to8" name="regPeriods1" value="7" class="timetableBtn">Between P7 & P8</button>						
+			<button type="button" id="1regAfterLast" name="regPeriods1" value="Last" class="timetableBtn">After Last Period</button>	
 			<br>
 			<br>
 			<p>Before or after Break?</p>
-			<button type="button" id="1regBeforeBreak" name="regBreak1" value="1regBeforeBreak" onclick="function1()">Before</button>
-			<button type="button" id="1regAfterBreak" name="regBreak1" value="1regAfterBreak" class="active" onclick="function1()">After</button>
+			<button type="button" id="1regBeforeBreak" name="regBreak1" value="1regBeforeBreak" class="timetableBtn">Before</button>
+			<button type="button" id="1regAfterBreak" name="regBreak1" value="1regAfterBreak" class="timetableBtn active">After</button>
 			<br>
 			<br>
 			<p>Before or after Lunch?</p>
-			<button type="button" id="1regBeforeLunch" name="regLunch1" value="1regBeforeLunch" onclick="function1()">Before</button>
-			<button type="button" id="1regAfterLunch" name="regLunch1" value="1regAfterLunch" class="active" onclick="function1()">After</button>
+			<button type="button" id="1regBeforeLunch" name="regLunch1" value="1regBeforeLunch" class="timetableBtn">Before</button>
+			<button type="button" id="1regAfterLunch" name="regLunch1" value="1regAfterLunch" class="timetableBtn active">After</button>
 			<br>
 			<br>
 			<p>When is the Second?</p>
-			<button type="button" id="2regBefore1" name="regPeriods2" value="0" onclick="function1()">Before P1</button>
-			<button type="button" id="2reg1to2" name="regPeriods2" value="1" onclick="function1()">Between P1 & P2</button>
-			<button type="button" id="2reg2to3" name="regPeriods2" value="2" onclick="function1()">Between P2 & P3</button>
-			<button type="button" id="2reg3to4" name="regPeriods2" value="3" onclick="function1()">Between P3 & P4</button>
-			<button type="button" id="2reg4to5" name="regPeriods2" value="4" onclick="function1()">Between P4 & P5</button>
-			<button type="button" id="2reg5to6" name="regPeriods2" value="5" onclick="function1()">Between P5 & P6</button>
-			<button type="button" id="2reg6to7" name="regPeriods2" value="6" class="active" onclick="function1()">Between P6 & P7</button>						
-			<button type="button" id="2reg7to8" name="regPeriods2" value="7" onclick="function1()">Between P7 & P8</button>						
-			<button type="button" id="2regAfterLast" name="regPeriods2" value="Last" onclick="function1()">After Last Period</button>	
+			<button type="button" id="2regBefore1" name="regPeriods2" value="0" class="timetableBtn">Before P1</button>
+			<button type="button" id="2reg1to2" name="regPeriods2" value="1" class="timetableBtn">Between P1 & P2</button>
+			<button type="button" id="2reg2to3" name="regPeriods2" value="2" class="timetableBtn">Between P2 & P3</button>
+			<button type="button" id="2reg3to4" name="regPeriods2" value="3" class="timetableBtn">Between P3 & P4</button>
+			<button type="button" id="2reg4to5" name="regPeriods2" value="4" class="timetableBtn">Between P4 & P5</button>
+			<button type="button" id="2reg5to6" name="regPeriods2" value="5" class="timetableBtn">Between P5 & P6</button>
+			<button type="button" id="2reg6to7" name="regPeriods2" value="6" class="timetableBtn active">Between P6 & P7</button>						
+			<button type="button" id="2reg7to8" name="regPeriods2" value="7" class="timetableBtn">Between P7 & P8</button>						
+			<button type="button" id="2regAfterLast" name="regPeriods2" value="Last" class="timetableBtn">After Last Period</button>	
 			<br>
 			<br>
 			<p>Before or after Break?</p>
-			<button type="button" id="2regBeforeBreak" name="regBreak2" value="2regBeforeBreak" onclick="function1()">Before</button>
-			<button type="button" id="2regAfterBreak" name="regBreak2" value="2regAfterBreak" class="active" onclick="function1()">After</button>
+			<button type="button" id="2regBeforeBreak" name="regBreak2" value="2regBeforeBreak" class="timetableBtn">Before</button>
+			<button type="button" id="2regAfterBreak" name="regBreak2" value="2regAfterBreak" class="timetableBtn active">After</button>
 			<br>
 			<br>
 			<p>Before or after Lunch?</p>
-			<button type="button" id="2regBeforeLunch" name="regLunch2" value="2regBeforeLunch" onclick="function1()">Before</button>
-			<button type="button" id="2regAfterLunch" name="regLunch2" value="2regAfterLunch" class="active" onclick="function1()">After</button>
+			<button type="button" id="2regBeforeLunch" name="regLunch2" value="2regBeforeLunch" class="timetableBtn">Before</button>
+			<button type="button" id="2regAfterLunch" name="regLunch2" value="2regAfterLunch" class="timetableBtn active">After</button>
 			<br>
 			<br>
 			<p>Check your Timetable:</p>
@@ -149,7 +151,7 @@
 			<br>
 			<br>
 			<label for="save">If this is correct : </label>
-            <button type="button" id="save" name="save" value="Save" onclick="function1()">Save</button>
+            <button type="button" id="save" name="save" value="Save">Save</button>
 			<br>
 			<p>If this is not correct, please amend your answers above.</p>
         </form>

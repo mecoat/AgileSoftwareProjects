@@ -7,6 +7,7 @@ function drawTimetable(){
     //Get weeks from document    
     var weeks = document.getElementsByName("weeks");
     //call function to get weeks in timetable
+    // console.log(weeks)
     var noWeeks = getActive (weeks);
     //add content to the placeholder to add to the DOM
     timetableContent += createHeaderRow(noWeeks);
@@ -14,6 +15,7 @@ function drawTimetable(){
     //Get periods from document    
     var periods = document.getElementsByName("periods");
     //call function to get weeks in timetable
+    // console.log(periods)
     var noPeriods = getActive (periods);
     
     //get lunch from DOM
@@ -124,7 +126,7 @@ function drawTimetable(){
 function getActive (input){
     var retVal;
     for (var i=0; i<input.length; i++){
-        if (input[i].getAttribute("class")=="active"){
+        if (input[i].getAttribute("class").includes("active")){
             retVal = input[i].value;
         }
     }
@@ -164,6 +166,7 @@ function createTimetableRow(noWeeks, period, text = ""){
 //////////
 
 function activateButton(name, value){
+    console.log("activated : " + name + " " +value)
     //Get section from document    
     var section = document.getElementsByName(name);
     //call function to get weeks in timetable
@@ -188,7 +191,7 @@ function activateButton(name, value){
 function deleteActive (section, value){
     for (var i=0; i<section.length; i++){
         if (section[i].getAttribute("value")==value){
-            section[i].className = "";
+            section[i].className = "timetableBtn";
         }
     }
     return (section);
@@ -197,9 +200,24 @@ function deleteActive (section, value){
 function addActive (section, value){
     for (var i=0; i<section.length; i++){
         if (section[i].getAttribute("value")==value){
-            section[i].className = "active";
+            section[i].className = "timetableBtn active";
         }
     }
     return (section);
 }
 
+////////////////////
+
+function addEventListeners (){
+    var ttButtons = document.getElementsByClassName("timetableBtn")
+    for (var i = 0; i < ttButtons.length; i++){
+        console.log(ttButtons[i].name)
+        ttButtons[i].addEventListener("click", function(){ activateButton(ttButtons[i].name, ttButtons[i].value); });
+    }
+
+}
+
+function ttStart(){
+    drawTimetable(); 
+    addEventListeners (); 
+}
