@@ -160,3 +160,46 @@ function createTimetableRow(noWeeks, period, text = ""){
     returnVal += "</tr>"
     return(returnVal);
 }
+
+//////////
+
+function activateButton(name, value){
+    //Get section from document    
+    var section = document.getElementsByName(name);
+    //call function to get weeks in timetable
+    var oldActive = getActive (section);
+    //check is user has selected currently active setting
+    if (oldActive == value){
+        //do nothing if they have
+        return;
+    } else { //otherwise...
+
+        //delete old active class
+        section = deleteActive(section, oldActive);
+        //set new active class
+        section = addActive(section, value);
+
+        //redraw the timetable because something has changed
+        drawTimetable();
+    }
+
+}
+
+function deleteActive (section, value){
+    for (var i=0; i<section.length; i++){
+        if (section[i].getAttribute("value")==value){
+            section[i].className = "";
+        }
+    }
+    return (section);
+}
+
+function addActive (section, value){
+    for (var i=0; i<section.length; i++){
+        if (section[i].getAttribute("value")==value){
+            section[i].className = "active";
+        }
+    }
+    return (section);
+}
+
