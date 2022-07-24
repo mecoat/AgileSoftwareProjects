@@ -189,8 +189,11 @@ function activateButton(name, value){
 }
 
 function deleteActive (section, value){
+    //iterate through the section
     for (var i=0; i<section.length; i++){
+        //find the value
         if (section[i].getAttribute("value")==value){
+            //change the classname so that it no longer includes active
             section[i].className = "timetableBtn";
         }
     }
@@ -198,8 +201,11 @@ function deleteActive (section, value){
 }
 
 function addActive (section, value){
+    //iterate through the section
     for (var i=0; i<section.length; i++){
+        //find the value
         if (section[i].getAttribute("value")==value){
+            //change the class name so that it includes active
             section[i].className = "timetableBtn active";
         }
     }
@@ -209,7 +215,9 @@ function addActive (section, value){
 ////////////////////
 
 function addEventListeners (){
+    //get all the items that have "timetableBtn" as a Class name (I've only added it to buttons)
     var ttButtons = document.getElementsByClassName("timetableBtn")
+    //iterate through them and add an event listener that calls the activate button with appropriate parameters when clicked
     for (var i = 0; i < ttButtons.length; i++){
         ttButtons[i].addEventListener("click", function(){ activateButton(this.name, this.value); });
     }
@@ -217,6 +225,8 @@ function addEventListeners (){
 }
 
 function ttStart(){
+    //draw the timetable to screen
     drawTimetable(); 
+    //add the event listeners for the timetable choice buttns
     addEventListeners (); 
 }
