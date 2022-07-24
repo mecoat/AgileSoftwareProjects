@@ -211,8 +211,7 @@ function addActive (section, value){
 function addEventListeners (){
     var ttButtons = document.getElementsByClassName("timetableBtn")
     for (var i = 0; i < ttButtons.length; i++){
-        console.log(ttButtons[i].name)
-        ttButtons[i].addEventListener("click", function(){ activateButton(ttButtons[i].name, ttButtons[i].value); });
+        ttButtons[i].addEventListener("click", function(){ activateButton(this.name, this.value); });
     }
 
 }
