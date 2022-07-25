@@ -194,7 +194,7 @@ function deleteActive (section, value){
         //find the value
         if (section[i].getAttribute("value")==value){
             //change the classname so that it no longer includes active
-            section[i].className = "timetableBtn";
+            section[i].classList.remove("active");
         }
     }
     return (section);
@@ -206,7 +206,7 @@ function addActive (section, value){
         //find the value
         if (section[i].getAttribute("value")==value){
             //change the class name so that it includes active
-            section[i].className = "timetableBtn active";
+            section[i].classList.add("active");
         }
     }
     return (section);
@@ -230,3 +230,6 @@ function ttStart(){
     //add the event listeners for the timetable choice buttns
     addEventListeners (); 
 }
+
+/////////////////
+
