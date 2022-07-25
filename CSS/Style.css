@@ -84,3 +84,11 @@ button:hover, button:focus{
     color:#FFFFFF;
 }
 
+
+table , td, th{
+    border-color: #000000;
+    border-style: solid;
+    border-collapse: collapse;
+    padding:0.5rem;
+}
+
