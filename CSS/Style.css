@@ -12,10 +12,6 @@ body{
 	font-family:Arial, calibri, helvetica, "gill sans", "sans-serif";
 }
 
-/* nav{
-    font-size: 0;
-} */
-
 nav ul {
     list-style: none;
 }
@@ -92,3 +88,6 @@ table , td, th{
     padding:0.5rem;
 }
 
+.hide {
+    display: none;
+}
