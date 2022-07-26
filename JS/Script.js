@@ -43,7 +43,7 @@ function drawTimetable(){
 
     //get registration from DOM
     var regPeriods = document.getElementsByName("regPeriods");
-    //get number of breaks with function
+    //get number of registrations with function
     var noRegPeriods = getActive(regPeriods); 
 
     //if there's 1 or more reg periods
@@ -168,7 +168,15 @@ function activateButton(name, value){
     var section = document.getElementsByName(name);
     //check for optional items that need hiding/unhiding
     if (name == "periods"){
-        unhideExtraPeriods (value)
+        //get registration from DOM
+        var breaks = document.getElementsByName("breaks");
+        //get number of registrations with function
+        var noBreaks = getActive(breaks); 
+        //get registration from DOM
+        var regPeriods = document.getElementsByName("regPeriods");
+        //get number of registrations with function
+        var noReg = getActive(regPeriods); 
+        unhideExtraPeriods (value, noBreaks, noReg);
     }
     //call function to get weeks in timetable
     var oldActive = getActive (section);
@@ -235,29 +243,44 @@ function ttStart(){
 /////////////////
 
 
-function unhideExtraPeriods(periods){
+function unhideExtraPeriods(periods, noBreaks, noReg){
+    //get list of items marke "hide"
     var hideClassList = document.getElementsByClassName("hide") ;
-    console.log(hideClassList);
-    console.log(hideClassList[1]);
-    // if ()
     
+    //iterate through the list (from the tail end, because it is going 
+    //to be removng elements and items will get missed if iterated 
+    //upwards)
     for (var i=hideClassList.length -1; i>=0; i--){
-        //find the value
-        // if (section[i].getAttribute("value")==value){
-            //change the classname so that it no longer includes active
-            // console.log(hideClassList[i])
-            // console.log (i)
-            // if (i <= 3){
-            //     console.log(console.log(hideClassList[i]))
-            // }
-        // if (hideClassList.getAttribute("Name") = "lunch"){
-            hideClassList[i].classList.remove("hide");
-        // }
-            
-        // }
-        // if (i <= 3){
-        //     console.log(console.log(hideClassList[i]))
-        // }
+
+        //check if the element has a name, and if the name is "lunch"
+        if (hideClassList[i].hasAttribute("name") && 
+            hideClassList[i].getAttribute("name").includes("lunch")){
+            //check if the element has a value and compare the value 
+            //to the number of periods
+            if (hideClassList[i].hasAttribute("value") && 
+                hideClassList[i].getAttribute("value") < periods){
+                //remove the hide class if the value is less than periods
+                hideClassList[i].classList.remove("hide");
+            }
+        }
+        
+        //check if any breaks are set
+        if (noBreaks > 0){
+            //check if the element name includes "break1"
+            if (hideClassList[i].hasAttribute("name") && 
+                hideClassList[i].getAttribute("name").includes("break1")){
+                //check if the element has a value and compare the value 
+                //to the number of periods
+                if (hideClassList[i].hasAttribute("value") && 
+                    hideClassList[i].getAttribute("value") < periods){
+                    //remove the hide class if the value is less than periods
+                    hideClassList[i].classList.remove("hide");
+                }
+            }
+        }
+        
+        // hideClassList[i].classList.remove("hide");
+
     }
     // return (section);
 }
