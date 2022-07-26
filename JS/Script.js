@@ -166,6 +166,10 @@ function createTimetableRow(noWeeks, period, text = ""){
 function activateButton(name, value){
     //Get section from document    
     var section = document.getElementsByName(name);
+    //check for optional items that need hiding/unhiding
+    if (name == "periods"){
+        unhideExtraPeriods (value)
+    }
     //call function to get weeks in timetable
     var oldActive = getActive (section);
     //check is user has selected currently active setting
@@ -231,3 +235,29 @@ function ttStart(){
 /////////////////
 
 
+function unhideExtraPeriods(periods){
+    var hideClassList = document.getElementsByClassName("hide") ;
+    console.log(hideClassList);
+    console.log(hideClassList[1]);
+    // if ()
+    
+    for (var i=hideClassList.length -1; i>=0; i--){
+        //find the value
+        // if (section[i].getAttribute("value")==value){
+            //change the classname so that it no longer includes active
+            // console.log(hideClassList[i])
+            // console.log (i)
+            // if (i <= 3){
+            //     console.log(console.log(hideClassList[i]))
+            // }
+        // if (hideClassList.getAttribute("Name") = "lunch"){
+            hideClassList[i].classList.remove("hide");
+        // }
+            
+        // }
+        // if (i <= 3){
+        //     console.log(console.log(hideClassList[i]))
+        // }
+    }
+    // return (section);
+}
