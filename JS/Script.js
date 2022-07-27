@@ -251,36 +251,47 @@ function unhideExtraPeriods(periods, noBreaks, noReg){
     //to be removng elements and items will get missed if iterated 
     //upwards)
     for (var i=hideClassList.length -1; i>=0; i--){
-
-        //check if the element has a name, and if the name is "lunch"
-        if (hideClassList[i].hasAttribute("name") && 
-            hideClassList[i].getAttribute("name").includes("lunch")){
-            //check if the element has a value and compare the value 
-            //to the number of periods
-            if (hideClassList[i].hasAttribute("value") && 
-                hideClassList[i].getAttribute("value") < periods){
-                //remove the hide class if the value is less than periods
-                hideClassList[i].classList.remove("hide");
-            }
-        }
-        
+        //check for lunch values
+        runChecks(hideClassList[i], "lunch", periods);
+                
         //check if any breaks are set
         if (noBreaks > 0){
-            //check if the element name includes "break1"
-            if (hideClassList[i].hasAttribute("name") && 
-                hideClassList[i].getAttribute("name").includes("break1")){
-                //check if the element has a value and compare the value 
-                //to the number of periods
-                if (hideClassList[i].hasAttribute("value") && 
-                    hideClassList[i].getAttribute("value") < periods){
-                    //remove the hide class if the value is less than periods
-                    hideClassList[i].classList.remove("hide");
-                }
-            }
+            runChecks(hideClassList[i], "break1", periods);
+        }
+        //check if 2 breaks are set
+        if (noBreaks > 1){
+            //check if the element name includes "break2"
+            runChecks(hideClassList[i], "break2", periods);
         }
         
         // hideClassList[i].classList.remove("hide");
 
     }
-    // return (section);
+}
+
+function checkName(element, name){
+    if (element.hasAttribute("name") && 
+    element.getAttribute("name").includes(name)){
+        return true;
+    }
+    return false;
+}
+
+function getValue(element){
+    if (element.hasAttribute("value")){
+        return  element.getAttribute("value");
+    } 
+}
+
+function runChecks(element, name, periods){
+    //check if the element has a name, and it matches
+    if (checkName(element, name)){
+        //check if the element has a value and compare the value 
+        //to the number of periods
+        if (getValue(element) != false 
+        && getValue(element) < periods){
+            //remove the hide class if the value is less than periods
+            element.classList.remove("hide");
+        }
+    }
 }
