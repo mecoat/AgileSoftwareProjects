@@ -166,18 +166,7 @@ function createTimetableRow(noWeeks, period, text = ""){
 function activateButton(name, value){
     //Get section from document    
     var section = document.getElementsByName(name);
-    //check for optional items that need hiding/unhiding
-    if (name == "periods"){
-        //get registration from DOM
-        var breaks = document.getElementsByName("breaks");
-        //get number of registrations with function
-        var noBreaks = getActive(breaks); 
-        //get registration from DOM
-        var regPeriods = document.getElementsByName("regPeriods");
-        //get number of registrations with function
-        var noReg = getActive(regPeriods); 
-        unhideExtraPeriods (value, noBreaks, noReg);
-    }
+   
     //call function to get weeks in timetable
     var oldActive = getActive (section);
     //check is user has selected currently active setting
@@ -190,6 +179,9 @@ function activateButton(name, value){
         section = deleteActive(section, oldActive);
         //set new active class
         section = addActive(section, value);
+
+        //check for changes to optional Q/A displays
+        checkForOptionals();
 
         //redraw the timetable because something has changed
         drawTimetable();
@@ -238,6 +230,8 @@ function ttStart(){
     drawTimetable(); 
     //add the event listeners for the timetable choice buttns
     addEventListeners (); 
+    //run checks for optional questions and display if needed
+    checkForOptionals();
 }
 
 /////////////////
@@ -264,8 +258,6 @@ function unhideExtraPeriods(periods, noBreaks, noReg){
             runChecks(hideClassList[i], "break2", periods);
         }
         
-        // hideClassList[i].classList.remove("hide");
-
     }
 }
 
@@ -281,6 +273,7 @@ function getValue(element){
     if (element.hasAttribute("value")){
         return  element.getAttribute("value");
     } 
+    return false
 }
 
 function runChecks(element, name, periods){
@@ -294,4 +287,74 @@ function runChecks(element, name, periods){
             element.classList.remove("hide");
         }
     }
+}
+
+function unhideBreakQuestions(breaks, noPeriods){
+    //get list of items marked "hide"
+    var hideClassList = document.getElementsByClassName("hide") ;
+    
+    //iterate through the list (from the tail end, because it is going 
+    //to be removng elements and items will get missed if iterated 
+    //upwards)
+    for (var i=hideClassList.length -1; i>=0; i--){
+        //check if there are breaks
+        if (breaks >= 1){
+            unhideByClass(hideClassList[i], "break1", noPeriods);
+        }
+        
+        if (breaks == 2){
+            unhideByClass(hideClassList[i], "break2", noPeriods);
+        }
+        
+    }
+}
+
+function unhideByClass(element, checkClass, targetValue){
+    console.log("called")
+    if (element.getAttribute("class").includes(checkClass)){
+        
+        if (!getValue(element) || getValue(element) < targetValue){
+            element.classList.remove("hide");
+        }
+        
+        
+    }
+}
+
+function checkForOptionals(){
+    //Get section from document    
+    var section = document.getElementsByName(name);
+
+    //check for optional items that need hiding/unhiding
+    var periods = document.getElementsByName("periods");
+    var perVal = getActive(periods)
+    checkPeriods(perVal);
+    
+    var breaks = document.getElementsByName("breaks");
+    var breakVal = getActive(breaks)
+    checkBreaks(breakVal);
+
+   
+}
+
+function checkPeriods(value){
+    //get breaks from DOM
+    var breaks = document.getElementsByName("breaks");
+    //get number of breaks with function
+    var noBreaks = getActive(breaks); 
+    //get registration from DOM
+    var regPeriods = document.getElementsByName("regPeriods");
+    //get number of registrations with function
+    var noReg = getActive(regPeriods); 
+    //unhide apropriate questions/answers
+    unhideExtraPeriods (value, noBreaks, noReg);
+}
+
+function checkBreaks(value){
+    //get periods from DOM
+    var periods = document.getElementsByName("periods");
+    //get number of registrations with function
+    var noPeriods = getActive(periods); 
+    //unhide appropriate questions/answers
+    unhideBreakQuestions (value, noPeriods);
 }
