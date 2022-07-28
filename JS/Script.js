@@ -246,16 +246,16 @@ function unhideExtraPeriods(periods, noBreaks, noReg){
     //upwards)
     for (var i=hideClassList.length -1; i>=0; i--){
         //check for lunch values
-        runChecks(hideClassList[i], "lunch", periods);
+        runChecksUnhide(hideClassList[i], "lunch", periods);
                 
         //check if any breaks are set
         if (noBreaks > 0){
-            runChecks(hideClassList[i], "break1", periods);
+            runChecksUnhide(hideClassList[i], "break1", periods);
         }
         //check if 2 breaks are set
         if (noBreaks > 1){
             //check if the element name includes "break2"
-            runChecks(hideClassList[i], "break2", periods);
+            runChecksUnhide(hideClassList[i], "break2", periods);
         }
         
     }
@@ -276,7 +276,7 @@ function getValue(element){
     return false
 }
 
-function runChecks(element, name, periods){
+function runChecksUnhide(element, name, periods){
     //check if the element has a name, and it matches
     if (checkName(element, name)){
         //check if the element has a value and compare the value 
