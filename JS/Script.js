@@ -245,17 +245,23 @@ function unhideExtraPeriods(periods, noBreaks, noReg){
     //to be removng elements and items will get missed if iterated 
     //upwards)
     for (var i=hideClassList.length -1; i>=0; i--){
+        console.log ("1 iteration")
+        var checkElement = hideClassList[i];
         //check for lunch values
-        runChecks(hideClassList[i], "lunch", periods);
-                
+        runPeriodChecks(checkElement, "lunch", periods);
+                console.log (checkElement)
         //check if any breaks are set
         if (noBreaks > 0){
-            runChecks(hideClassList[i], "break1", periods);
+            runPeriodChecks(checkElement, "break1", periods);
+            console.log (checkElement)
+
         }
         //check if 2 breaks are set
         if (noBreaks > 1){
             //check if the element name includes "break2"
-            runChecks(hideClassList[i], "break2", periods);
+            runPeriodChecks(checkElement, "break2", periods);
+            console.log (checkElement)
+
         }
         
     }
@@ -276,7 +282,7 @@ function getValue(element){
     return false
 }
 
-function runChecks(element, name, periods){
+function runChecksUnhide(element, name, periods){
     //check if the element has a name, and it matches
     if (checkName(element, name)){
         //check if the element has a value and compare the value 
@@ -310,7 +316,6 @@ function unhideBreakQuestions(breaks, noPeriods){
 }
 
 function unhideByClass(element, checkClass, targetValue){
-    console.log("called")
     if (element.getAttribute("class").includes(checkClass)){
         
         if (!getValue(element) || getValue(element) < targetValue){
@@ -357,4 +362,44 @@ function checkBreaks(value){
     var noPeriods = getActive(periods); 
     //unhide appropriate questions/answers
     unhideBreakQuestions (value, noPeriods);
+}
+
+
+function runChecksHide(element, name, periods){
+    // console.log("called " + checkName(element, name))
+    if (element.hasAttribute("id") &&
+        element.getAttribute("id")=="lunch6to7"){
+        console.log(element)
+        console.log(checkName(element, name))
+    }
+    
+
+    //check if the element has a name, and it matches
+    if (checkName(element, name)){
+        // console.log("called " + getValue(element) + " " + periods)
+
+        //check if the element has a value and compare the value 
+        //to the number of periods
+        if (getValue(element) != false         
+        && getValue(element) >= periods){
+            //add the hide class if the value is greater than periods
+            // console.log("hiding " + element)
+            element.classList.add("hide");
+        }
+    }
+}
+
+function runPeriodChecks(element, name, periods){
+    if (element.hasAttribute("id") &&
+        element.getAttribute("id")=="lunch6to7"){
+    console.log ("unhide")
+    console.log(element)
+        }
+    runChecksUnhide(element, name, periods)
+    if (element.hasAttribute("id") &&
+        element.getAttribute("id")=="lunch6to7"){
+    console.log ("hide")
+    console.log(element)
+        }
+    runChecksHide(element, name, periods)
 }
