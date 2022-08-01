@@ -7,7 +7,6 @@ function drawTimetable(){
     //Get weeks from document    
     var weeks = document.getElementsByName("weeks");
     //call function to get weeks in timetable
-    // console.log(weeks)
     var noWeeks = getActive (weeks);
     //add content to the placeholder to add to the DOM
     timetableContent += createHeaderRow(noWeeks);
@@ -15,7 +14,6 @@ function drawTimetable(){
     //Get periods from document    
     var periods = document.getElementsByName("periods");
     //call function to get weeks in timetable
-    // console.log(periods)
     var noPeriods = getActive (periods);
     
     //get lunch from DOM
@@ -166,7 +164,6 @@ function createTimetableRow(noWeeks, period, text = ""){
 //////////
 
 function activateButton(name, value){
-    console.log("activated : " + name + " " +value)
     //Get section from document    
     var section = document.getElementsByName(name);
     //call function to get weeks in timetable
@@ -257,6 +254,13 @@ function createOutput(){
 
 function saveOutput(){
     var outputData = createOutput();
-    // saveJSON(outputData, 'timetable.json');
-    console.log(outputData);
+    saveJSON(outputData, 'timetable.json');
 }
+
+
+
+////////////////////////////
+//required so that p5 will work
+function setup(){}
+//required so that p5 will work
+function draw(){}
