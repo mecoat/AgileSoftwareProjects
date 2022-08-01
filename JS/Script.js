@@ -222,6 +222,9 @@ function addEventListeners (){
         ttButtons[i].addEventListener("click", function(){ activateButton(this.name, this.value); });
     }
 
+    var saveBtn = document.getElementById("save");
+    saveBtn.addEventListener("click", saveOutput);
+
 }
 
 function ttStart(){
@@ -233,4 +236,27 @@ function ttStart(){
 
 /////////////////
 
+function createOutput(){
+    var output = {};
+    output.weeks = getActive(document.getElementsByName("weeks"));
+    output.periods = getActive(document.getElementsByName("periods"));
+    output.lunch = getActive(document.getElementsByName("lunch"));
+    output.breaks = getActive(document.getElementsByName("breaks"));
+    output.break1 = getActive(document.getElementsByName("break1"));
+    output.break2 = getActive(document.getElementsByName("break2"));
+    output.regPeriods = getActive(document.getElementsByName("regPeriods"));
+    output.regPeriods1 = getActive(document.getElementsByName("regPeriods1"));
+    output.regBreak1 = getActive(document.getElementsByName("regBreak1"));
+    output.regLunch1 = getActive(document.getElementsByName("regLunch1"));
+    output.regPeriods2 = getActive(document.getElementsByName("regPeriods2"));
+    output.regBreak2 = getActive(document.getElementsByName("regBreak2"));
+    output.regLunch2 = getActive(document.getElementsByName("regLunch2"));
 
+    return output;
+}
+
+function saveOutput(){
+    var outputData = createOutput();
+    // saveJSON(outputData, 'timetable.json');
+    console.log(outputData);
+}
