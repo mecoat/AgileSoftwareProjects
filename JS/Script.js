@@ -289,8 +289,17 @@ async function loadTTInput(){
         for (var key in fileParsed){
             //check if the key is a name in elements in the page
             if (document.getElementsByName(key).length > 0){
-                // Change the active value as though the user had clicked the button
-                activateButton(key, fileParsed[key])
+                //Check the value is valid for that name
+                if (checkActiveValid(key, fileParsed[key])) {
+                    // Change the active value as though the user had clicked the button
+                    activateButton(key, fileParsed[key]);
+                }
+                //if value is invalid
+                else {
+                    //Alert the user of a potential issue
+                    showError("invalidContents");
+                }
+                
             }
             //if key is not a name of an element in the file ...
             else {            
@@ -328,6 +337,21 @@ function hideError(idName){
         //add hide to the class to make the message go away again
         invalid.classList.add("hide");
     }
+}
+
+function checkActiveValid(name, value){
+    //get all elements with the name
+    var section = document.getElementsByName(name);
+    //iterate thrugh the elements 
+    for (var i = 0; i < section.length; i++){
+        //check if the value matches the desired value
+        if (section[i].value == value){
+            //return true if found
+            return true;
+        }
+    }
+    //return false if not found at all
+    return false;
 }
 
 ////////////////////////////
