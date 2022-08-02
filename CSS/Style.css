@@ -92,3 +92,6 @@ table , td, th{
     padding:0.5rem;
 }
 
+.hide {
+    display: none;
+}

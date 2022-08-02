@@ -259,11 +259,36 @@ function saveTTOutput(){
     saveJSON(outputData, 'timetable.json');
 }
 
+//function needs to be asynchronous to load the input file
 async function loadTTInput(){
+    //get the input file
     var input = document.querySelector('input[type="file"]');
     var file = input.files[0];
-    var fileText = await file.text();
-    console.log(fileText);
+
+    //check that the input file is the correct type
+    if (file.name.endsWith(".json")){
+        //find the error message element...
+        var invalid = document.getElementById("invalidFile");
+        //check that it doesn't have "hide" in the class (it's currently showing)
+        if (!invalid.classList.contains("hide")){
+            //add hide to the class to make the message go away again
+            invalid.classList.add("hide");
+        }
+
+        //now start processing file contents
+        var fileText = await file.text();
+
+        
+    }
+    //if not correct type...
+    else {
+        //find the error message element...
+        var invalid = document.getElementById("invalidFile");
+        //and remove the "hide" from the cass list to make it display
+        invalid.classList.remove("hide");
+    }
+    
+    // console.log(fileText);
    
 }
 
