@@ -289,7 +289,8 @@ async function loadTTInput(){
         for (var key in fileParsed){
             //check if the key is a name in elements in the page
             if (document.getElementsByName(key).length > 0){
-                console.log(key);
+                // Change the active value as though the user had clicked the button
+                activateButton(key, fileParsed[key])
             }
             //if key is not a name of an element in the file ...
             else {            
