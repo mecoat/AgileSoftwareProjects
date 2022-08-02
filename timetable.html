@@ -14,6 +14,7 @@
 	  <link rel="apple-touch-icon" sizes="144x144" href="Images/apple-icon-144x144.png">
 	  <link rel="apple-touch-icon" sizes="152x152" href="Images/apple-icon-152x152.png">
 	  <link rel="apple-touch-icon" sizes="180x180" href="Images/apple-icon-180x180.png"> -->
+	  <script src="JS/libraries/p5.min.js"></script>
 	  <script src="JS/Script.js"></script>
 	  <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0">
 	  <meta name="description" content="Coates Consultancy provides D&amp;TA accredited Health and Safety training for Design &amp; Technology (DT) Departments in secondary schools in London and South-East England." /> -->
@@ -42,7 +43,11 @@
     <div class="timetablePage mainPage">
         <form>
             <label for="upload">Upload previous File : </label>
-            <button type="button" id="upload" name="upload" value="Upload">Upload</button>
+			<input type="file" id="ttFile" name="upload" accept=".json">
+			<br>
+            <button type="button" id="upload" name="upload" value="Upload">Check it</button>
+			<p class="hide invalidFile" id="invalidFile">Sorry this is an invalid file type, please upload a valid template json file from this software.</p>
+			<p class="hide invalidContents" id="invalidContents">Some or all of the values in the file uploaded were not able to be matched against expected values.  Please either try to upload another file, or check the values below against expected outcomes, correct and save file again.</p>
 			<br>
 			<br>
 			<p>How many Weeks in your timetable?</p>

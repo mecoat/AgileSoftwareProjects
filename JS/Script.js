@@ -7,7 +7,6 @@ function drawTimetable(){
     //Get weeks from document    
     var weeks = document.getElementsByName("weeks");
     //call function to get weeks in timetable
-    // console.log(weeks)
     var noWeeks = getActive (weeks);
     //add content to the placeholder to add to the DOM
     timetableContent += createHeaderRow(noWeeks);
@@ -15,7 +14,6 @@ function drawTimetable(){
     //Get periods from document    
     var periods = document.getElementsByName("periods");
     //call function to get weeks in timetable
-    // console.log(periods)
     var noPeriods = getActive (periods);
     
     //get lunch from DOM
@@ -166,7 +164,6 @@ function createTimetableRow(noWeeks, period, text = ""){
 //////////
 
 function activateButton(name, value){
-    console.log("activated : " + name + " " +value)
     //Get section from document    
     var section = document.getElementsByName(name);
     //call function to get weeks in timetable
@@ -214,7 +211,7 @@ function addActive (section, value){
 
 ////////////////////
 
-function addEventListeners (){
+function addTTEventListeners (){
     //get all the items that have "timetableBtn" as a Class name (I've only added it to buttons)
     var ttButtons = document.getElementsByClassName("timetableBtn")
     //iterate through them and add an event listener that calls the activate button with appropriate parameters when clicked
@@ -222,15 +219,141 @@ function addEventListeners (){
         ttButtons[i].addEventListener("click", function(){ activateButton(this.name, this.value); });
     }
 
+    var saveBtn = document.getElementById("save");
+    saveBtn.addEventListener("click", saveTTOutput);
+
+    var uploadBtn = document.getElementById("upload");
+    uploadBtn.addEventListener("click", loadTTInput);
 }
 
 function ttStart(){
     //draw the timetable to screen
     drawTimetable(); 
     //add the event listeners for the timetable choice buttns
-    addEventListeners (); 
+    addTTEventListeners (); 
 }
 
 /////////////////
 
+function createOutput(){
+    var output = {};
+    output.weeks = getActive(document.getElementsByName("weeks"));
+    output.periods = getActive(document.getElementsByName("periods"));
+    output.lunch = getActive(document.getElementsByName("lunch"));
+    output.breaks = getActive(document.getElementsByName("breaks"));
+    output.break1 = getActive(document.getElementsByName("break1"));
+    output.break2 = getActive(document.getElementsByName("break2"));
+    output.regPeriods = getActive(document.getElementsByName("regPeriods"));
+    output.regPeriods1 = getActive(document.getElementsByName("regPeriods1"));
+    output.regBreak1 = getActive(document.getElementsByName("regBreak1"));
+    output.regLunch1 = getActive(document.getElementsByName("regLunch1"));
+    output.regPeriods2 = getActive(document.getElementsByName("regPeriods2"));
+    output.regBreak2 = getActive(document.getElementsByName("regBreak2"));
+    output.regLunch2 = getActive(document.getElementsByName("regLunch2"));
 
+    return output;
+}
+
+function saveTTOutput(){
+    var outputData = createOutput();
+    saveJSON(outputData, 'timetable.json');
+}
+
+//function needs to be asynchronous to load the input file
+async function loadTTInput(){
+    //get the input file
+    var input = document.querySelector('input[type="file"]');
+    var file = input.files[0];
+
+    //check that the input file is the correct type
+    if (file.name.endsWith(".json")){
+        //hide error messages if they were showing
+        hideError("invalidFile");
+        hideError("invalidContents");
+
+        //now start processing file contents
+        var fileText = await file.text();
+        //try to convert string to JSON
+        try{
+            var fileParsed = JSON.parse(fileText);
+        }
+        //if conversion fails...
+        catch{
+            //display the error message
+            showError("invalidFile");
+            //end function
+            return;
+        }
+        
+        //iterate through the parsed file contents
+        for (var key in fileParsed){
+            //check if the key is a name in elements in the page
+            if (document.getElementsByName(key).length > 0){
+                //Check the value is valid for that name
+                if (checkActiveValid(key, fileParsed[key])) {
+                    // Change the active value as though the user had clicked the button
+                    activateButton(key, fileParsed[key]);
+                }
+                //if value is invalid
+                else {
+                    //Alert the user of a potential issue
+                    showError("invalidContents");
+                }
+                
+            }
+            //if key is not a name of an element in the file ...
+            else {            
+                //Alert the user of a potential issue
+                showError("invalidContents");
+            }
+        }
+        
+
+    }
+    //if not correct type...
+    else {
+        showError("invalidFile");
+    }
+    
+    // console.log(fileText);
+   
+}
+
+function showError(idName){
+    //find the error message element...
+    var invalid = document.getElementById(idName);
+    //and remove the "hide" from the class list to make it display 
+    // (if not already showing)
+    if (invalid.classList.contains("hide")){
+        invalid.classList.remove("hide");
+    }
+}
+
+function hideError(idName){
+    //find the error message element...
+    var invalid = document.getElementById(idName);
+    //check that it doesn't have "hide" in the class (it's currently showing)
+    if (!invalid.classList.contains("hide")){
+        //add hide to the class to make the message go away again
+        invalid.classList.add("hide");
+    }
+}
+
+function checkActiveValid(name, value){
+    //get all elements with the name
+    var section = document.getElementsByName(name);
+    //iterate thrugh the elements 
+    for (var i = 0; i < section.length; i++){
+        //check if the value matches the desired value
+        if (section[i].value == value){
+            //return true if found
+            return true;
+        }
+    }
+    //return false if not found at all
+    return false;
+}
+
+////////////////////////////
+//required so that p5 will work
+function setup(){}
