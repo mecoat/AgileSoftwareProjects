@@ -1,3 +1,9 @@
+//required so that p5 will work
+function setup(){}
+
+///////////////////
+
+//draw the template timetable to the screen
 function drawTimetable(){
     //get the element we want to make changes to
     var timetable = document.getElementById("templateTimetable");
@@ -119,6 +125,14 @@ function drawTimetable(){
 
     //add the content to the DOM
     timetable.innerHTML = timetableContent;
+}
+
+function getActiveElement(name){
+    //Get elements from document    
+    var elements = document.getElementsByName(name);
+    //call function to get active value
+    var active = getActive (elements);
+    return active;
 }
 
 function getActive (input){
@@ -355,5 +369,23 @@ function checkActiveValid(name, value){
 }
 
 ////////////////////////////
-//required so that p5 will work
-function setup(){}
+
+
+function hideSection(name, value){
+    //get all elements with the name
+    var section = document.getElementsByName(name);
+    //iterate thrugh the elements 
+    for (var i = 0; i < section.length; i++){
+        //check if the value matches or it higher than the input value
+        if (section[i].value >= value){
+            //add hide to the class of the element
+            section[i].classList.add("hide");
+        }
+    }
+}
+
+
+
+function setupTTPage(){
+
+}
