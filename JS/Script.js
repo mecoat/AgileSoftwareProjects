@@ -211,7 +211,7 @@ function addActive (section, value){
 
 ////////////////////
 
-function addEventListeners (){
+function addTTEventListeners (){
     //get all the items that have "timetableBtn" as a Class name (I've only added it to buttons)
     var ttButtons = document.getElementsByClassName("timetableBtn")
     //iterate through them and add an event listener that calls the activate button with appropriate parameters when clicked
@@ -220,15 +220,17 @@ function addEventListeners (){
     }
 
     var saveBtn = document.getElementById("save");
-    saveBtn.addEventListener("click", saveOutput);
+    saveBtn.addEventListener("click", saveTTOutput);
 
+    var uploadBtn = document.getElementById("upload");
+    uploadBtn.addEventListener("click", loadTTInput);
 }
 
 function ttStart(){
     //draw the timetable to screen
     drawTimetable(); 
     //add the event listeners for the timetable choice buttns
-    addEventListeners (); 
+    addTTEventListeners (); 
 }
 
 /////////////////
@@ -252,15 +254,20 @@ function createOutput(){
     return output;
 }
 
-function saveOutput(){
+function saveTTOutput(){
     var outputData = createOutput();
     saveJSON(outputData, 'timetable.json');
 }
 
+async function loadTTInput(){
+    var input = document.querySelector('input[type="file"]');
+    var file = input.files[0];
+    var fileText = await file.text();
+    console.log(fileText);
+   
+}
 
 
 ////////////////////////////
 //required so that p5 will work
 function setup(){}
-//required so that p5 will work
-function draw(){}
