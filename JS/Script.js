@@ -267,31 +267,67 @@ async function loadTTInput(){
 
     //check that the input file is the correct type
     if (file.name.endsWith(".json")){
-        //find the error message element...
-        var invalid = document.getElementById("invalidFile");
-        //check that it doesn't have "hide" in the class (it's currently showing)
-        if (!invalid.classList.contains("hide")){
-            //add hide to the class to make the message go away again
-            invalid.classList.add("hide");
-        }
+        //hide error messages if they were showing
+        hideError("invalidFile");
+        hideError("invalidContents");
 
         //now start processing file contents
         var fileText = await file.text();
-
+        //try to convert string to JSON
+        try{
+            var fileParsed = JSON.parse(fileText);
+        }
+        //if conversion fails...
+        catch{
+            //display the error message
+            showError("invalidFile");
+            //end function
+            return;
+        }
         
+        //iterate through the parsed file contents
+        for (var key in fileParsed){
+            //check if the key is a name in elements in the page
+            if (document.getElementsByName(key).length > 0){
+                console.log(key);
+            }
+            //if key is not a name of an element in the file ...
+            else {            
+                //Alert the user of a potential issue
+                showError("invalidContents");
+            }
+        }
+        
+
     }
     //if not correct type...
     else {
-        //find the error message element...
-        var invalid = document.getElementById("invalidFile");
-        //and remove the "hide" from the cass list to make it display
-        invalid.classList.remove("hide");
+        showError("invalidFile");
     }
     
     // console.log(fileText);
    
 }
 
+function showError(idName){
+    //find the error message element...
+    var invalid = document.getElementById(idName);
+    //and remove the "hide" from the class list to make it display 
+    // (if not already showing)
+    if (invalid.classList.contains("hide")){
+        invalid.classList.remove("hide");
+    }
+}
+
+function hideError(idName){
+    //find the error message element...
+    var invalid = document.getElementById(idName);
+    //check that it doesn't have "hide" in the class (it's currently showing)
+    if (!invalid.classList.contains("hide")){
+        //add hide to the class to make the message go away again
+        invalid.classList.add("hide");
+    }
+}
 
 ////////////////////////////
 //required so that p5 will work
