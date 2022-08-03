@@ -463,20 +463,49 @@ function hidePeriods(){
 function hideBreaks(){
     var breaks = getActiveElement("breaks");
     if (breaks <= 1){
-        hideSection("break2")
+        hideSection("break2");
     }
     if (breaks < 1){
-        hideSection("break1")
+        hideSection("break1");
     }
 }
 
 function hideReg(){
     var reg = getActiveElement("regPeriods");
+    var lunch = getActiveElement("lunch");
+    var noBreaks = getActiveElement("breaks"); 
+    var break1Time = getActiveElement("break1"); 
+    var break2Time = getActiveElement("break2"); 
+
+    
+
     if (reg <= 1){
-        hideSection("reg2")
+        hideSection("reg2");
     }
     if (reg < 1){
-        hideSection("reg1")
+        hideSection("reg1");
+    }
+
+    if (reg == 2){
+        var reg2Time = getActiveElement("regPeriods2"); 
+        if (reg2Time != lunch){
+            hideSection("regLunch2");
+        }
+        if ((noBreaks == 2 && reg2Time != break2Time) 
+         || (noBreaks >= 1 && reg2Time != break1Time)){
+            hideSection("regBreak2");
+        }
+    }
+
+    if (reg >= 1){
+        var reg1Time = getActiveElement("regPeriods1"); 
+        if (reg1Time != lunch){
+            hideSection("regLunch1");
+        }
+        if ((noBreaks == 2 && reg1Time != break2Time) 
+         || (noBreaks >= 1 && reg1Time != break1Time)){
+            hideSection("regBreak1");
+        }
     }
 }
 
@@ -551,13 +580,46 @@ function showBreaks(){
 
 function showReg(){
     var reg = getActiveElement("regPeriods");
+    var lunch = getActiveElement("lunch");
+    var noBreaks = getActiveElement("breaks"); 
+    var break1Time = getActiveElement("break1"); 
+    var break2Time = getActiveElement("break2"); 
+
+
     if (reg > 1){
         showSection("reg2");
+        hideSection("regLunch2");
+        hideSection("regBreak2");
         hidePeriods();
     }
     if (reg >= 1){
         showSection("reg1");
+        hideSection("regLunch1");
+        hideSection("regBreak1");
         hidePeriods();
+    }
+
+
+    if (reg == 2){
+        var reg2Time = getActiveElement("regPeriods2"); 
+        if (reg2Time == lunch){
+            showSection("regLunch2");
+        }
+        if ((noBreaks == 2 && reg2Time == break2Time) 
+         || (noBreaks >= 1 && reg2Time == break1Time)){
+            showSection("regBreak2");
+        }
+    }
+
+    if (reg >= 1){
+        var reg1Time = getActiveElement("regPeriods1"); 
+        if (reg1Time == lunch){
+            showSection("regLunch1");
+        }
+        if ((noBreaks == 2 && reg1Time == break2Time) 
+         || (noBreaks >= 1 && reg1Time == break1Time)){
+            showSection("regBreak1");
+        }
     }
 }
 
