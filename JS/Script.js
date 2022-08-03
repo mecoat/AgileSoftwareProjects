@@ -227,6 +227,11 @@ function activateButton(name, value){
 
         //redraw the timetable because something has changed
         drawTimetable();
+
+        //hide optional elements as appropriate
+        hideOnTTPage();
+        //show optional elements as appropriate
+        showOnTTPage();
     }
 
 }
@@ -278,7 +283,7 @@ function ttStart(){
     //add the event listeners for the timetable choice buttns
     addTTEventListeners (); 
     //hide optional values
-    setupTTPage();
+    hideOnTTPage();
 }
 
 /////////////////
@@ -415,14 +420,15 @@ function hideElements(name, value){
             //add hide to the class of the element
             section[i].classList.add("hide");
         }
+        //otherwise ...
         else {
+            //...end the function to save power
             return
         }
     }
 }
 
 function hideSection(name){
-    console.log("called")
     //get all elements with the class
     var section = document.getElementsByClassName(name);
      //iterate thrugh the elements 
@@ -432,7 +438,7 @@ function hideSection(name){
     }
 }
 
-function setupTTPage(){
+function hideOnTTPage(){
     var periods = getActiveElement("periods");
     if (periods < 8){
         hideElements("lunch", periods);
@@ -458,3 +464,62 @@ function setupTTPage(){
         hideSection("reg1")
     }
 }
+
+
+
+
+////////////////////////////
+
+
+function showElements(name, value){
+    //get all elements with the name
+    var section = document.getElementsByName(name);
+    //iterate thrugh the elements 
+    for (var i = section.length -1; i >= 0; i--){
+        //check if the value is lower than the input value
+        if (section[i].value < value){
+            //add hide to the class of the element
+            section[i].classList.remove("hide");
+        }
+    }
+}
+
+function showSection(name){
+    //get all elements with the class
+    var section = document.getElementsByClassName(name);
+     //iterate thrugh the elements 
+     for (var i = 0; i < section.length; i++){
+        //add hide to the class of the element
+        section[i].classList.remove("hide");
+    }
+}
+
+function showOnTTPage(){
+    var periods = getActiveElement("periods");
+    if (periods > 4){
+        showElements("lunch", periods);
+        showElements("break1", periods);
+        showElements("break2", periods);
+        showElements("regPeriods1", periods);
+        showElements("regPeriods2", periods);
+    }
+
+    var breaks = getActiveElement("breaks");
+    if (breaks > 1){
+        showSection("break2")
+    }
+    if (breaks == 1){
+        showSection("break1")
+    }
+
+    var reg = getActiveElement("regPeriods");
+    if (reg > 1){
+        showSection("reg2")
+    }
+    if (reg == 1){
+        showSection("reg1")
+    }
+}
+
+
+
