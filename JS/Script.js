@@ -541,7 +541,7 @@ function showBreaks(){
         showSection("break2");
         hidePeriods();
     }
-    if (breaks == 1){
+    if (breaks >= 1){
         showSection("break1");
         hidePeriods();
     }
@@ -553,7 +553,7 @@ function showReg(){
         showSection("reg2");
         hidePeriods();
     }
-    if (reg == 1){
+    if (reg >= 1){
         showSection("reg1");
         hidePeriods();
     }
