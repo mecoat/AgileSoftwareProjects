@@ -1,124 +1,170 @@
+//required so that p5 will work
+function setup(){}
+
+///////////////////
+
+//draw the template timetable to the screen
 function drawTimetable(){
     //get the element we want to make changes to
     var timetable = document.getElementById("templateTimetable");
     //create an empty placeholder for content
     var timetableContent = "";
 
-    //Get weeks from document    
-    var weeks = document.getElementsByName("weeks");
     //call function to get weeks in timetable
-    var noWeeks = getActive (weeks);
+    var noWeeks = getActiveElement("weeks")
     //add content to the placeholder to add to the DOM
     timetableContent += createHeaderRow(noWeeks);
 
-    //Get periods from document    
-    var periods = document.getElementsByName("periods");
-    //call function to get weeks in timetable
-    var noPeriods = getActive (periods);
+    //call function to get periods in timetable
+    var noPeriods = getActiveElement ("periods");
     
-    //get lunch from DOM
-    var lunch = document.getElementsByName("lunch");
     //get lunchtime with function
-    var lunchTime = getActive(lunch);
+    var lunchTime = getActiveElement("lunch");
     
-    //get breaks from DOM
-    var breaks = document.getElementsByName("breaks");
     //get number of breaks with function
-    var noBreaks = getActive(breaks); 
+    var noBreaks = getActiveElement("breaks"); 
     
     //if there's 1 or more breaks
     if (noBreaks > 0){
-        //get first break from DOM
-        var break1 = document.getElementsByName("break1");
         //get first breaktime with function
-        var break1Time = getActive(break1); 
+        var break1Time = getActiveElement("break1"); 
     }
     //if there's 2 breaks
     if (noBreaks > 1){
-        //get second break from DOM
-        var break2 = document.getElementsByName("break2");
         //get second breaktime with function
-        var break2Time = getActive(break2); 
+        var break2Time = getActiveElement("break2"); 
     }
 
-    //get registration from DOM
-    var regPeriods = document.getElementsByName("regPeriods");
-    //get number of breaks with function
-    var noRegPeriods = getActive(regPeriods); 
+    //get number of registration periods with function
+    var noRegPeriods = getActiveElement("regPeriods"); 
 
     //if there's 1 or more reg periods
     if (noRegPeriods > 0){
-        //get first break from DOM
-        var regPeriods1 = document.getElementsByName("regPeriods1");
-        //get first breaktime with function
-        var reg1Time = getActive(regPeriods1); 
+        //get first reg period with function
+        var reg1Time = getActiveElement("regPeriods1"); 
     }
     //if there's 2 reg periods
     if (noRegPeriods > 1){
-        //get second break from DOM
-        var regPeriods2 = document.getElementsByName("regPeriods2");
-        //get second breaktime with function
-        var reg2Time = getActive(regPeriods2); 
+        //get second reg period with function
+        var reg2Time = getActiveElement("regPeriods2"); 
     }
 
     var reg1LunchTime = 0;
     //check if reg1 is adjacent to lunch, find out if before/After
     if (reg1Time && reg1Time == lunchTime){
-        //get registration from DOM
-        var regLunch1 = document.getElementsByName("regLunch1");
-        //get number of breaks with function
-        reg1LunchTime = getActive(regLunch1); 
+        //get value with function
+        reg1LunchTime = getActiveElement("regLunch1"); 
     }
 
     var reg1BreakTime = 0;
-    //check if reg1 is adjacent to lunch, find out if before/after
-    if (reg1Time && reg1Time == lunchTime){
-        //get registration from DOM
-        var regBreak1 = document.getElementsByName("regBreak1");
-        //get number of breaks with function
-        reg1BreakTime = getActive(regBreak1); 
+    //check if reg1 is adjacent to break, find out if before/after
+    if ((reg1Time && reg1Time == break1Time) ||
+     (reg1Time && reg1Time == break1Time)){
+        //get value with function
+        reg1BreakTime = getActiveElement("regBreak1"); 
     }
 
     var reg2LunchTime = 0;
     //check if reg2 is adjacent to lunch, find out if before/After
     if (reg2Time && reg2Time == lunchTime){
-        //get registration from DOM
-        var regLunch2 = document.getElementsByName("regLunch2");
-        //get number of breaks with function
-        reg2LunchTime = getActive(regLunch2); 
+        //get value with function
+        reg2LunchTime = getActiveElement("regLunch2"); 
     }
 
 
     var reg2BreakTime = 0;
-    //check if reg2 is adjacent to lunch, find out if before/after
-    if (reg2Time && reg1Time == lunchTime){
-        //get registration from DOM
-        var regBreak2 = document.getElementsByName("regBreak2");
-        //get number of breaks with function
-        reg2BreakTime = getActive(regBreak2); 
+    //check if reg2 is adjacent to break, find out if before/after
+    if ((reg2Time && reg1Time == break1Time) ||
+     (reg2Time && reg1Time == break2Time)){
+        //get value with function
+        reg2BreakTime = getActiveElement("regBreak2"); 
     }
 
     //add content to the placeholder to add to the DOM
     for (var i = 0; i < noPeriods; i++){
-        if ((i==reg1Time && (reg1LunchTime ==0 || reg1LunchTime == "Before")) 
-        || (i == reg2Time&& (reg2LunchTime ==0 || reg2LunchTime == "Before"))){
+        
+        if ((i == reg1Time && i==lunchTime 
+            && checkReg(reg1LunchTime))
+         ||
+         (i == reg1Time && i==break1Time 
+            && checkReg(reg1BreakTime))
+         ||
+         (i == reg1Time && i==break2Time 
+            && checkReg(reg1BreakTime))
+         ||
+         (i == reg1Time && i!=lunchTime && i!=break1Time && i!=break2Time)){
             timetableContent += createTimetableRow(noWeeks, "Registration");
         }
+
+        if ((i == reg2Time && i==lunchTime 
+            && checkReg(reg2LunchTime))
+         ||
+         (i == reg2Time && i==break1Time 
+            && checkReg(reg2BreakTime))
+         ||
+         (i == reg2Time && i==break2Time 
+            && checkReg(reg2BreakTime))
+         ||
+         (i == reg2Time && i!=lunchTime && i!=break1Time && i!=break2Time)){
+            timetableContent += createTimetableRow(noWeeks, "Registration");
+        }
+
+
         if (i==lunchTime){
             timetableContent += createTimetableRow(noWeeks, "Lunch", "Lunch");
         }
         if (i==break1Time || i==break2Time){
             timetableContent += createTimetableRow(noWeeks, "Break", "Break");
         }
+        
+        if ((i == reg1Time && i==lunchTime 
+            && !checkReg(reg1LunchTime))
+         ||
+         (i == reg1Time && i==break1Time 
+            && !checkReg(reg1BreakTime))
+         ||
+         (i == reg1Time && i==break2Time 
+            && !checkReg(reg2BreakTime))){
+            timetableContent += createTimetableRow(noWeeks, "Registration");
+        }
+
+        if ((i == reg2Time && i==lunchTime 
+            && !checkReg(reg2LunchTime))
+         ||
+         (i == reg2Time && i==break1Time 
+            && !checkReg(reg2BreakTime))
+         ||
+         (i == reg2Time && i==break2Time 
+            && !checkReg(reg2BreakTime))){
+            timetableContent += createTimetableRow(noWeeks, "Registration");
+        }
+
+
         timetableContent += createTimetableRow(noWeeks, i+1);
     } 
     
     if (reg1Time == "Last" || reg2Time == "Last"){
-        timetableContent += createTimetableRow("Registration");
+        timetableContent += createTimetableRow(noWeeks, "Registration");
     }
 
     //add the content to the DOM
     timetable.innerHTML = timetableContent;
+}
+
+//returns true for before or 0, and false otherwise
+function checkReg (regVal){
+    if (regVal == 0 || regVal == "Before") {
+        return true;
+    };
+    return false;
+}
+
+function getActiveElement(name){
+    //Get elements from document    
+    var elements = document.getElementsByName(name);
+    //call function to get active value
+    var active = getActive (elements);
+    return active;
 }
 
 function getActive (input){
@@ -181,6 +227,11 @@ function activateButton(name, value){
 
         //redraw the timetable because something has changed
         drawTimetable();
+
+        //hide optional elements as appropriate
+        hideOnTTPage();
+        //show optional elements as appropriate
+        showOnTTPage();
     }
 
 }
@@ -231,6 +282,8 @@ function ttStart(){
     drawTimetable(); 
     //add the event listeners for the timetable choice buttns
     addTTEventListeners (); 
+    //hide optional values
+    hideOnTTPage();
 }
 
 /////////////////
@@ -355,5 +408,165 @@ function checkActiveValid(name, value){
 }
 
 ////////////////////////////
-//required so that p5 will work
-function setup(){}
+
+
+function hideElements(name, value){
+    //get all elements with the name
+    var section = document.getElementsByName(name);
+    //iterate thrugh the elements 
+    for (var i = section.length - 1; i >= 0; i--){
+        //check if the value matches or it higher than the input value
+        if (section[i].value >= value){
+            //add hide to the class of the element
+            section[i].classList.add("hide");
+        }
+        //otherwise ...
+        else {
+            //...end the function to save power
+            return
+        }
+    }
+}
+
+function hideSection(name){
+    //get all elements with the class
+    var section = document.getElementsByClassName(name);
+     //iterate thrugh the elements 
+     for (var i = 0; i < section.length; i++){
+        //add hide to the class of the element
+        section[i].classList.add("hide");
+    }
+}
+
+function hidePeriods(){
+    var periods = getActiveElement("periods");
+    if (periods < 8){
+        hideElements("lunch", periods);
+        if (getActiveElement("breaks") >= 1){
+            hideElements("break1", periods);
+        }
+        if (getActiveElement("breaks") == 2){
+            hideElements("break2", periods);
+        }
+        if (getActiveElement("regPeriods") >= 1){
+            hideElements("regPeriods1", periods);
+        }
+        if (getActiveElement("regPeriods") == 2){
+            hideElements("regPeriods2", periods);
+        }
+        
+    }
+}
+
+function hideBreaks(){
+    var breaks = getActiveElement("breaks");
+    if (breaks <= 1){
+        hideSection("break2")
+    }
+    if (breaks < 1){
+        hideSection("break1")
+    }
+}
+
+function hideReg(){
+    var reg = getActiveElement("regPeriods");
+    if (reg <= 1){
+        hideSection("reg2")
+    }
+    if (reg < 1){
+        hideSection("reg1")
+    }
+}
+
+function hideOnTTPage(){
+    hidePeriods();
+
+    hideBreaks();
+
+    hideReg();
+}
+
+
+
+
+////////////////////////////
+
+
+function showElements(name, value){
+    //get all elements with the name
+    var section = document.getElementsByName(name);
+    //iterate thrugh the elements 
+    for (var i = section.length -1; i >= 0; i--){
+        //check if the value is lower than the input value
+        if (section[i].value < value){
+            //add hide to the class of the element
+            section[i].classList.remove("hide");
+        }
+    }
+}
+
+function showSection(name){
+    //get all elements with the class
+    var section = document.getElementsByClassName(name);
+     //iterate thrugh the elements 
+     for (var i = 0; i < section.length; i++){
+        //add hide to the class of the element
+        section[i].classList.remove("hide");
+    }
+}
+
+function showPeriods(){
+    var periods = getActiveElement("periods");
+    if (periods > 4){
+        showElements("lunch", periods);
+        if (getActiveElement("breaks") >= 1){
+            showElements("break1", periods);
+        }
+        if (getActiveElement("breaks") == 2){
+            showElements("break2", periods);
+        }
+        if (getActiveElement("regPeriods") >= 1){
+            showElements("regPeriods1", periods);
+        }
+        if (getActiveElement("regPeriods") == 2){
+            showElements("regPeriods1", periods);
+        }
+        
+    }
+}
+
+function showBreaks(){
+    var breaks = getActiveElement("breaks");
+    if (breaks > 1){
+        showSection("break2");
+        hidePeriods();
+    }
+    if (breaks >= 1){
+        showSection("break1");
+        hidePeriods();
+    }
+}
+
+function showReg(){
+    var reg = getActiveElement("regPeriods");
+    if (reg > 1){
+        showSection("reg2");
+        hidePeriods();
+    }
+    if (reg >= 1){
+        showSection("reg1");
+        hidePeriods();
+    }
+}
+
+function showOnTTPage(){
+    showPeriods();
+
+    showBreaks();
+
+    showReg();
+
+}
+
+
+
