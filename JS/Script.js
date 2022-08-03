@@ -57,8 +57,9 @@ function drawTimetable(){
     }
 
     var reg1BreakTime = 0;
-    //check if reg1 is adjacent to lunch, find out if before/after
-    if (reg1Time && reg1Time == lunchTime){
+    //check if reg1 is adjacent to break, find out if before/after
+    if ((reg1Time && reg1Time == break1Time) ||
+     (reg1Time && reg1Time == break1Time)){
         //get value with function
         reg1BreakTime = getActiveElement("regBreak1"); 
     }
@@ -72,24 +73,73 @@ function drawTimetable(){
 
 
     var reg2BreakTime = 0;
-    //check if reg2 is adjacent to lunch, find out if before/after
-    if (reg2Time && reg1Time == lunchTime){
+    //check if reg2 is adjacent to break, find out if before/after
+    if ((reg2Time && reg1Time == break1Time) ||
+     (reg2Time && reg1Time == break2Time)){
         //get value with function
         reg2BreakTime = getActiveElement("regBreak2"); 
     }
 
     //add content to the placeholder to add to the DOM
     for (var i = 0; i < noPeriods; i++){
-        if ((i==reg1Time && (reg1LunchTime ==0 || reg1LunchTime == "Before")) 
-        || (i == reg2Time&& (reg2LunchTime ==0 || reg2LunchTime == "Before"))){
+        
+        if ((i == reg1Time && i==lunchTime 
+            && checkReg(reg1LunchTime))
+         ||
+         (i == reg1Time && i==break1Time 
+            && checkReg(reg1BreakTime))
+         ||
+         (i == reg1Time && i==break2Time 
+            && checkReg(reg1BreakTime))
+         ||
+         (i == reg1Time && i!=lunchTime && i!=break1Time && i!=break2Time)){
             timetableContent += createTimetableRow(noWeeks, "Registration");
         }
+
+        if ((i == reg2Time && i==lunchTime 
+            && checkReg(reg1LunchTime))
+         ||
+         (i == reg2Time && i==break1Time 
+            && checkReg(reg1BreakTime))
+         ||
+         (i == reg2Time && i==break2Time 
+            && checkReg(reg1BreakTime))
+         ||
+         (i == reg2Time && i!=lunchTime && i!=break1Time && i!=break2Time)){
+            timetableContent += createTimetableRow(noWeeks, "Registration");
+        }
+
+
         if (i==lunchTime){
             timetableContent += createTimetableRow(noWeeks, "Lunch", "Lunch");
         }
         if (i==break1Time || i==break2Time){
             timetableContent += createTimetableRow(noWeeks, "Break", "Break");
         }
+        
+        if ((i == reg1Time && i==lunchTime 
+            && !checkReg(reg1LunchTime))
+         ||
+         (i == reg1Time && i==break1Time 
+            && !checkReg(reg1BreakTime))
+         ||
+         (i == reg1Time && i==break2Time 
+            && !checkReg(reg2BreakTime))){
+            timetableContent += createTimetableRow(noWeeks, "Registration");
+        }
+
+        if ((i == reg2Time && i==lunchTime 
+            && !checkReg(reg1LunchTime))
+         ||
+         (i == reg2Time && i==break1Time 
+            && !checkReg(reg1BreakTime))
+         ||
+         (i == reg2Time && i==break2Time 
+            && !checkReg(reg2BreakTime))){
+            timetableContent += createTimetableRow(noWeeks, "Registration");
+        }
+
+
         timetableContent += createTimetableRow(noWeeks, i+1);
     } 
     
@@ -99,6 +149,14 @@ function drawTimetable(){
 
     //add the content to the DOM
     timetable.innerHTML = timetableContent;
+}
+
+//returns true for before or 0, and false otherwise
+function checkReg (regVal){
+    if (regVal == 0 || regVal == "Before") {
+        return true;
+    };
+    return false;
 }
 
 function getActiveElement(name){
