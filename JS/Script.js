@@ -416,7 +416,9 @@ function hideElements(name, value){
     //iterate thrugh the elements 
     for (var i = section.length - 1; i >= 0; i--){
         //check if the value matches or it higher than the input value
-        if (section[i].value >= value){
+        if (section[i].value == "Last") {
+            continue;
+        } else if (section[i].value >= value){
             //add hide to the class of the element
             section[i].classList.add("hide");
         }
@@ -498,10 +500,10 @@ function showElements(name, value){
     //iterate thrugh the elements 
     for (var i = section.length -1; i >= 0; i--){
         //check if the value is lower than the input value
-        if (section[i].value < value){
+        if (section[i].value < value || section[i].value == "Last"){
             //add hide to the class of the element
             section[i].classList.remove("hide");
-        }
+        } 
     }
 }
 
