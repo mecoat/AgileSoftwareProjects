@@ -277,6 +277,8 @@ function ttStart(){
     drawTimetable(); 
     //add the event listeners for the timetable choice buttns
     addTTEventListeners (); 
+    //hide optional values
+    setupTTPage();
 }
 
 /////////////////
@@ -407,11 +409,14 @@ function hideSection(name, value){
     //get all elements with the name
     var section = document.getElementsByName(name);
     //iterate thrugh the elements 
-    for (var i = 0; i < section.length; i++){
+    for (var i = section.length - 1; i >= 0; i--){
         //check if the value matches or it higher than the input value
         if (section[i].value >= value){
             //add hide to the class of the element
             section[i].classList.add("hide");
+        }
+        else {
+            return
         }
     }
 }
@@ -419,5 +424,14 @@ function hideSection(name, value){
 
 
 function setupTTPage(){
+    var periods = getActiveElement("periods");
+    if (periods < 8){
+        hideSection("lunch", periods);
+        hideSection("break1", periods);
+        hideSection("break2", periods);
+        hideSection("regPeriods1", periods);
+        hideSection("regPeriods2", periods);
+    }
+
 
 }
