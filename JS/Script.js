@@ -97,13 +97,13 @@ function drawTimetable(){
         }
 
         if ((i == reg2Time && i==lunchTime 
-            && checkReg(reg1LunchTime))
+            && checkReg(reg2LunchTime))
          ||
          (i == reg2Time && i==break1Time 
-            && checkReg(reg1BreakTime))
+            && checkReg(reg2BreakTime))
          ||
          (i == reg2Time && i==break2Time 
-            && checkReg(reg1BreakTime))
+            && checkReg(reg2BreakTime))
          ||
          (i == reg2Time && i!=lunchTime && i!=break1Time && i!=break2Time)){
             timetableContent += createTimetableRow(noWeeks, "Registration");
@@ -129,10 +129,10 @@ function drawTimetable(){
         }
 
         if ((i == reg2Time && i==lunchTime 
-            && !checkReg(reg1LunchTime))
+            && !checkReg(reg2LunchTime))
          ||
          (i == reg2Time && i==break1Time 
-            && !checkReg(reg1BreakTime))
+            && !checkReg(reg2BreakTime))
          ||
          (i == reg2Time && i==break2Time 
             && !checkReg(reg2BreakTime))){
@@ -227,6 +227,11 @@ function activateButton(name, value){
 
         //redraw the timetable because something has changed
         drawTimetable();
+
+        //hide optional elements as appropriate
+        hideOnTTPage();
+        //show optional elements as appropriate
+        showOnTTPage();
     }
 
 }
@@ -277,6 +282,8 @@ function ttStart(){
     drawTimetable(); 
     //add the event listeners for the timetable choice buttns
     addTTEventListeners (); 
+    //hide optional values
+    hideOnTTPage();
 }
 
 /////////////////
@@ -403,21 +410,227 @@ function checkActiveValid(name, value){
 ////////////////////////////
 
 
-function hideSection(name, value){
+function hideElements(name, value){
     //get all elements with the name
     var section = document.getElementsByName(name);
     //iterate thrugh the elements 
-    for (var i = 0; i < section.length; i++){
+    for (var i = section.length - 1; i >= 0; i--){
         //check if the value matches or it higher than the input value
-        if (section[i].value >= value){
+        if (section[i].value == "Last") {
+            continue;
+        } else if (section[i].value >= value){
             //add hide to the class of the element
             section[i].classList.add("hide");
+        }
+        //otherwise ...
+        else {
+            //...end the function to save power
+            return
         }
     }
 }
 
+function hideSection(name){
+    //get all elements with the class
+    var section = document.getElementsByClassName(name);
+     //iterate thrugh the elements 
+     for (var i = 0; i < section.length; i++){
+        //add hide to the class of the element
+        section[i].classList.add("hide");
+    }
+}
+
+function hidePeriods(){
+    var periods = getActiveElement("periods");
+    if (periods < 8){
+        hideElements("lunch", periods);
+        if (getActiveElement("breaks") >= 1){
+            hideElements("break1", periods);
+        }
+        if (getActiveElement("breaks") == 2){
+            hideElements("break2", periods);
+        }
+        if (getActiveElement("regPeriods") >= 1){
+            hideElements("regPeriods1", periods);
+        }
+        if (getActiveElement("regPeriods") == 2){
+            hideElements("regPeriods2", periods);
+        }
+        
+    }
+}
+
+function hideBreaks(){
+    var breaks = getActiveElement("breaks");
+    if (breaks <= 1){
+        hideSection("break2");
+    }
+    if (breaks < 1){
+        hideSection("break1");
+    }
+}
+
+function hideReg(){
+    var reg = getActiveElement("regPeriods");
+    var lunch = getActiveElement("lunch");
+    var noBreaks = getActiveElement("breaks"); 
+    var break1Time = getActiveElement("break1"); 
+    var break2Time = getActiveElement("break2"); 
+
+    
+
+    if (reg <= 1){
+        hideSection("reg2");
+    }
+    if (reg < 1){
+        hideSection("reg1");
+    }
+
+    if (reg == 2){
+        var reg2Time = getActiveElement("regPeriods2"); 
+        if (reg2Time != lunch){
+            hideSection("regLunch2");
+        }
+        if ((noBreaks == 2 && reg2Time != break2Time) 
+         || (noBreaks >= 1 && reg2Time != break1Time)){
+            hideSection("regBreak2");
+        }
+    }
+
+    if (reg >= 1){
+        var reg1Time = getActiveElement("regPeriods1"); 
+        if (reg1Time != lunch){
+            hideSection("regLunch1");
+        }
+        if ((noBreaks == 2 && reg1Time != break2Time) 
+         || (noBreaks >= 1 && reg1Time != break1Time)){
+            hideSection("regBreak1");
+        }
+    }
+}
+
+function hideOnTTPage(){
+    hidePeriods();
+
+    hideBreaks();
+
+    hideReg();
+}
 
 
-function setupTTPage(){
+
+
+////////////////////////////
+
+
+function showElements(name, value){
+    //get all elements with the name
+    var section = document.getElementsByName(name);
+    //iterate thrugh the elements 
+    for (var i = section.length -1; i >= 0; i--){
+        //check if the value is lower than the input value
+        if (section[i].value < value || section[i].value == "Last"){
+            //add hide to the class of the element
+            section[i].classList.remove("hide");
+        } 
+    }
+}
+
+function showSection(name){
+    //get all elements with the class
+    var section = document.getElementsByClassName(name);
+     //iterate thrugh the elements 
+     for (var i = 0; i < section.length; i++){
+        //add hide to the class of the element
+        section[i].classList.remove("hide");
+    }
+}
+
+function showPeriods(){
+    var periods = getActiveElement("periods");
+    if (periods > 4){
+        showElements("lunch", periods);
+        if (getActiveElement("breaks") >= 1){
+            showElements("break1", periods);
+        }
+        if (getActiveElement("breaks") == 2){
+            showElements("break2", periods);
+        }
+        if (getActiveElement("regPeriods") >= 1){
+            showElements("regPeriods1", periods);
+        }
+        if (getActiveElement("regPeriods") == 2){
+            showElements("regPeriods1", periods);
+        }
+        
+    }
+}
+
+function showBreaks(){
+    var breaks = getActiveElement("breaks");
+    if (breaks > 1){
+        showSection("break2");
+        hidePeriods();
+    }
+    if (breaks >= 1){
+        showSection("break1");
+        hidePeriods();
+    }
+}
+
+function showReg(){
+    var reg = getActiveElement("regPeriods");
+    var lunch = getActiveElement("lunch");
+    var noBreaks = getActiveElement("breaks"); 
+    var break1Time = getActiveElement("break1"); 
+    var break2Time = getActiveElement("break2"); 
+
+
+    if (reg > 1){
+        showSection("reg2");
+        hideSection("regLunch2");
+        hideSection("regBreak2");
+        hidePeriods();
+    }
+    if (reg >= 1){
+        showSection("reg1");
+        hideSection("regLunch1");
+        hideSection("regBreak1");
+        hidePeriods();
+    }
+
+
+    if (reg == 2){
+        var reg2Time = getActiveElement("regPeriods2"); 
+        if (reg2Time == lunch){
+            showSection("regLunch2");
+        }
+        if ((noBreaks == 2 && reg2Time == break2Time) 
+         || (noBreaks >= 1 && reg2Time == break1Time)){
+            showSection("regBreak2");
+        }
+    }
+
+    if (reg >= 1){
+        var reg1Time = getActiveElement("regPeriods1"); 
+        if (reg1Time == lunch){
+            showSection("regLunch1");
+        }
+        if ((noBreaks == 2 && reg1Time == break2Time) 
+         || (noBreaks >= 1 && reg1Time == break1Time)){
+            showSection("regBreak1");
+        }
+    }
+}
+
+function showOnTTPage(){
+    showPeriods();
+
+    showBreaks();
+
+    showReg();
 
 }
+
+
+
