@@ -405,7 +405,7 @@ function checkActiveValid(name, value){
 ////////////////////////////
 
 
-function hideSection(name, value){
+function hideElements(name, value){
     //get all elements with the name
     var section = document.getElementsByName(name);
     //iterate thrugh the elements 
@@ -421,17 +421,40 @@ function hideSection(name, value){
     }
 }
 
-
+function hideSection(name){
+    console.log("called")
+    //get all elements with the class
+    var section = document.getElementsByClassName(name);
+     //iterate thrugh the elements 
+     for (var i = 0; i < section.length; i++){
+        //add hide to the class of the element
+        section[i].classList.add("hide");
+    }
+}
 
 function setupTTPage(){
     var periods = getActiveElement("periods");
     if (periods < 8){
-        hideSection("lunch", periods);
-        hideSection("break1", periods);
-        hideSection("break2", periods);
-        hideSection("regPeriods1", periods);
-        hideSection("regPeriods2", periods);
+        hideElements("lunch", periods);
+        hideElements("break1", periods);
+        hideElements("break2", periods);
+        hideElements("regPeriods1", periods);
+        hideElements("regPeriods2", periods);
     }
 
+    var breaks = getActiveElement("breaks");
+    if (breaks <= 1){
+        hideSection("break2")
+    }
+    if (breaks < 1){
+        hideSection("break1")
+    }
 
+    var reg = getActiveElement("regPeriods");
+    if (reg <= 1){
+        hideSection("reg2")
+    }
+    if (reg < 1){
+        hideSection("reg1")
+    }
 }
