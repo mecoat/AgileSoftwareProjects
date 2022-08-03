@@ -97,13 +97,13 @@ function drawTimetable(){
         }
 
         if ((i == reg2Time && i==lunchTime 
-            && checkReg(reg1LunchTime))
+            && checkReg(reg2LunchTime))
          ||
          (i == reg2Time && i==break1Time 
-            && checkReg(reg1BreakTime))
+            && checkReg(reg2BreakTime))
          ||
          (i == reg2Time && i==break2Time 
-            && checkReg(reg1BreakTime))
+            && checkReg(reg2BreakTime))
          ||
          (i == reg2Time && i!=lunchTime && i!=break1Time && i!=break2Time)){
             timetableContent += createTimetableRow(noWeeks, "Registration");
@@ -129,10 +129,10 @@ function drawTimetable(){
         }
 
         if ((i == reg2Time && i==lunchTime 
-            && !checkReg(reg1LunchTime))
+            && !checkReg(reg2LunchTime))
          ||
          (i == reg2Time && i==break1Time 
-            && !checkReg(reg1BreakTime))
+            && !checkReg(reg2BreakTime))
          ||
          (i == reg2Time && i==break2Time 
             && !checkReg(reg2BreakTime))){
@@ -438,16 +438,27 @@ function hideSection(name){
     }
 }
 
-function hideOnTTPage(){
+function hidePeriods(){
     var periods = getActiveElement("periods");
     if (periods < 8){
         hideElements("lunch", periods);
-        hideElements("break1", periods);
-        hideElements("break2", periods);
-        hideElements("regPeriods1", periods);
-        hideElements("regPeriods2", periods);
+        if (getActiveElement("breaks") >= 1){
+            hideElements("break1", periods);
+        }
+        if (getActiveElement("breaks") == 2){
+            hideElements("break2", periods);
+        }
+        if (getActiveElement("regPeriods") >= 1){
+            hideElements("regPeriods1", periods);
+        }
+        if (getActiveElement("regPeriods") == 2){
+            hideElements("regPeriods2", periods);
+        }
+        
     }
+}
 
+function hideBreaks(){
     var breaks = getActiveElement("breaks");
     if (breaks <= 1){
         hideSection("break2")
@@ -455,7 +466,9 @@ function hideOnTTPage(){
     if (breaks < 1){
         hideSection("break1")
     }
+}
 
+function hideReg(){
     var reg = getActiveElement("regPeriods");
     if (reg <= 1){
         hideSection("reg2")
@@ -463,6 +476,14 @@ function hideOnTTPage(){
     if (reg < 1){
         hideSection("reg1")
     }
+}
+
+function hideOnTTPage(){
+    hidePeriods();
+
+    hideBreaks();
+
+    hideReg();
 }
 
 
@@ -494,31 +515,57 @@ function showSection(name){
     }
 }
 
-function showOnTTPage(){
+function showPeriods(){
     var periods = getActiveElement("periods");
     if (periods > 4){
         showElements("lunch", periods);
-        showElements("break1", periods);
-        showElements("break2", periods);
-        showElements("regPeriods1", periods);
-        showElements("regPeriods2", periods);
+        if (getActiveElement("breaks") >= 1){
+            showElements("break1", periods);
+        }
+        if (getActiveElement("breaks") == 2){
+            showElements("break2", periods);
+        }
+        if (getActiveElement("regPeriods") >= 1){
+            showElements("regPeriods1", periods);
+        }
+        if (getActiveElement("regPeriods") == 2){
+            showElements("regPeriods1", periods);
+        }
+        
     }
+}
 
+function showBreaks(){
     var breaks = getActiveElement("breaks");
     if (breaks > 1){
-        showSection("break2")
+        showSection("break2");
+        hidePeriods();
     }
     if (breaks == 1){
-        showSection("break1")
+        showSection("break1");
+        hidePeriods();
     }
+}
 
+function showReg(){
     var reg = getActiveElement("regPeriods");
     if (reg > 1){
-        showSection("reg2")
+        showSection("reg2");
+        hidePeriods();
     }
     if (reg == 1){
-        showSection("reg1")
+        showSection("reg1");
+        hidePeriods();
     }
+}
+
+function showOnTTPage(){
+    showPeriods();
+
+    showBreaks();
+
+    showReg();
+
 }
 
 
