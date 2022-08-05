@@ -82,7 +82,7 @@ function drawTimetable(){
 
     //add content to the placeholder to add to the DOM
     for (var i = 0; i < noPeriods; i++){
-        
+        //check if reg 1 is adjacent to break or lunch and needs to be drawn first
         if ((i == reg1Time && i==lunchTime 
             && checkReg(reg1LunchTime))
          ||
@@ -95,7 +95,7 @@ function drawTimetable(){
          (i == reg1Time && i!=lunchTime && i!=break1Time && i!=break2Time)){
             timetableContent += createTimetableRow(noWeeks, "Registration");
         }
-
+        //check if reg 2 is adjacent to break or lunch and needs to be drawn first
         if ((i == reg2Time && i==lunchTime 
             && checkReg(reg2LunchTime))
          ||
@@ -109,14 +109,16 @@ function drawTimetable(){
             timetableContent += createTimetableRow(noWeeks, "Registration");
         }
 
-
+        //draw lunch in the right place
         if (i==lunchTime){
             timetableContent += createTimetableRow(noWeeks, "Lunch", "Lunch");
         }
+        //draw breaks in the right place
         if (i==break1Time || i==break2Time){
             timetableContent += createTimetableRow(noWeeks, "Break", "Break");
         }
-        
+
+        //check if reg 1 is adjacent to break or lunch and needs to be drawn after
         if ((i == reg1Time && i==lunchTime 
             && !checkReg(reg1LunchTime))
          ||
@@ -127,7 +129,7 @@ function drawTimetable(){
             && !checkReg(reg2BreakTime))){
             timetableContent += createTimetableRow(noWeeks, "Registration");
         }
-
+        //check if reg 1 is adjacent to break or lunch and needs to be drawn after
         if ((i == reg2Time && i==lunchTime 
             && !checkReg(reg2LunchTime))
          ||
@@ -139,10 +141,11 @@ function drawTimetable(){
             timetableContent += createTimetableRow(noWeeks, "Registration");
         }
 
-
+        //drawhe timetable row
         timetableContent += createTimetableRow(noWeeks, i+1);
     } 
     
+    //draw reg if it is listed as after the last period
     if (reg1Time == "Last" || reg2Time == "Last"){
         timetableContent += createTimetableRow(noWeeks, "Registration");
     }
@@ -159,6 +162,7 @@ function checkReg (regVal){
     return false;
 }
 
+//gets the active value within elements with a name
 function getActiveElement(name){
     //Get elements from document    
     var elements = document.getElementsByName(name);
@@ -167,6 +171,7 @@ function getActiveElement(name){
     return active;
 }
 
+//iterates through inputs and returns current ative value
 function getActive (input){
     var retVal;
     for (var i=0; i<input.length; i++){
@@ -177,6 +182,7 @@ function getActive (input){
     return (retVal);
 }
 
+//creates html content for Timetable header row
 function createHeaderRow(noWeeks){
     //array to hold days of the week for the header
     var days = ["Mon", "Tue", "Wed", "Thu", "Fri"]
@@ -273,8 +279,20 @@ function addTTEventListeners (){
     var saveBtn = document.getElementById("save");
     saveBtn.addEventListener("click", saveTTOutput);
 
-    var uploadBtn = document.getElementById("upload");
+    var uploadBtn = document.getElementById("checkIt");
     uploadBtn.addEventListener("click", loadTTInput);
+}
+
+function addUIEventListeners (){
+    //get the file input element
+    var ttFile = document.getElementById("ttFile");
+    var checkBtn = document.getElementById("checkIt");
+
+    //add an event listener that adds active to the Change it button
+    // to make it more obvious to press once user has uploaded a file
+    ttFile.addEventListener("change", function(){ 
+        checkBtn.classList.add("active"); 
+    });
 }
 
 function ttStart(){
@@ -284,6 +302,8 @@ function ttStart(){
     addTTEventListeners (); 
     //hide optional values
     hideOnTTPage();
+    //add event listener to user input
+    addUIEventListeners ();
 }
 
 /////////////////
@@ -367,9 +387,7 @@ async function loadTTInput(){
     else {
         showError("invalidFile");
     }
-    
-    // console.log(fileText);
-   
+       
 }
 
 function showError(idName){
