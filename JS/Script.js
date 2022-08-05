@@ -82,7 +82,7 @@ function drawTimetable(){
 
     //add content to the placeholder to add to the DOM
     for (var i = 0; i < noPeriods; i++){
-        
+        //check if reg 1 is adjacent to break or lunch and needs to be drawn first
         if ((i == reg1Time && i==lunchTime 
             && checkReg(reg1LunchTime))
          ||
@@ -95,7 +95,7 @@ function drawTimetable(){
          (i == reg1Time && i!=lunchTime && i!=break1Time && i!=break2Time)){
             timetableContent += createTimetableRow(noWeeks, "Registration");
         }
-
+        //check if reg 2 is adjacent to break or lunch and needs to be drawn first
         if ((i == reg2Time && i==lunchTime 
             && checkReg(reg2LunchTime))
          ||
@@ -109,14 +109,16 @@ function drawTimetable(){
             timetableContent += createTimetableRow(noWeeks, "Registration");
         }
 
-
+        //draw lunch in the right place
         if (i==lunchTime){
             timetableContent += createTimetableRow(noWeeks, "Lunch", "Lunch");
         }
+        //draw breaks in the right place
         if (i==break1Time || i==break2Time){
             timetableContent += createTimetableRow(noWeeks, "Break", "Break");
         }
-        
+
+        //check if reg 1 is adjacent to break or lunch and needs to be drawn after
         if ((i == reg1Time && i==lunchTime 
             && !checkReg(reg1LunchTime))
          ||
@@ -127,7 +129,7 @@ function drawTimetable(){
             && !checkReg(reg2BreakTime))){
             timetableContent += createTimetableRow(noWeeks, "Registration");
         }
-
+        //check if reg 1 is adjacent to break or lunch and needs to be drawn after
         if ((i == reg2Time && i==lunchTime 
             && !checkReg(reg2LunchTime))
          ||
@@ -139,10 +141,11 @@ function drawTimetable(){
             timetableContent += createTimetableRow(noWeeks, "Registration");
         }
 
-
+        //drawhe timetable row
         timetableContent += createTimetableRow(noWeeks, i+1);
     } 
     
+    //draw reg if it is listed as after the last period
     if (reg1Time == "Last" || reg2Time == "Last"){
         timetableContent += createTimetableRow(noWeeks, "Registration");
     }
@@ -159,6 +162,7 @@ function checkReg (regVal){
     return false;
 }
 
+//gets the active value within elements with a name
 function getActiveElement(name){
     //Get elements from document    
     var elements = document.getElementsByName(name);
@@ -167,6 +171,7 @@ function getActiveElement(name){
     return active;
 }
 
+//iterates through inputs and returns current ative value
 function getActive (input){
     var retVal;
     for (var i=0; i<input.length; i++){
@@ -177,33 +182,49 @@ function getActive (input){
     return (retVal);
 }
 
+//creates html content for Timetable header row
 function createHeaderRow(noWeeks){
     //array to hold days of the week for the header
     var days = ["Mon", "Tue", "Wed", "Thu", "Fri"]
 
+    //placeholder to hold the html
     var returnVal = "";
+    //add start
     returnVal += "<tr><td></td>"
+    //iterate through number of weeks
     for (var i = 0; i < noWeeks; i++){
+        //iterate through number of days
         for (var j = 0; j < days.length; j++){
+            //add an element for each day per week
             returnVal +=  "<th>" + days[j] + (i+1) +"</th>"
         }
     }
+    //add ending
     returnVal += "</tr>"
+    //return the placeholder 
     return(returnVal);
 }
 
+//creates standard rows of the timeable
 function createTimetableRow(noWeeks, period, text = ""){
-    //array to hold days of the week for the header
+    //variable of number of days of the week
     var days = 5;
-
+    
+    //placeholder to hold the html
     var returnVal = "";
+    //add start text
     returnVal += "<tr><th>" + period + "</th>"
+    //iterate through the number of weeks
     for (var i = 0; i < noWeeks; i++){
+        //iterate through number of days (to draw correct number of boxes)
         for (var j = 0; j < days; j++){
+            //add content (including text inside if needed)
             returnVal +=  "<td>" + text + "</td>";
         }
     }
+    //add ending
     returnVal += "</tr>"
+    //return row html
     return(returnVal);
 }
 
@@ -245,6 +266,7 @@ function deleteActive (section, value){
             section[i].classList.remove("active");
         }
     }
+    //return the amended section
     return (section);
 }
 
@@ -257,6 +279,7 @@ function addActive (section, value){
             section[i].classList.add("active");
         }
     }
+    //return the amended section
     return (section);
 }
 
@@ -270,11 +293,27 @@ function addTTEventListeners (){
         ttButtons[i].addEventListener("click", function(){ activateButton(this.name, this.value); });
     }
 
+    //Get the Save Button
     var saveBtn = document.getElementById("save");
+    //listen for a click to call the function to save the data
     saveBtn.addEventListener("click", saveTTOutput);
 
-    var uploadBtn = document.getElementById("upload");
-    uploadBtn.addEventListener("click", loadTTInput);
+    //get the check it button
+    var chkUploadBtn = document.getElementById("checkIt");
+    //listen for a click to load the data from the file
+    chkUploadBtn.addEventListener("click", loadTTInput);
+}
+
+function addUIEventListeners (){
+    //get the file input element
+    var ttFile = document.getElementById("ttFile");
+    var checkBtn = document.getElementById("checkIt");
+
+    //add an event listener that adds active to the Change it button
+    // to make it more obvious to press once user has uploaded a file
+    ttFile.addEventListener("change", function(){ 
+        checkBtn.classList.add("active"); 
+    });
 }
 
 function ttStart(){
@@ -284,10 +323,13 @@ function ttStart(){
     addTTEventListeners (); 
     //hide optional values
     hideOnTTPage();
+    //add event listener to user input
+    addUIEventListeners ();
 }
 
 /////////////////
 
+// creates an object of all active values 
 function createOutput(){
     var output = {};
     output.weeks = getActive(document.getElementsByName("weeks"));
@@ -307,6 +349,7 @@ function createOutput(){
     return output;
 }
 
+//saves active values to file as a JSON
 function saveTTOutput(){
     var outputData = createOutput();
     saveJSON(outputData, 'timetable.json');
@@ -367,9 +410,7 @@ async function loadTTInput(){
     else {
         showError("invalidFile");
     }
-    
-    // console.log(fileText);
-   
+       
 }
 
 function showError(idName){
@@ -441,7 +482,9 @@ function hideSection(name){
 }
 
 function hidePeriods(){
+    //get number of periods
     var periods = getActiveElement("periods");
+    //if periods isn't max (8) hide any irreevant elements
     if (periods < 8){
         hideElements("lunch", periods);
         if (getActiveElement("breaks") >= 1){
@@ -460,6 +503,8 @@ function hidePeriods(){
     }
 }
 
+//hides questions relating to irrelevant breaks 
+//(eg hides 2nd break questions if only 1)
 function hideBreaks(){
     var breaks = getActiveElement("breaks");
     if (breaks <= 1){
@@ -470,22 +515,25 @@ function hideBreaks(){
     }
 }
 
+//hides irrelevant registration questions
 function hideReg(){
+    //get values
     var reg = getActiveElement("regPeriods");
     var lunch = getActiveElement("lunch");
     var noBreaks = getActiveElement("breaks"); 
     var break1Time = getActiveElement("break1"); 
     var break2Time = getActiveElement("break2"); 
 
-    
-
+    //hide 2nd reg
     if (reg <= 1){
         hideSection("reg2");
     }
+    //hide first reg
     if (reg < 1){
         hideSection("reg1");
     }
 
+    //check for adjacency to break and lunch and hide those questions if not
     if (reg == 2){
         var reg2Time = getActiveElement("regPeriods2"); 
         if (reg2Time != lunch){
@@ -497,6 +545,7 @@ function hideReg(){
         }
     }
 
+    //check for adjacency to break and lunch and hide those questions if not
     if (reg >= 1){
         var reg1Time = getActiveElement("regPeriods1"); 
         if (reg1Time != lunch){
@@ -546,6 +595,7 @@ function showSection(name){
     }
 }
 
+//shows periods answers for other questions if required
 function showPeriods(){
     var periods = getActiveElement("periods");
     if (periods > 4){
@@ -566,6 +616,7 @@ function showPeriods(){
     }
 }
 
+//show break questions depending on number of breaks
 function showBreaks(){
     var breaks = getActiveElement("breaks");
     if (breaks > 1){
@@ -578,20 +629,24 @@ function showBreaks(){
     }
 }
 
+//show registration questions depending on no of reg
 function showReg(){
+    //get values
     var reg = getActiveElement("regPeriods");
     var lunch = getActiveElement("lunch");
     var noBreaks = getActiveElement("breaks"); 
     var break1Time = getActiveElement("break1"); 
     var break2Time = getActiveElement("break2"); 
 
-
+    //display reg 2 questions (rehiding any that aren't required)
     if (reg > 1){
         showSection("reg2");
         hideSection("regLunch2");
         hideSection("regBreak2");
         hidePeriods();
     }
+        
+    //display reg 1 questions (rehiding any that aren't required)
     if (reg >= 1){
         showSection("reg1");
         hideSection("regLunch1");
@@ -599,7 +654,7 @@ function showReg(){
         hidePeriods();
     }
 
-
+    //display the lunch and break questions as required
     if (reg == 2){
         var reg2Time = getActiveElement("regPeriods2"); 
         if (reg2Time == lunch){
@@ -611,6 +666,7 @@ function showReg(){
         }
     }
 
+    //display the lunch and break questions as required
     if (reg >= 1){
         var reg1Time = getActiveElement("regPeriods1"); 
         if (reg1Time == lunch){
