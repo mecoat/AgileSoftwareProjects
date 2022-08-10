@@ -4,13 +4,16 @@ var subjectData = [["De", "German"], ["En", "English"], ["Ma", "Maths"]];
 function subStart(){
     //draw the subject list to screen
     drawSubjects(); 
-    //add the event listeners for the timetable choice buttns
-    // addTTEventListeners (); 
+    //add the event listener for the subject Add button
+    addSubEventListener (); 
     //hide optional values
     // hideOnTTPage();
     //add event listener to user input
     // addUIEventListeners ();
 }
+
+
+/////////////////
 
 function drawSubjects(){
 
@@ -34,30 +37,37 @@ function drawSubjects(){
     subList.innerHTML = subListContent;
 }
 
+///////////////////////////////////
 
+function addSubEventListener (){
+    //get the items that has "addSub" as an ID
+    var button = document.getElementById("addSub");
 
+    button.addEventListener("click", addSub);
 
+}
 
+function addSub(){
+    var subCode = document.getElementById("subCode").value;
 
-//creates standard rows of the timeable
-function createTimetableRow(noWeeks, period, text = ""){
-    //variable of number of days of the week
-    var days = 5;
-    
-    //placeholder to hold the html
-    var returnVal = "";
-    //add start text
-    returnVal += "<tr><th>" + period + "</th>"
-    //iterate through the number of weeks
-    for (var i = 0; i < noWeeks; i++){
-        //iterate through number of days (to draw correct number of boxes)
-        for (var j = 0; j < days; j++){
-            //add content (including text inside if needed)
-            returnVal +=  "<td>" + text + "</td>";
-        }
+    var subName = document.getElementById("subject").value;
+
+    //display error if input incomplete
+    if (subCode.length < 1 || subName.length < 1){
+        var shortInput = document.getElementById("shortInput");
+        shortInput.classList.remove("hide");
+        //end function as can do no more
+        return;
     }
-    //add ending
-    returnVal += "</tr>"
-    //return row html
-    return(returnVal);
+
+    //Display error if Subject Code is not alhanumeric
+    var regEx = /^[0-9a-zA-Z]+$/;
+    if (!subCode.match(regEx)){
+        var notAlphaNum = document.getElementById("notAlphaNum");
+        notAlphaNum.classList.remove("hide");
+        //end function as can do no more
+        return;
+    }
+
+
 }
