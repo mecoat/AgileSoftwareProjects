@@ -1,3 +1,6 @@
+//global variable to hold subject data
+var subjectData = [["De", "German"], ["En", "English"], ["Ma", "Maths"]];
+
 function subStart(){
     //draw the subject list to screen
     drawSubjects(); 
@@ -22,8 +25,10 @@ function drawSubjects(){
     //add the header row to the placeholder to add to the DOM
     subListContent += createHeaderRow(headers);
 
-    
-
+    //iterate through global variable of subjectdata to create rows in the table
+    for (var i = 0; i < subjectData.length; i++){
+        subListContent += createTableRow(subjectData[i]);
+    }
 
     //add the content to the DOM
     subList.innerHTML = subListContent;
