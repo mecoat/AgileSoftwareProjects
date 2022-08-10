@@ -66,6 +66,10 @@ input[type="file"]{
     font-size:100%;
 }
 
+input[type="text"]{
+    font-size:100%;
+}
+
 button, input[type="file"]::file-selector-button {
     background-color:#FFFFFF;
     color: #150578;
