@@ -8,7 +8,7 @@ function drawTimetable(){
     //call function to get weeks in timetable
     var noWeeks = getActiveElement("weeks")
     //add content to the placeholder to add to the DOM
-    timetableContent += createHeaderRow(noWeeks);
+    timetableContent += createTTHeaderRow(noWeeks);
 
     //call function to get periods in timetable
     var noPeriods = getActiveElement ("periods");
@@ -178,7 +178,7 @@ function getActive (input){
 }
 
 //creates html content for Timetable header row
-function createHeaderRow(noWeeks){
+function createTTHeaderRow(noWeeks){
     //array to hold days of the week for the header
     var days = ["Mon", "Tue", "Wed", "Thu", "Fri"]
 
