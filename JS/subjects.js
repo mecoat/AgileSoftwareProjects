@@ -11,33 +11,28 @@ function subStart(){
 
 function drawSubjects(){
 
+    //get the element we want to make changes to
+    var subList = document.getElementById("subList");
+    //create an empty placeholder for content
+    var subListContent = "";
+
+    //headers to display
+    var headers = ["Subject Code", "Subject Name"];
+
+    //add the header row to the placeholder to add to the DOM
+    subListContent += createHeaderRow(headers);
+
+    
+
+
+    //add the content to the DOM
+    subList.innerHTML = subListContent;
 }
 
 
 
 
-//creates html content for Subjects header row
-function createHeaderRow(noWeeks){
-    //array to hold days of the week for the header
-    var days = ["Mon", "Tue", "Wed", "Thu", "Fri"]
 
-    //placeholder to hold the html
-    var returnVal = "";
-    //add start
-    returnVal += "<tr><td></td>"
-    //iterate through number of weeks
-    for (var i = 0; i < noWeeks; i++){
-        //iterate through number of days
-        for (var j = 0; j < days.length; j++){
-            //add an element for each day per week
-            returnVal +=  "<th>" + days[j] + (i+1) +"</th>"
-        }
-    }
-    //add ending
-    returnVal += "</tr>"
-    //return the placeholder 
-    return(returnVal);
-}
 
 //creates standard rows of the timeable
 function createTimetableRow(noWeeks, period, text = ""){
