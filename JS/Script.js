@@ -41,3 +41,37 @@ function createTableRow(rowData){
 function addToArray(array, valToAdd){
     array.push(valToAdd);
 }
+
+function saveAsCSV(header, data, fileName){
+    var csvData = "";
+
+    csvData += csvPrepRow(header);
+
+    for (var i = 0; i < data.length; i++){
+        csvData += csvPrepRow(data[i]);
+    }
+
+
+    var hiddenElement = document.createElement('a');  
+    hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csvData);  
+    hiddenElement.target = '_blank';  
+    //provide the name for the CSV file to be downloaded  
+    hiddenElement.download = fileName;  
+    hiddenElement.click();  
+
+}
+
+function csvPrepRow (dataToAdd){
+    var rowData ="";
+    for (var i = 0; i < dataToAdd.length; i++){
+        rowData += dataToAdd[i];
+        if (i < dataToAdd.length -1){
+            rowData += ","
+        }
+        
+    }
+
+    rowData += "\n"
+
+    return rowData;
+}

@@ -6,6 +6,8 @@ function subStart(){
     drawSubjects(); 
     //add the event listener for the subject Add button
     addSubEventListener (); 
+    //add the event listener for the Save button
+    addSaveEventListener (); 
     //hide optional values
     // hideOnTTPage();
     //add event listener to user input
@@ -94,3 +96,11 @@ function addSub(){
 
 }
 
+/////////////////
+
+function addSaveEventListener (){
+    //get the items that has "addSub" as an ID
+    var button = document.getElementById("save");
+
+    button.addEventListener("click", function() {saveAsCSV(["Subject Code", "Subject Name"],subjectData, "subjects.csv")});
+}
