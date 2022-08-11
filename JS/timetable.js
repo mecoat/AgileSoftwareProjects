@@ -408,26 +408,6 @@ async function loadTTInput(){
        
 }
 
-function showError(idName){
-    //find the error message element...
-    var invalid = document.getElementById(idName);
-    //and remove the "hide" from the class list to make it display 
-    // (if not already showing)
-    if (invalid.classList.contains("hide")){
-        invalid.classList.remove("hide");
-    }
-}
-
-function hideError(idName){
-    //find the error message element...
-    var invalid = document.getElementById(idName);
-    //check that it doesn't have "hide" in the class (it's currently showing)
-    if (!invalid.classList.contains("hide")){
-        //add hide to the class to make the message go away again
-        invalid.classList.add("hide");
-    }
-}
-
 function checkActiveValid(name, value){
     //get all elements with the name
     var section = document.getElementsByName(name);
