@@ -87,9 +87,10 @@ function addSub(){
     values.push(subName);
     
     //add values to global variable
-    subjectData.push(values);
+    addToArray(subjectData, values);
 
     //redraw table
     drawSubjects();
 
 }
+

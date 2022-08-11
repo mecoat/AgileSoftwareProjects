@@ -37,3 +37,7 @@ function createTableRow(rowData){
     //return the placeholder 
     return(returnVal);
 }
+
+function addToArray(array, valToAdd){
+    array.push(valToAdd);
+}
