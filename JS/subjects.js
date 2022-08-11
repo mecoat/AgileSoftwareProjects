@@ -1,5 +1,8 @@
 //global variable to hold subject data
-var subjectData = [["De", "German"], ["En", "English"], ["Ma", "Maths"]];
+// var subjectData = [["De", "German"], ["En", "English"], ["Ma", "Maths"]];
+var subjectData = [];
+//headers
+var headers = ["Subject Code", "Subject Name"];
 
 function subStart(){
     //draw the subject list to screen
@@ -7,7 +10,9 @@ function subStart(){
     //add the event listener for the subject Add button
     addSubEventListener (); 
     //add the event listener for the Save button
-    addSaveEventListener (); 
+    addSaveEventListener ();
+    //add the event listener for the Save button
+    addLoadEventListener (); 
     //hide optional values
     // hideOnTTPage();
     //add event listener to user input
@@ -23,9 +28,6 @@ function drawSubjects(){
     var subList = document.getElementById("subList");
     //create an empty placeholder for content
     var subListContent = "";
-
-    //headers to display
-    var headers = ["Subject Code", "Subject Name"];
 
     //add the header row to the placeholder to add to the DOM
     subListContent += createHeaderRow(headers);
@@ -104,3 +106,32 @@ function addSaveEventListener (){
 
     button.addEventListener("click", function() {saveAsCSV(["Subject Code", "Subject Name"],subjectData, "subjects.csv")});
 }
+
+function addLoadEventListener (){
+    //get the check it button
+    var chkUploadBtn = document.getElementById("checkIt");
+
+     //get the file input element
+     var subFile = document.getElementById("subFile");
+ 
+     //add an event listener that adds active to the Change it button
+     // to make it more obvious to press once user has uploaded a file
+     subFile.addEventListener("change", function(){ 
+        chkUploadBtn.classList.add("active"); 
+     });
+
+    
+
+    //listen for a click to load the data from the file
+    chkUploadBtn.addEventListener("click", loadSubFile);
+}
+
+function loadSubFile(){
+    //get the input file
+    var input = document.querySelector('input[type="file"]');
+    var file = input.files[0];
+
+    loadCSV(file, headers, subjectData);
+}
+
+    

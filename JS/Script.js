@@ -75,3 +75,7 @@ function csvPrepRow (dataToAdd){
 
     return rowData;
 }
+
+function loadCSV(file, headers, subjectData){
+    console.log (file)
+}
