@@ -77,13 +77,14 @@ function csvPrepRow (dataToAdd){
 }
 
 //function needs to be asynchronous to load the input file
-async function loadCSV(file, headers, subjectData){
+async function loadCSV(file, headers, data, drawFunc){
 
     //check that the input file is the correct type
     if (file.name.endsWith(".csv")){
         //hide error messages if they were showing
-        // hideError("invalidFile");
-        // hideError("invalidContents");
+        hideError("invalidFile");
+        hideError("invalidHeaders");
+        hideError("invalidContents");
 
         //now start processing file contents
         var fileText = await file.text();
@@ -97,9 +98,51 @@ async function loadCSV(file, headers, subjectData){
             fileArray.push(fileText[i].split(","))
         }
 
-        if (fileArray[0] != headers){
-            showError("invalidHeaders")
+        //check the headers in the input document against the headers expected
+        // if (fileArray[0] !== headers){
+        //     console.log(fileArray[0] != headers)
+        //     showError("invalidHeaders");
+        //     console.log(fileArray[0][0].split(""))
+        //     console.log(headers[0].split(""));
+        //     console.log(fileArray[0][1].split(""))
+        //     console.log(headers[1].split(""));
+        // }
+        
+
+        //put the elements (without the header) into the array
+        for (var i = 1; i < fileArray.length; i++){
+            //check for an empty first column (required value)
+            if (fileArray[i][0].length < 1){
+                //end this iteration
+                continue;
+            }
+
+            //check that there's enough data in a row
+            if (fileArray[i].length < headers.length){
+                //if there isn't, show error message
+                showError("invalidContents");
+                //end this iteration
+                continue;
+            }
+
+            //check if data is too long (there may be commas in the last column)
+            if (fileArray[i].length > headers.length){
+                //join the end values together
+                for (var j = headers.length; j < fileArray[i].length; j++){
+                    fileArray[i][headers.length - 1].concat(",", fileArray[i][j]);
+                }
+                //remove the other elements from the array
+                while (fileArray[i].length > headers.length){
+                    fileArray[i].pop();
+                }
+            }
+
+            //add the element to the data array in the argument
+            data.push(fileArray[i]);
         }
+        console.log(data)
+
+        drawFunc();
         // console.log(fileArray[0][0])
         // //try to convert string to JSON
         // try{

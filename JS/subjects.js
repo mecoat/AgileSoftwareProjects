@@ -131,7 +131,8 @@ function loadSubFile(){
     var input = document.querySelector('input[type="file"]');
     var file = input.files[0];
 
-    loadCSV(file, headers, subjectData);
+    loadCSV(file, headers, subjectData, drawSubjects);
+    
 }
 
     
