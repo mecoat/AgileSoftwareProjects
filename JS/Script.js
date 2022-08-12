@@ -77,7 +77,7 @@ function csvPrepRow (dataToAdd){
 }
 
 //function needs to be asynchronous to load the input file
-async function loadCSV(file, headers, data, drawFunc){
+async function loadCSV(file, headers, data, drawFunc, required = [0]){
 
     //hide error messages if they were showing
     hideError("invalidFile");
@@ -109,7 +109,7 @@ async function loadCSV(file, headers, data, drawFunc){
         var fileHeader = [];
         fileHeader = fileArray[0];
         
-        //heck the file header is correct
+        //check the file header is correct
         for (var i = 0; i < fileHeader.length; i++){
             //check for longer headers in file
             if (typeof headers[i] == undefined){
@@ -129,13 +129,31 @@ async function loadCSV(file, headers, data, drawFunc){
             }
         }
 
+        //everything's basically OK with the file, so...
+
+        //empty the array
+        data = [];
+
         //put the elements (without the header) into the array
         for (var i = 1; i < fileArray.length; i++){
-            //check for an empty first column (required value)
-            if (fileArray[i][0].length < 1){
+            //check for an empty required value
+            var reqErrors = 0;
+            for (var j = 0; j < required.length; j++){
+                if (fileArray[i][j].length < 1){
+                    reqErrors ++;
+                }
+            }
+            //check value of req errors against length of required values
+            if (reqErrors == required.length){
+                //skip this iteration
+                continue;
+            }
+            if (reqErrors > 0){
+                showError("invalidContents");
                 //end this iteration
                 continue;
             }
+            
 
             //check that there's enough data in a row
             if (fileArray[i].length < headers.length){
