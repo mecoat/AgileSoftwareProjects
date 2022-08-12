@@ -23,7 +23,8 @@ function subStart(){
 /////////////////
 
 function drawSubjects(){
-
+    
+    
     //get the element we want to make changes to
     var subList = document.getElementById("subList");
     //create an empty placeholder for content
@@ -52,14 +53,30 @@ function addSubEventListener (){
 }
 
 function addSub(){
+    //hide errors if already showing
+    hideError("shortInput");
+    hideError("notAlphaNum");
+    hideError("alreadyAdded");
+
     var subCode = document.getElementById("subCode").value;
 
     var subName = document.getElementById("subject").value;
 
+    var subArr = [subCode, subName];
+
+    addSubArray(subArr);
+
+    //redraw table
+    drawSubjects();
+
+}
+
+function addSubArray(values){
+    var subCode = values[0];
+    var subName = values[1];
     //display error if input incomplete
     if (subCode.length < 1 || subName.length < 1){
-        var shortInput = document.getElementById("shortInput");
-        shortInput.classList.remove("hide");
+        showError("shortInput");
         //end function as can do no more
         return;
     }
@@ -67,8 +84,8 @@ function addSub(){
     //Display error if Subject Code is not alphanumeric
     var regEx = /^[0-9a-zA-Z]+$/;
     if (!subCode.match(regEx)){
-        var notAlphaNum = document.getElementById("notAlphaNum");
-        notAlphaNum.classList.remove("hide");
+        showError("notAlphaNum");
+
         //end function as can do no more
         return;
     }
@@ -79,8 +96,7 @@ function addSub(){
     //check if subject code is already in array (making both lower case to check as not case sensitive in SMS)
     for (var i = 0; i < subjectData.length; i++){
         if (subCode.toLowerCase() == subjectData[i][0].toLowerCase()){
-            var alreadyAdded = document.getElementById("alreadyAdded");
-            alreadyAdded.classList.remove("hide");
+            showError("alreadyAdded");
             //end function as can do no more
             return;
         }
@@ -89,13 +105,9 @@ function addSub(){
     //add values to array
     values.push(subCode);
     values.push(subName);
-    
+
     //add values to global variable
     addToArray(subjectData, values);
-
-    //redraw table
-    drawSubjects();
-
 }
 
 /////////////////
@@ -131,7 +143,12 @@ function loadSubFile(){
     var input = document.querySelector('input[type="file"]');
     var file = input.files[0];
 
-    loadCSV(file, headers, subjectData, drawSubjects);
+    //hide errors if already showing
+    hideError("shortInput");
+    hideError("notAlphaNum");
+    hideError("alreadyAdded");
+
+    loadCSV(file, headers, subjectData, drawSubjects, addSubArray);
     
 }
 

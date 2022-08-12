@@ -77,7 +77,7 @@ function csvPrepRow (dataToAdd){
 }
 
 //function needs to be asynchronous to load the input file
-async function loadCSV(file, headers, data, drawFunc, required = [0]){
+async function loadCSV(file, headers, data, drawFunc, addArrayFunc, required = [0]){
 
     //hide error messages if they were showing
     hideError("invalidFile");
@@ -131,9 +131,6 @@ async function loadCSV(file, headers, data, drawFunc, required = [0]){
 
         //everything's basically OK with the file, so...
 
-        //empty the array
-        data = [];
-
         //put the elements (without the header) into the array
         for (var i = 1; i < fileArray.length; i++){
             //check for an empty required value
@@ -176,10 +173,12 @@ async function loadCSV(file, headers, data, drawFunc, required = [0]){
             }
 
             //add the element to the data array in the argument
-            data.push(fileArray[i]);
+            addArrayFunc(fileArray[i])
+                // data.push(fileArray[i]);
         }
-
+        console.log(data)
         drawFunc();
+
         
 }
 
