@@ -83,6 +83,8 @@ async function loadCSV(file, headers, data, drawFunc, addArrayFunc, required = [
     hideError("invalidFile");
     hideError("invalidHeaders");
     hideError("invalidContents");
+    hideError("invalidRow");
+
 
     //check that the input file is the correct type
     if (!file.name.endsWith(".csv")){
@@ -173,10 +175,14 @@ async function loadCSV(file, headers, data, drawFunc, addArrayFunc, required = [
             }
 
             //add the element to the data array in the argument
-            addArrayFunc(fileArray[i])
+            var errorAdding = addArrayFunc(fileArray[i]);
+
+            if (errorAdding){
+                showError("invalidRow");
+            }
                 // data.push(fileArray[i]);
         }
-        console.log(data)
+
         drawFunc();
 
         
