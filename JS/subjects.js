@@ -152,4 +152,6 @@ function loadSubFile(){
     
 }
 
-    
+// function sortSubsInit () {
+//     sortArray(subjectData, 0);
+// }  

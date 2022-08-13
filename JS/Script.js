@@ -39,7 +39,59 @@ function createTableRow(rowData){
 }
 
 function addToArray(array, valToAdd){
-    array.push(valToAdd);
+    var comparitor = 0;
+
+    //if array is empty, add the emelent in
+    if (array.length == 0){
+        array.push(valToAdd);
+    }
+    //if array has only 1 value...
+    else if (array.length == 1){
+        var searchVal = valToAdd[comparitor].toLowerCase();
+        var initComp = array[0][comparitor].toLowerCase();
+
+        //if lower than first value add to front
+        if (searchVal < initComp){
+            array.unshift(valToAdd)
+        }
+        //otherwise must be bigger, add to end
+        else {
+            array.push(valToAdd);
+        }
+
+    }
+    //if array has 2 or more values...
+    else{
+        var searchVal = valToAdd[comparitor].toLowerCase();
+        var initComp = array[0][comparitor].toLowerCase();
+        var endComp = array[array.length -1][comparitor].toLowerCase();
+        
+        //if lower than first value add to front
+        if (searchVal < initComp){
+            array.unshift(valToAdd)
+        }
+        //if larger than last value, add to end
+        else if (searchVal > endComp){
+            array.push(valToAdd);
+        }
+        //otherwise must be somewhere in the middle
+        else {
+            for (var i = 0; i < array.length -1 ; i++){
+                var compVal1 = array[i][comparitor].toLowerCase();
+                var compVal2 = array[i+1][comparitor].toLowerCase();
+                
+                if (searchVal > compVal1 && searchVal < compVal2){
+                    array.splice(i+1, 0, valToAdd);
+                    return;
+                }
+                
+            }
+        }
+        
+    }
+    
+    
+    // sortArray(array, 0);
 }
 
 function saveAsCSV(header, data, fileName){
@@ -222,3 +274,13 @@ function deleteRow(array, row){
         }
     }
 }
+
+// function sortArray(array, sortIndex){
+//     array.sort(function(a, b){
+//         let x = a[sortIndex].type.toLowerCase();
+//         let y = b[sortIndex].type.toLowerCase();
+//         if (x < y) {return -1;}
+//         if (x > y) {return 1;}
+//         return 0;
+//       });
+// }
