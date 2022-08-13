@@ -77,13 +77,19 @@ function csvPrepRow (dataToAdd){
 }
 
 //function needs to be asynchronous to load the input file
-async function loadCSV(file, headers, data, drawFunc, addArrayFunc, required = [0]){
+async function loadCSV(file, headers, drawFunc, addArrayFunc, required = [0]){
+    // async function loadCSV(file, headers, data, drawFunc, addArrayFunc, required = [0]){
 
-    //hide error messages if they were showing
+    //hide upload error messages if they were showing
     hideError("invalidFile");
     hideError("invalidHeaders");
     hideError("invalidContents");
     hideError("invalidRow");
+
+    //hide individual errors if already showing
+    hideError("shortInput");
+    hideError("notAlphaNum");
+    hideError("alreadyAdded");
 
 
     //check that the input file is the correct type
@@ -205,5 +211,14 @@ function hideError(idName){
     if (!invalid.classList.contains("hide")){
         //add hide to the class to make the message go away again
         invalid.classList.add("hide");
+    }
+}
+
+function deleteRow(array, row){
+
+    for (var i = 0; i < array.length; i++){
+        if (array[i] == row){
+            array.splice(i, 1);
+        }
     }
 }

@@ -143,12 +143,12 @@ function loadSubFile(){
     var input = document.querySelector('input[type="file"]');
     var file = input.files[0];
 
-    //hide errors if already showing
-    hideError("shortInput");
-    hideError("notAlphaNum");
-    hideError("alreadyAdded");
-
-    loadCSV(file, headers, subjectData, drawSubjects, addSubArray);
+    for (var i = subjectData.length - 1; i >= 0; i--){
+        deleteRow(subjectData, subjectData[i])
+    }
+    
+    // loadCSV(file, headers, subjectData, drawSubjects, addSubArray);
+    loadCSV(file, headers, drawSubjects, addSubArray);
     
 }
 
