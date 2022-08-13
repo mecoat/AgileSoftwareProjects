@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	  <meta charset="UTF-8">
+	  <title>TTAssist</title>
+	  <!-- <link rel="icon" type="image/x-icon" href="Images/CCLogo.png"/> -->
+	  <link rel="stylesheet" href="CSS/Style.css">
+	  <!-- <link rel="apple-touch-icon" sizes="57x57" href="Images/apple-icon-57x57.png">
+	  <link rel="apple-touch-icon" sizes="60x60" href="Images/apple-icon-60x60.png">
+	  <link rel="apple-touch-icon" sizes="72x72" href="Images/apple-icon-72x72.png">
+	  <link rel="apple-touch-icon" sizes="76x76" href="Images/apple-icon-76x76.png">
+	  <link rel="apple-touch-icon" sizes="114x114" href="Images/apple-icon-114x114.png">
+	  <link rel="apple-touch-icon" sizes="120x120" href="Images/apple-icon-120x120.png">
+	  <link rel="apple-touch-icon" sizes="144x144" href="Images/apple-icon-144x144.png">
+	  <link rel="apple-touch-icon" sizes="152x152" href="Images/apple-icon-152x152.png">
+	  <link rel="apple-touch-icon" sizes="180x180" href="Images/apple-icon-180x180.png"> -->
+	  <script src="JS/libraries/p5.min.js"></script>
+	  <script src="JS/Script.js"></script>
+	  <script src="JS/subjects.js"></script>
+	  <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	  <meta name="description" content="Coates Consultancy provides D&amp;TA accredited Health and Safety training for Design &amp; Technology (DT) Departments in secondary schools in London and South-East England." /> -->
+</head>
+<body id="top" onload="subStart()">
+    <nav class="nav" id="nav">
+		<ul>
+			<li>
+				<a href='timetable.html'>Timetable</a>
+			</li>
+			<li id="navActive">
+				<a href='subjects.html'>Subjects</a>
+			</li>
+			<li>
+				<a href='teachers.html'>Teachers</a>
+			</li>
+			<li>
+				<a href='classes.html'>Classes</a>
+			</li>
+			<li>
+				<a href='analysis.html'>Analysis</a>
+			</li>
+		</ul>
+	</nav>
+
+    <div class="subjectsPage mainPage">
+        <p>You can either complete the form below for each subject, or download and fill in the template file.</p>
+		<br>
+		<br>
+		<label for="template">Download Template File : </label>
+		<button type="button" id="template" name="template" value="template">Template</button>
+		<br>
+		<br>
+		<br>
+
+		<form>
+		    <label for="upload">Upload previous File : </label>
+			<input type="file" id="subFile" name="upload" accept=".csv">
+            <button type="button" id="checkIt" name="upload" value="Upload">Check it</button>
+			<p class="hide invalidFile" id="invalidFile">Sorry this is an invalid file type, please upload a valid Subjects csv file from this software.</p>
+			<p class="hide invalidHeaders" id="invalidHeaders">Sorry, this doesn't seem to the the right file, please ensure you are using a file based upon the Subjects template provided.</p>
+			<p class="hide invalidContents" id="invalidContents">Sorry, it seems that one or more of your data rows is incomplete. Please either try to upload another file, or check the values below against expected outcomes, correct and save file again.</p>
+			<p class="hide invalidRow" id="invalidRow">Sorry, it seems that one or more of your data rows is has produced an error. Please check the error messages below the user input for more infrmation, try to upload another file, or check the values below against expected outcomes, correct and save file again.</p>
+			<br>
+			<br>
+			<br>
+			
+			<label for="subject">Subject :</label>
+  			<input type="text" id="subject" name="subject">
+			<br>
+			<br>
+ 	 		<label for="subCode">Subject Code :</label>
+  			<input type="text" id="subCode" name="subCode">
+			<br>
+			<br>
+            <button type="button" id="addSub" name="addSub" value="addSub">Add Subject</button>
+			<br>
+			<p class="hide shortInput" id="shortInput">Sorry, you don't appear to have completed both boxes above.  Please complete both the Subject and Subject Code input boxes.</p>
+			<p class="hide notAlphaNum" id="notAlphaNum">Sorry, the Subject Code can only be Letters or Numbers.  Please amend your Subject Code above.</p>
+			<p class="hide alreadyAdded" id="alreadyAdded">Sorry, the Subject Code you have added is already in the list.  Please amend your Subject Code above.</p>
+			<br>
+			<br>
+			<p>Check your Subjects: (don't forget to scroll down to save your template)</p>
+			<br>
+			<table id="subList" ></table>
+			<button type="button" id="delSub" name="delSub" value="delSub">Delete Row</button>
+			<br>
+			<br>
+			<label for="save">If this is correct : </label>
+            <button type="button" id="save" name="save" value="Save">Save</button>
+			<br>
+			<p>If this is not correct, please cick a row to select, and the click delete to delete the faulty row.</p>
+    </div>
+
+</body>
+</html>
