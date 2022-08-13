@@ -81,7 +81,7 @@ button, input[type="file"]::file-selector-button {
     border-color: #150578;
 }
 
-button.active {
+button.active, tr.active {
     color:#FFFFFF;
     background-color: #150578;
     border-color: #FFFFFF;
@@ -103,3 +103,9 @@ table , td, th{
 .hide {
     display: none;
 }
+
+#subList {
+    display: inline;
+    border : none;
+}
+
