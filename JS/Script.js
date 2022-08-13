@@ -284,3 +284,7 @@ function deleteRow(array, row){
 //         return 0;
 //       });
 // }
+
+function mySanitise(value){
+    return value.replace(/<|>/g," ");
+}

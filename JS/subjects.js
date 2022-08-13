@@ -58,9 +58,13 @@ function addSub(){
     hideError("notAlphaNum");
     hideError("alreadyAdded");
 
+    //get values
     var subCode = document.getElementById("subCode").value;
-
     var subName = document.getElementById("subject").value;
+
+    //basic html sanitisation
+    subName = mySanitise(subName);
+
 
     var subArr = [subCode, subName];
 
