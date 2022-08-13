@@ -22,11 +22,13 @@ function createHeaderRow(headers){
 
 
 //creates html content for header row
-function createTableRow(rowData){
+function createTableRow(rowData, idName = ""){
     //placeholder to hold the html
     var returnVal = "";
     //add start
-    returnVal += "<tr>"
+    returnVal += "<tr id = '"
+    returnVal += idName
+    returnVal += "'>"
     //iterate through values in headers
     for (var i = 0; i < rowData.length; i++){
         //add an element for each day per week

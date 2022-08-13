@@ -33,7 +33,7 @@ function drawSubjects(){
 
     //iterate through global variable of subjectdata to create rows in the table
     for (var i = 0; i < subjectData.length; i++){
-        subListContent += createTableRow(subjectData[i]);
+        subListContent += createTableRow(subjectData[i], subjectData[i][0]);
     }
 
     //add the content to the DOM
