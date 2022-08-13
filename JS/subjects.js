@@ -13,10 +13,8 @@ function subStart(){
     addSaveEventListener ();
     //add the event listener for the Save button
     addLoadEventListener (); 
-    //hide optional values
-    // hideOnTTPage();
-    //add event listener to user input
-    // addUIEventListeners ();
+    //add the event listener for the Save button
+    addTemplateEventListener ();
 }
 
 
@@ -120,7 +118,7 @@ function addSaveEventListener (){
     //get the items that has "addSub" as an ID
     var button = document.getElementById("save");
 
-    button.addEventListener("click", function() {saveAsCSV(["Subject Code", "Subject Name"],subjectData, "subjects.csv")});
+    button.addEventListener("click", function() {saveAsCSV(headers,subjectData, "subjects.csv")});
 }
 
 function addLoadEventListener (){
@@ -156,6 +154,9 @@ function loadSubFile(){
     
 }
 
-// function sortSubsInit () {
-//     sortArray(subjectData, 0);
-// }  
+function addTemplateEventListener (){
+    //get the items that has "addSub" as an ID
+    var button = document.getElementById("template");
+
+    button.addEventListener("click", function() {saveAsCSV(headers,[], "subjects.csv")});
+}

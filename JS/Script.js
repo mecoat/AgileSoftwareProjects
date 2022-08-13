@@ -275,16 +275,6 @@ function deleteRow(array, row){
     }
 }
 
-// function sortArray(array, sortIndex){
-//     array.sort(function(a, b){
-//         let x = a[sortIndex].type.toLowerCase();
-//         let y = b[sortIndex].type.toLowerCase();
-//         if (x < y) {return -1;}
-//         if (x > y) {return 1;}
-//         return 0;
-//       });
-// }
-
 function mySanitise(value){
     return value.replace(/<|>/g," ");
 }
