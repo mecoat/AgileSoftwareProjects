@@ -11,10 +11,14 @@ function subStart(){
     addSubEventListener (); 
     //add the event listener for the Save button
     addSaveEventListener ();
-    //add the event listener for the Save button
+    //add the event listener for the Load button
     addLoadEventListener (); 
-    //add the event listener for the Save button
+    //add the event listener for the Template button
     addTemplateEventListener ();
+    //add the event listener for the Delete button
+    addDeleteEventListener ();
+    //add the event listener for the Subjects table
+    addSubtableEventListener ();
 }
 
 
@@ -38,6 +42,9 @@ function drawSubjects(){
 
     //add the content to the DOM
     subList.innerHTML = subListContent;
+
+    //check there's an event listener on them all
+    addSubtableEventListener ()
 }
 
 ///////////////////////////////////
@@ -160,3 +167,53 @@ function addTemplateEventListener (){
 
     button.addEventListener("click", function() {saveAsCSV(headers,[], "subjects.csv")});
 }
+
+////////////////////
+
+function addDeleteEventListener (){
+    //get the item that has "delSub" as an ID
+    var button = document.getElementById("delSub");
+
+    button.addEventListener("click", delSub);
+}
+
+function delSub(){
+    //get the item that has "subList" as an ID
+    var table = document.getElementById("subList");
+    var tableRows = table.getElementsByTagName("tr");
+
+    for (var i = 0; i < tableRows.length; i++){
+        if (getActiveRow(tableRows[i])){
+            //find the location of the data in the array
+            var dataLoc = findData(subjectData, tableRows[i].id, 0);
+            
+            //delete the row from the array 
+            deleteRow(subjectData, subjectData[dataLoc])
+
+            //redraw the table
+            drawSubjects();
+
+            //end function
+            return;
+        }    
+    }
+}
+
+function addSubtableEventListener (){
+    //get the item that has "subList" as an ID
+    var table = document.getElementById("subList");
+    var tableRows = table.getElementsByTagName("tr");
+
+    for (var i = 0; i < tableRows.length; i++){
+        tableRows[i].addEventListener("click", function(){ rowSelect(this, tableRows); });
+    }
+}
+
+function findData(array, searchVal, valLoc){
+    for (var i = 0; i < array.length; i++){
+        if (array[i][valLoc] == searchVal){
+            return i;
+        }
+    }
+}
+

@@ -280,3 +280,39 @@ function deleteRow(array, row){
 function mySanitise(value){
     return value.replace(/<|>/g," ");
 }
+
+////////////////////
+
+
+function getActiveRow(row){
+    //if it's already active...
+    try {
+        if (row.getAttribute("class").includes("active")){
+            return true;
+        }
+    } 
+    //not already active
+    catch{
+        return false;
+    }
+}
+
+function rowSelect(row, allRows){
+    //if it's already active...
+    if (getActiveRow(row)){
+        //remove the active value - deselect
+        row.classList.remove("active");
+    }
+    //not already active
+    else {
+        //so search to see if someting else is...
+        for (var i = 0; i < allRows.length; i++){
+            if (getActiveRow(allRows[i])){
+                allRows[i].classList.remove("active");
+                break;
+            }
+        }
+        row.classList.add("active");
+    }
+
+}
