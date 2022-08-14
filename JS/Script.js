@@ -178,9 +178,10 @@ async function loadCSV(file, headers, drawFunc, addArrayFunc, required = [0]){
                 showError("invalidHeaders");
                 return;
             }
-            //check for incorect values
-            if (fileHeader[i] != headers[i]){
+            //check for incorect values afer strippng white space from edges
+            if (fileHeader[i].trim() != headers[i].trim()){
                 showError("invalidHeaders");
+               
                 return;
             }
             //check if the file headers are too short
