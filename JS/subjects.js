@@ -155,7 +155,9 @@ function loadSubFile(){
     for (var i = subjectData.length - 1; i >= 0; i--){
         deleteRow(subjectData, subjectData[i])
     }
-    
+
+    drawSubjects();
+
     // loadCSV(file, headers, subjectData, drawSubjects, addSubArray);
     loadCSV(file, headers, drawSubjects, addSubArray);
     
