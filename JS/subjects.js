@@ -73,7 +73,13 @@ function addSub(){
 
     var subArr = [subCode, subName];
 
-    addSubArray(subArr);
+    var added = addSubArray(subArr);
+
+    //clear entry boxes if added to array
+    if (added == "completed"){
+        document.getElementById("subCode").value = "";
+        document.getElementById("subject").value = "";
+    }
 
     //redraw table
     drawSubjects();
@@ -117,6 +123,8 @@ function addSubArray(values){
 
     //add values to global variable
     addToArray(subjectData, values);
+
+    return "completed";
 }
 
 /////////////////
@@ -155,7 +163,9 @@ function loadSubFile(){
     for (var i = subjectData.length - 1; i >= 0; i--){
         deleteRow(subjectData, subjectData[i])
     }
-    
+
+    drawSubjects();
+
     // loadCSV(file, headers, subjectData, drawSubjects, addSubArray);
     loadCSV(file, headers, drawSubjects, addSubArray);
     
