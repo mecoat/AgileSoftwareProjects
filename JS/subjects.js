@@ -73,7 +73,13 @@ function addSub(){
 
     var subArr = [subCode, subName];
 
-    addSubArray(subArr);
+    var added = addSubArray(subArr);
+
+    //clear entry boxes if added to array
+    if (added == "completed"){
+        document.getElementById("subCode").value = "";
+        document.getElementById("subject").value = "";
+    }
 
     //redraw table
     drawSubjects();
@@ -117,6 +123,8 @@ function addSubArray(values){
 
     //add values to global variable
     addToArray(subjectData, values);
+
+    return "completed";
 }
 
 /////////////////
