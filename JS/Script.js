@@ -238,7 +238,7 @@ async function loadCSV(file, headers, drawFunc, addArrayFunc, required = [0]){
             //add the element to the data array in the argument
             var errorAdding = addArrayFunc(fileArray[i]);
 
-            if (errorAdding){
+            if (errorAdding == "error"){
                 showError("invalidRow");
             }
                 // data.push(fileArray[i]);

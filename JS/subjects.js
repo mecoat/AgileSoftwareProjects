@@ -87,13 +87,13 @@ function addSub(){
 }
 
 function addSubArray(values){
-    var subCode = values[0];
-    var subName = values[1];
+    var subCode = values[0].trim();
+    var subName = values[1].trim();
     //display error if input incomplete
     if (subCode.length < 1 || subName.length < 1){
         showError("shortInput");
         //end function as can do no more
-        return true;
+        return "error";
     }
 
     //Display error if Subject Code is not alphanumeric
@@ -102,7 +102,7 @@ function addSubArray(values){
         showError("notAlphaNum");
 
         //end function as can do no more
-        return true;
+        return "error";
     }
 
     //variable to hold the values
@@ -113,7 +113,7 @@ function addSubArray(values){
         if (subCode.toLowerCase() == subjectData[i][0].toLowerCase()){
             showError("alreadyAdded");
             //end function as can do no more
-            return true;
+            return "error";
         }
     }
 
