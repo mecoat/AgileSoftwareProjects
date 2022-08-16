@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	  <meta charset="UTF-8">
+	  <title>TTAssist</title>
+	  <!-- <link rel="icon" type="image/x-icon" href="Images/CCLogo.png"/> -->
+	  <link rel="stylesheet" href="CSS/Style.css">
+	  <!-- <link rel="apple-touch-icon" sizes="57x57" href="Images/apple-icon-57x57.png">
+	  <link rel="apple-touch-icon" sizes="60x60" href="Images/apple-icon-60x60.png">
+	  <link rel="apple-touch-icon" sizes="72x72" href="Images/apple-icon-72x72.png">
+	  <link rel="apple-touch-icon" sizes="76x76" href="Images/apple-icon-76x76.png">
+	  <link rel="apple-touch-icon" sizes="114x114" href="Images/apple-icon-114x114.png">
+	  <link rel="apple-touch-icon" sizes="120x120" href="Images/apple-icon-120x120.png">
+	  <link rel="apple-touch-icon" sizes="144x144" href="Images/apple-icon-144x144.png">
+	  <link rel="apple-touch-icon" sizes="152x152" href="Images/apple-icon-152x152.png">
+	  <link rel="apple-touch-icon" sizes="180x180" href="Images/apple-icon-180x180.png"> -->
+	  <script src="JS/libraries/p5.min.js"></script>
+	  <script src="JS/Script.js"></script>
+	  <script src="JS/subjects.js"></script>
+	  <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	  <meta name="description" content="Coates Consultancy provides D&amp;TA accredited Health and Safety training for Design &amp; Technology (DT) Departments in secondary schools in London and South-East England." /> -->
+</head>
+<body id="top" onload="subStart()">
+    <nav class="nav" id="nav">
+		<ul>
+			<li>
+				<a href='timetable.html'>Timetable</a>
+			</li>
+			<li>
+				<a href='subjects.html'>Subjects</a>
+			</li>
+			<li id="navActive">
+				<a href='teachers.html'>Teachers</a>
+			</li>
+			<li>
+				<a href='classes.html'>Classes</a>
+			</li>
+			<li>
+				<a href='analysis.html'>Analysis</a>
+			</li>
+		</ul>
+	</nav>
+
+    <div class="subjectsPage mainPage">
+        
+		<label for="template">Download Template File : </label>
+		<button type="button" id="template" name="template" value="template">Template</button>
+		<br>
+		<br>
+		<p>You can either complete the form below for each subject, or download and fill in the template file using the button above.  This will allow you to input the data offline, and in bulk, eg by copying from an export from your School Management Software.</p>
+		<br>
+		<br>
+		<br>
+
+		<form>
+		    <label for="uploadTeacher">Upload previous Teacher File : </label>
+			<input type="file" id="teacherFile" name="uploadTeacher" accept=".csv">
+            <button type="button" id="checkIt" name="uploadTeacher" value="uploadTeacher">Check it</button>
+			<br>
+			<label for="uploadSub">Upload Subjects File : </label>
+			<input type="file" id="subFile" name="uploadSub" accept=".csv">
+            <button type="button" id="checkIt" name="uploadSub" value="uploadSub">Add to Form</button>
+			<p class="hide invalidFile" id="invalidFile">Sorry this is an invalid file type, please upload a valid Subjects csv file from this software.</p>
+			<p class="hide invalidHeaders" id="invalidHeaders">Sorry, this doesn't seem to the the right file, please ensure you are using a file based upon the templates provided.</p>
+			<p class="hide invalidContents" id="invalidContents">Sorry, it seems that one or more of your data rows is incomplete. Please either try to upload another file, or check the values below against expected outcomes, correct and save file again.</p>
+			<p class="hide invalidRow" id="invalidRow">Sorry, it seems that one or more of your data rows has produced an error. Please check the error messages below the user input for more information, try to upload another file, or check the values below against expected outcomes, correct and save file again.</p>
+			<br>
+			<br>
+			<br>
+			<label for="defaultPeriods">What is the default number of contact sessions taught by teachers? :</label>
+  			<input type="number" id="defaultPeriods" name="defaultPeriods">
+			<br>
+			<br>
+			<p>Would you prefer to input teacher sujects by :</p>
+			<button type="button" id="subCode" name="subjectStyle" value="subCode" class="subStyleBtn active">Subject Code</button>
+			<button type="button" id="subName" name="subjectStyle" value="subName" class="subStyleBtn">Subject Name</button>
+			<br>
+			<br>
+			<label for="setDefaults">Set Defaults : </label>
+            <button type="button" id="setDefaults" name="setDefaults" value="setDefaults">Set Defaults</button>
+			<br>
+			<br>
+			<br>
+ 	 		<label for="teacherName">Teacher Name :</label>
+  			<input type="text" id="teacherName" name="teacherName">
+			<br>
+			<br>
+			<label for="teacherCode">Teacher Code :</label>
+  			<input type="text" id="teacherCode" name="teacherCode">
+			<br>
+			<br>
+            <label for="teacherPeriods">Sessions taught :</label>
+  			<input type="number" id="teacherPeriods" name="teacherPeriods">
+			<br>
+			<br>
+			<label for="teacherCode">Teacher Code :</label>
+			<input type="text" id="teacherCode" name="teacherCode">
+			<br>
+			<br>
+			<label for="primarySub">Primary Subject :</label>
+			<select name="primarySub" id="primarySub">
+
+			</select>
+			<br>
+			<br>
+			<label for="secondarySub">Secondary Subject :</label>
+			<select name="secondarySub" id="secondarySub" >
+
+			</select>
+			<br>
+			<br>
+			<button type="button" id="addTeacher" name="addTeacher" value="addTeacher">Add teacher</button>
+			<br>
+			<p class="hide shortInput" id="shortInput">Sorry, you don't appear to have completed all required fields above.  All fields are required with the exception of the Secondary Subject.  Please complete all the Subject and Subject Code input boxes.</p>
+			<p class="hide notAlphaNum" id="notAlphaNum">Sorry, the Subject Code can only be Letters or Numbers.  Please amend your Subject Code above.</p>
+			<p class="hide alreadyAdded" id="alreadyAdded">Sorry, the Teacher Code you have added is already in the list.  Please amend your Subject Code above.</p>
+			<br>
+			<br>
+			<p>Check your Teachers: (don't forget to scroll down to save your template)</p>
+			<br>
+			<table id="teacherList" ></table>
+			<button type="button" id="delTeacher" name="delTeacher" value="delTeacher">Delete Row</button>
+			<br>
+			<br>
+			<label for="save">If this is correct : </label>
+            <button type="button" id="save" name="save" value="Save">Save</button>
+			<br>
+			<p>If this is not correct, please click a row to select, and then click delete to delete the faulty row.</p>
+    </div>
+
+</body>
+</html>
