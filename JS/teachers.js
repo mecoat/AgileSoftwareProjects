@@ -27,18 +27,20 @@ function addTeachArray(values){
         return "error";
     }
 
+    //Display error if teacher Code is not alphanumeric
+    var checkTeacherCode = checkAlphaNum(teacherCode);
+    if (checkTeacherCode == "error"){
+        showError("notAlphaNum");
+
+        //end function as can do no more
+        return "error";
+    }
+
     console.log (secondarySubCode)
     teacherData.push(values);
     
 
-    // //Display error if Subject Code is not alphanumeric
-    // var regEx = /^[0-9a-zA-Z]+$/;
-    // if (!subCode.match(regEx)){
-    //     showError("notAlphaNum");
-
-    //     //end function as can do no more
-    //     return "error";
-    // }
+    
 
     // //variable to hold the values
     // var values = [];

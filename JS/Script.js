@@ -367,3 +367,12 @@ function trimValues(values){
     }
     return values;
 }
+
+/////////////
+
+function checkAlphaNum(checkVal){
+    var regEx = /^[0-9a-zA-Z]+$/;
+    if (!checkVal.match(regEx)){
+        return "error";
+    }
+}

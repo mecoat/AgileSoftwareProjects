@@ -24,8 +24,8 @@ function addSubArray(values){
     }
 
     //Display error if Subject Code is not alphanumeric
-    var regEx = /^[0-9a-zA-Z]+$/;
-    if (!subCode.match(regEx)){
+    var checkSubCode = checkAlphaNum(subCode);
+    if (checkSubCode == "error"){
         showError("notAlphaNum");
 
         //end function as can do no more
