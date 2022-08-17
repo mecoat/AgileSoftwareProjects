@@ -45,21 +45,10 @@ function addTeachArray(values){
         }
     }
 
-    teacherData.push(values);
+    //add values to global variable
+    addToArray(teacherData, values);
 
-    // //variable to hold the values
-    // var values = [];
-
-    
-
-    // //add values to array
-    // values.push(subCode);
-    // values.push(subName);
-
-    // //add values to global variable
-    // addToArray(subjectData, values);
-
-    // return "completed";
+    return "completed";
 }
 
 /////////////////
