@@ -317,3 +317,14 @@ function rowSelect(row, allRows){
     }
 
 }
+
+////////////////
+
+function findData(array, searchVal, valLoc){
+    for (var i = 0; i < array.length; i++){
+        if (array[i][valLoc] == searchVal){
+            return i;
+        }
+    }
+}
+
