@@ -356,3 +356,14 @@ function getActive (input){
     }
     return (retVal);
 }
+
+
+///////////
+
+function trimValues(values){
+    //trim blank spaces 
+    for (var i = 0; i < values.length; i ++){
+        values[i] = values[i].trim();
+    }
+    return values;
+}

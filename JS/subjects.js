@@ -7,8 +7,15 @@ var subHeaders = ["Subject Code", "Subject Name"];
 /////////////////
 
 function addSubArray(values){
-    var subCode = values[0].trim();
-    var subName = values[1].trim();
+    // var subCode = values[0].trim();
+    // var subName = values[1].trim();
+
+    values = trimValues(values);
+
+    var subCode = values[0];
+    var subName = values[1];
+
+
     //display error if input incomplete
     if (subCode.length < 1 || subName.length < 1){
         showError("shortInput");

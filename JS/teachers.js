@@ -7,16 +7,29 @@ var teacherHeaders = ["Teacher Code", "Teacher Name", "Teaching Sessions", "Prim
 
 function addTeachArray(values){
 
+    values = trimValues(values);
 
+    var teacherCode = values[0];
+    var teacherName = values[1];
+    var teachingSessions = values[2];
+    var primarySubCode = values[3];
+    var primarySubName = values[4];
+    var secondarySubCode = values[5];
+    var secondarySubName  = values[6];
+
+    //display error if input incomplete (secondary subject is not required)
+    if (teacherCode.length < 1 || teacherName.length < 1 || 
+        primarySubCode.length < 1 || primarySubName.length < 1 || 
+        teachingSessions < 1 || teachingSessions == undefined){
+        //show the error to the user
+        showError("shortInput");
+        //end function as can do no more
+        return "error";
+    }
+
+    console.log (secondarySubCode)
     teacherData.push(values);
-    // var subCode = values[0].trim();
-    // var subName = values[1].trim();
-    // //display error if input incomplete
-    // if (subCode.length < 1 || subName.length < 1){
-    //     showError("shortInput");
-    //     //end function as can do no more
-    //     return "error";
-    // }
+    
 
     // //Display error if Subject Code is not alphanumeric
     // var regEx = /^[0-9a-zA-Z]+$/;
