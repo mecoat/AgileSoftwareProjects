@@ -82,15 +82,21 @@ function addTeacher(){
     teacherPeriods = mySanitise(teacherPeriods);
 
     //get code and subject
-    var primarySubArr = findData(subjectData, primarySub, subjectStyle)
-    var secondarySubArr = findData(subjectData, secondarySub, subjectStyle)
+    var primarySubLoc = findData(subjectData, primarySub, subjectStyle);
+    var secondarySubLoc = findData(subjectData, secondarySub, subjectStyle);
+    
+    var primarySubArr = subjectData[primarySubLoc];
 
-    // var teachArr = [teacherCode, teacherName, teacherPeriods, primarySubArr[0], primarySubArr[1], secondarySubArr[0], secondarySubArr[1]];
-    var teachArr = [teacherCode, teacherName, teacherPeriods, primarySub, primarySub, secondarySub, secondarySub];
+    if (secondarySubLoc != undefined){
+        var secondarySubArr = subjectData[secondarySubLoc];
+        var teachArr = [teacherCode, teacherName, teacherPeriods, primarySubArr[0], primarySubArr[1], secondarySubArr[0], secondarySubArr[1]];
+    }
+    else {
+        var teachArr = [teacherCode, teacherName, teacherPeriods, primarySubArr[0], primarySubArr[1]];
+        
+    }
 
-    teacherData.push(teachArr);
-
-    var added = 0//addSubArray(subArr);
+    var added = addTeachArray(teachArr);
 
     //clear entry boxes if added to array
     if (added == "completed"){
