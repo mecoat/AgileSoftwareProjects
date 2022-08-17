@@ -286,8 +286,13 @@ function mySanitise(value){
 
 
 function getActiveRow(row){
+    //if there's no class list it can't be active
+    if (row.classList.length == 0){
+        return false;
+    }
     //if it's already active...
     try {
+        
         if (row.getAttribute("class").includes("active")){
             return true;
         }
@@ -328,3 +333,26 @@ function findData(array, searchVal, valLoc){
     }
 }
 
+
+////////
+
+//gets the active value within elements with a name
+function getActiveElement(name){
+    //Get elements from document    
+    var elements = document.getElementsByName(name);
+    //call function to get active value
+    var active = getActive (elements);
+    return active;
+}
+
+
+//iterates through inputs and returns current ative value
+function getActive (input){
+    var retVal;
+    for (var i=0; i<input.length; i++){
+        if (input[i].getAttribute("class").includes("active")){
+            retVal = input[i].value;
+        }
+    }
+    return (retVal);
+}

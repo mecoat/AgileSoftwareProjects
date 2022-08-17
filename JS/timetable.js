@@ -157,26 +157,6 @@ function checkReg (regVal){
     return false;
 }
 
-//gets the active value within elements with a name
-function getActiveElement(name){
-    //Get elements from document    
-    var elements = document.getElementsByName(name);
-    //call function to get active value
-    var active = getActive (elements);
-    return active;
-}
-
-//iterates through inputs and returns current ative value
-function getActive (input){
-    var retVal;
-    for (var i=0; i<input.length; i++){
-        if (input[i].getAttribute("class").includes("active")){
-            retVal = input[i].value;
-        }
-    }
-    return (retVal);
-}
-
 //creates html content for Timetable header row
 function createTTHeaderRow(noWeeks){
     //array to hold days of the week for the header

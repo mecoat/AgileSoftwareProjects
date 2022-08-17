@@ -1,8 +1,8 @@
-//global variable to hold subject data
+//global variables to hold subject data and headers
 // var subjectData = [["De", "German"], ["En", "English"], ["Ma", "Maths"]];
 var subjectData = [];
 //headers
-var headers = ["Subject Code", "Subject Name"];
+var subHeaders = ["Subject Code", "Subject Name"];
 
 /////////////////
 

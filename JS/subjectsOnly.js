@@ -25,7 +25,7 @@ function drawSubjects(){
     var subListContent = "";
 
     //add the header row to the placeholder to add to the DOM
-    subListContent += createHeaderRow(headers);
+    subListContent += createHeaderRow(subHeaders);
 
     //iterate through global variable of subjectdata to create rows in the table
     for (var i = 0; i < subjectData.length; i++){
@@ -84,7 +84,7 @@ function addSaveEventListener (){
     //get the items that has "addSub" as an ID
     var button = document.getElementById("save");
 
-    button.addEventListener("click", function() {saveAsCSV(headers,subjectData, "subjects.csv")});
+    button.addEventListener("click", function() {saveAsCSV(subHeaders,subjectData, "subjects.csv")});
 }
 
 function addLoadEventListener (){
@@ -115,8 +115,7 @@ function loadSubFile(){
 
     drawSubjects();
 
-    // loadCSV(file, headers, subjectData, drawSubjects, addSubArray);
-    loadCSV(file, headers, drawSubjects, addSubArray);
+    loadCSV(file, subHeaders, drawSubjects, addSubArray);
     
 }
 
@@ -126,7 +125,7 @@ function addTemplateEventListener (){
     //get the items that has "addSub" as an ID
     var button = document.getElementById("template");
 
-    button.addEventListener("click", function() {saveAsCSV(headers,[], "subjects.csv")});
+    button.addEventListener("click", function() {saveAsCSV(subHeaders,[], "subjects.csv")});
 }
 
 ////////////////////
