@@ -35,24 +35,22 @@ function addTeachArray(values){
         //end function as can do no more
         return "error";
     }
+   
+    //check if teacher code is already in array (making both lower case to check as not necesarrily case sensitive in SMS)
+    for (var i = 0; i < teacherData.length; i++){
+        if (teacherCode.toLowerCase() == teacherData[i][0].toLowerCase()){
+            showError("alreadyAdded");
+            //end function as can do no more
+            return "error";
+        }
+    }
 
-    console.log (secondarySubCode)
     teacherData.push(values);
-    
-
-    
 
     // //variable to hold the values
     // var values = [];
 
-    // //check if subject code is already in array (making both lower case to check as not case sensitive in SMS)
-    // for (var i = 0; i < subjectData.length; i++){
-    //     if (subCode.toLowerCase() == subjectData[i][0].toLowerCase()){
-    //         showError("alreadyAdded");
-    //         //end function as can do no more
-    //         return "error";
-    //     }
-    // }
+    
 
     // //add values to array
     // values.push(subCode);
