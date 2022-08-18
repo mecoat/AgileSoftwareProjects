@@ -241,12 +241,11 @@ async function loadCSV(file, headers, drawFunc, addArrayFunc, required = [0]){
             if (errorAdding == "error"){
                 showError("invalidRow");
             }
-                // data.push(fileArray[i]);
+
         }
 
         drawFunc();
-
-        
+       
 }
 
 function showError(idName){
@@ -376,3 +375,31 @@ function checkAlphaNum(checkVal){
         return "error";
     }
 }
+
+////////////////////
+
+function addToDropdown(ddID, array, index){
+    var element = document.getElementById(ddID);
+
+    var content = "";
+
+    content += '<option value=""></option>';
+
+    for (var i = 0; i < array.length; i++){
+        content += '<option value="';
+        content += array[i][index];
+        content += '">';
+        content += array[i][index];
+        content +='</option>';
+
+    }
+    console.log(content)
+    element.innerHTML = content;
+}
+
+/////////////
+
+//filler function - does nothing (used as input to loadCSV if no drawing required)
+// function emptyDraw(){
+//     return
+// }

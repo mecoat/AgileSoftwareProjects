@@ -3,10 +3,11 @@ function teachersStart(){
     drawTeachers(); 
     //add the event listener for the subject Add button
     addTeacherEventListener (); 
+    //add the event listener for the subjects Load button
+    addSubLoadEventListener (); 
     //add the event listener for the Save button
     // addSaveEventListener ();
-    //add the event listener for the Load button
-    // addLoadEventListener (); 
+    
     //add the event listener for the Template button
     // addTemplateEventListener ();
     //add the event listener for the Delete button
@@ -98,13 +99,57 @@ function addTeacher(){
 
     var added = addTeachArray(teachArr);
 
-    //clear entry boxes if added to array
+    //reset entry boxes if added to array
     if (added == "completed"){
-        document.getElementById("subCode").value = "";
-        document.getElementById("subject").value = "";
+        document.getElementById("teacherName").value = "";
+        document.getElementById("teacherCode").value = "";
+        document.getElementById("teacherPeriods").value = document.getElementById("defaultPeriods").value;
+        document.getElementById("primarySub").value = "";
+        document.getElementById("secondarySub").value = "";
     }
 
     //redraw table
     drawTeachers();
 
 }
+
+////////////////////////
+
+function addSubLoadEventListener (){
+    //get the check it button
+    var chkUploadBtn = document.getElementById("checkItSub");
+
+     //get the file input element
+     var subFile = document.getElementById("subFile");
+ 
+     //add an event listener that adds active to the Change it button
+     // to make it more obvious to press once user has uploaded a file
+     subFile.addEventListener("change", function(){ 
+        chkUploadBtn.classList.add("active"); 
+     });
+
+    //listen for a click to load the data from the file
+    chkUploadBtn.addEventListener("click", loadSubFile);
+}
+
+function loadSubFile(){
+    //get the input file
+    var input = document.querySelector('input#subFile[type="file"]');
+    var file = input.files[0];
+
+    for (var i = subjectData.length - 1; i >= 0; i--){
+        deleteRow(subjectData, subjectData[i])
+    }
+
+    loadCSV(file, subHeaders, teacherDropDowns, addSubArray);
+    
+    
+}
+
+function teacherDropDowns (){
+    var subIndex = getActiveElement("subjectStyle");
+
+    addToDropdown("primarySub", subjectData, subIndex);
+    addToDropdown("secondarySub", subjectData, subIndex);
+}
+
