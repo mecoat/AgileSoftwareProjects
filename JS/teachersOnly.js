@@ -5,6 +5,8 @@ function teachersStart(){
     addTeacherEventListener (); 
     //add the event listener for the subjects Load button
     addSubLoadEventListener (); 
+    //add the event listeners for the subject style buttons
+    addSubStyleEventListener (); 
     //add the event listener for the Save button
     // addSaveEventListener ();
     
@@ -152,4 +154,16 @@ function teacherDropDowns (){
     addToDropdown("primarySub", subjectData, subIndex);
     addToDropdown("secondarySub", subjectData, subIndex);
 }
+
+////////////////
+
+function addSubStyleEventListener (){
+    //get all the items that have "subjectStyle" as a Class name
+    var subStyleBtns = document.getElementsByClassName("subStyleBtn");
+    //iterate through them and add an event listener that calls the activate button with appropriate parameters when clicked
+    for (var i = 0; i < subStyleBtns.length; i++){
+        subStyleBtns[i].addEventListener("click", function(){ swapActiveButton(this.name, this.value); });
+    }
+}
+
 

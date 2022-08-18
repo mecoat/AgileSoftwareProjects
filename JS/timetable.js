@@ -206,21 +206,10 @@ function createTimetableRow(noWeeks, period, text = ""){
 //////////
 
 function activateButton(name, value){
-    //Get section from document    
-    var section = document.getElementsByName(name);
-    //call function to get weeks in timetable
-    var oldActive = getActive (section);
-    //check is user has selected currently active setting
-    if (oldActive == value){
-        //do nothing if they have
-        return;
-    } else { //otherwise...
+    //swap current values
+    var swapped = swapActiveButton(name, value)
 
-        //delete old active class
-        section = deleteActive(section, oldActive);
-        //set new active class
-        section = addActive(section, value);
-
+    if (swapped == true){
         //redraw the timetable because something has changed
         drawTimetable();
 
@@ -228,34 +217,8 @@ function activateButton(name, value){
         hideOnTTPage();
         //show optional elements as appropriate
         showOnTTPage();
-    }
+    } 
 
-}
-
-function deleteActive (section, value){
-    //iterate through the section
-    for (var i=0; i<section.length; i++){
-        //find the value
-        if (section[i].getAttribute("value")==value){
-            //change the classname so that it no longer includes active
-            section[i].classList.remove("active");
-        }
-    }
-    //return the amended section
-    return (section);
-}
-
-function addActive (section, value){
-    //iterate through the section
-    for (var i=0; i<section.length; i++){
-        //find the value
-        if (section[i].getAttribute("value")==value){
-            //change the class name so that it includes active
-            section[i].classList.add("active");
-        }
-    }
-    //return the amended section
-    return (section);
 }
 
 ////////////////////

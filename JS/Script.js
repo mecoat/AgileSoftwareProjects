@@ -393,11 +393,58 @@ function addToDropdown(ddID, array, index){
         content +='</option>';
 
     }
-    console.log(content)
     element.innerHTML = content;
 }
 
 /////////////
+
+function swapActiveButton(name, value){
+    //Get section from document    
+    var section = document.getElementsByName(name);
+    //call function to get active value
+    var oldActive = getActive (section);
+    //check if user has selected currently active setting
+    if (oldActive == value){
+        //do nothing if they have
+        return false;
+    } else { //otherwise...
+
+        //delete old active class
+        section = deleteActive(section, oldActive);
+        //set new active class
+        section = addActive(section, value);
+        return true;
+    }
+}
+
+function deleteActive (section, value){
+    //iterate through the section
+    for (var i=0; i<section.length; i++){
+        //find the value
+        if (section[i].getAttribute("value")==value){
+            //change the classname so that it no longer includes active
+            section[i].classList.remove("active");
+        }
+    }
+    //return the amended section
+    return (section);
+}
+
+function addActive (section, value){
+    //iterate through the section
+    for (var i=0; i<section.length; i++){
+        //find the value
+        if (section[i].getAttribute("value")==value){
+            //change the class name so that it includes active
+            section[i].classList.add("active");
+        }
+    }
+    //return the amended section
+    return (section);
+}
+
+
+/////////////////
 
 //filler function - does nothing (used as input to loadCSV if no drawing required)
 // function emptyDraw(){
