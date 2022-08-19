@@ -168,60 +168,92 @@ async function loadCSV(file, headers, drawFunc, addArrayFunc, required = [0]){
         fileArray.push(fileText[i].split(","))
     }
 
-        var fileHeader = [];
-        fileHeader = fileArray[0];
+    var fileHeader = [];
+    fileHeader = fileArray[0];
         
-        //check the file header is correct
-        for (var i = 0; i < fileHeader.length; i++){
-            //check for longer headers in file
-            if (typeof headers[i] == undefined){
-                showError("invalidHeaders");
-                return;
-            }
-            //check for incorect values afer strippng white space from edges
-            if (fileHeader[i].trim() != headers[i].trim()){
-                showError("invalidHeaders");
-               
-                return;
-            }
-            //check if the file headers are too short
-            if (i == fileHeader.length -1 
-                && headers[i+1] != undefined){
-                showError("invalidHeaders");
-                return;
+    //check the file header is correct
+    for (var i = 0; i < fileHeader.length; i++){
+        //check for longer headers in file
+        if (typeof headers[i] == undefined){
+            showError("invalidHeaders");
+            return;
+        }
+        //check for incorect values afer strippng white space from edges
+        if (fileHeader[i].trim() != headers[i].trim()){
+            showError("invalidHeaders");
+            
+            return;
+        }
+        //check if the file headers are too short
+        if (i == fileHeader.length -1 
+            && headers[i+1] != undefined){
+            showError("invalidHeaders");
+            return;
+        }
+    }
+
+    //remove empty values
+    for (var i = fileArray.length-1; i > 0; i--){
+        if (fileArray[i].length == 1){
+            var tempVal = fileArray[i][0].trim();
+            if (tempVal.length == 0){
+                //remove from array
+                fileArray.splice(i, 1);
             }
         }
+    }
 
-        //everything's basically OK with the file, so...
+    //everything's basically OK with the file, so...
 
-        //put the elements (without the header) into the array
-        for (var i = 1; i < fileArray.length; i++){
-            //check for an empty required value
-            var reqErrors = 0;
-            for (var j = 0; j < required.length; j++){
-                if (fileArray[i][j].length < 1){
-                    reqErrors ++;
+    //put the elements (without the header) into the array
+    for (var i = 1; i < fileArray.length; i++){
+        //look for a short row
+        if (fileArray[i].length < required[length-1]){
+
+            //completey empty, should never trigger
+            if (fileArray[i].length == 1){
+                var tempVal = fileArray[i][0].trim();
+                if (tempVal.length == 0){
+                    //skip this iteration
+                    continue;
                 }
             }
-            //check value of req errors against length of required values
-            if (reqErrors == required.length){
-                //skip this iteration
-                continue;
+            showError("invalidContents");
+            //end this iteration
+            continue;
+
+        }
+
+        //check for an empty required value
+        var reqErrors = 0;
+        for (var j = 0; j < required.length; j++){
+            if (fileArray[i][required[j]].length < 1){
+                console.log(fileArray[i])
+                console.log(required[j])
+                reqErrors ++;
             }
-            if (reqErrors > 0){
-                showError("invalidContents");
-                //end this iteration
-                continue;
-            }
+        }
+        //check value of req errors against length of required values
+        if (reqErrors == required.length){
+            //skip this iteration
+            continue;
+        }
+        else if (reqErrors > 0){
+            showError("invalidContents");
+            //end this iteration
+            continue;
+        }
             
 
-            //check that there's enough data in a row
-            if (fileArray[i].length < headers.length){
-                //if there isn't, show error message
-                showError("invalidContents");
-                //end this iteration
-                continue;
-            }
+        //check that there's enough data in a row
+        // if (fileArray[i].length < headers.length){
+        //     //if there isn't, show error message
+        //     console.log("error")
+
+        //     showError("invalidContents");
+        //     //end this iteration
+        //     continue;
+        // }
 
             //check if data is too long (there may be commas in the last column)
             if (fileArray[i].length > headers.length){

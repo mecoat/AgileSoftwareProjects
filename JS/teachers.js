@@ -7,16 +7,13 @@ var teacherHeaders = ["Teacher Code", "Teacher Name", "Teaching Sessions", "Prim
 var teacherFileHeaders = ["Teacher Code", "Teacher Name", "Teaching Sessions", "Primary Subject Code", "Secondary Subject Code"];
 
 function addTeachArray(values){
-
     values = trimValues(values);
-
+    // console.log (values)
     var teacherCode = values[0];
     var teacherName = values[1];
     var teachingSessions = values[2];
     var primarySubCode = values[3];
     var primarySubName = values[4];
-    var secondarySubCode = values[5];
-    var secondarySubName  = values[6];
 
     //display error if input incomplete (secondary subject is not required)
     if (teacherCode.length < 1 || teacherName.length < 1 || 
@@ -53,3 +50,34 @@ function addTeachArray(values){
 }
 
 /////////////////
+
+function loadTeachersArray(values){
+    console.log(values);
+    //add primary subject code
+    var primaryCode = values[3];
+
+    //if there's a secondary subject...
+    if (values[4] != undefined){
+        //add secondary subject code
+        var secondaryCode = values[4];
+        var secondarySubLoc = findData(subjectData, secondaryCode, 0);
+
+    }
+    //get code and subject
+    var primarySubLoc = findData(subjectData, primaryCode, 0);
+    
+    var primarySubArr = subjectData[primarySubLoc];
+
+    if (secondarySubLoc != undefined){
+        var secondarySubArr = subjectData[secondarySubLoc];
+        var teachArr = [values[0], values[1], values[2], primarySubArr[0], primarySubArr[1], secondarySubArr[0], secondarySubArr[1]];
+    }
+    else {
+        var teachArr = [values[0], values[1], values[2], primarySubArr[0], primarySubArr[1]];
+        
+    }
+
+    var added = addTeachArray(teachArr);
+
+    return added;
+}

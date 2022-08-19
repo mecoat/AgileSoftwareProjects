@@ -25,9 +25,9 @@ function teachersStart(){
     //add the event listener to the set defaults button
     addDefaultsEventListener ();
 
+    //add the event listener for the Load button
+    addLoadEventListener (); 
 
-
-    //add teacher load
 }
 
 ///////////////////
@@ -162,7 +162,7 @@ function loadSubFile(){
         deleteRow(subjectData, subjectData[i])
     }
 
-    loadCSV(file, subHeaders, teacherDropDowns, addSubArray);
+    loadCSV(file, subHeaders, teacherDropDowns, addSubArray, [0,1]);
     
     
 }
@@ -309,3 +309,37 @@ function setDefaults(){
 
 }
 
+/////////////////
+
+function addLoadEventListener (){
+    //get the check it button
+    var chkUploadBtn = document.getElementById("checkIt");
+
+     //get the file input element
+     var teacherFile = document.getElementById("teacherFile");
+ 
+     //add an event listener that adds active to the Change it button
+     // to make it more obvious to press once user has uploaded a file
+     teacherFile.addEventListener("change", function(){ 
+        chkUploadBtn.classList.add("active"); 
+     });
+
+    //listen for a click to load the data from the file
+    chkUploadBtn.addEventListener("click", loadTeacherFile);
+}
+
+function loadTeacherFile(){
+    //get the input file
+    var input = document.querySelector('input#teacherFile[type="file"]');
+    var file = input.files[0];
+
+    for (var i = teacherData.length - 1; i >= 0; i--){
+        deleteRow(teacherData, teacherData[i])
+    }
+
+    drawTeachers();
+
+    // loadCSV(file, teacherFileHeaders, drawTeachers, addTeachArray);
+    loadCSV(file, teacherFileHeaders, drawTeachers, loadTeachersArray, [0,1,2,3]);
+    
+}

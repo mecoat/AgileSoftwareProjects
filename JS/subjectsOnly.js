@@ -115,7 +115,7 @@ function loadSubFile(){
 
     drawSubjects();
 
-    loadCSV(file, subHeaders, drawSubjects, addSubArray);
+    loadCSV(file, subHeaders, drawSubjects, addSubArray, [0,1]);
     
 }
 
