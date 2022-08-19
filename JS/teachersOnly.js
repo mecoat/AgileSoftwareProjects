@@ -8,7 +8,7 @@ function teachersStart(){
     //add the event listeners for the subject style buttons
     addSubStyleEventListener (); 
     //add the event listener for the Save button
-    // addSaveEventListener ();
+    addSaveEventListener ();
     
     //add the event listener for the Template button
     // addTemplateEventListener ();
@@ -166,4 +166,42 @@ function addSubStyleEventListener (){
     }
 }
 
+///////////////////
 
+function addSaveEventListener (){
+    //get the items that has "save" as an ID
+    var button = document.getElementById("save");
+
+    button.addEventListener("click", processTeachersToSave);
+}
+
+function processTeachersToSave(){
+
+    //placeholder array
+    var teachersHolding = [];
+
+    //iterate through teachers array the table is made from...
+    for (var i = 0; i < teacherData.length; i++){
+        var tempData = [];
+       
+        //add teacher code
+        tempData.push(teacherData[i][0]);
+        //add teacher name
+        tempData.push(teacherData[i][1]);
+        //add teacher periods
+        tempData.push(teacherData[i][2]);
+        //add primary subject code
+        tempData.push(teacherData[i][3]);
+
+        //if there's a secondary subject...
+        if (teacherData[i][5] != undefined){
+            //add secondary subject code
+            tempData.push(teacherData[i][5]);
+        }
+        
+        //add temp data to placeolder
+        teachersHolding.push(tempData)
+    }
+
+    saveAsCSV(teacherFileHeaders,teachersHolding, "teachers.csv")
+}

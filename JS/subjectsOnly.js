@@ -81,7 +81,7 @@ function addSub(){
 ////////////////////////
 
 function addSaveEventListener (){
-    //get the items that has "addSub" as an ID
+    //get the items that has "save" as an ID
     var button = document.getElementById("save");
 
     button.addEventListener("click", function() {saveAsCSV(subHeaders,subjectData, "subjects.csv")});

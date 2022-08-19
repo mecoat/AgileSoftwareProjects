@@ -3,7 +3,8 @@
 var teacherData = [];
 //headers
 var teacherHeaders = ["Teacher Code", "Teacher Name", "Teaching Sessions", "Primary Subject Code", "Primary Subject Name", "Secondary Subject Code", "Secondary Subject Name"];
-
+//file headers
+var teacherFileHeaders = ["Teacher Code", "Teacher Name", "Teaching Sessions", "Primary Subject Code", "Secondary Subject Code"];
 
 function addTeachArray(values){
 
