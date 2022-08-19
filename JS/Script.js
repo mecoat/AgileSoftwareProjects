@@ -165,7 +165,8 @@ async function loadCSV(file, headers, drawFunc, addArrayFunc, required = [0]){
     var fileArray = [];
     //turn these values into separate array objects
     for (var i = 0; i < fileText.length; i++){
-        fileArray.push(fileText[i].split(","))
+        var sanitised = mySanitise(fileText[i])
+        fileArray.push(sanitised.split(","))
     }
 
     var fileHeader = [];
@@ -228,8 +229,6 @@ async function loadCSV(file, headers, drawFunc, addArrayFunc, required = [0]){
         var reqErrors = 0;
         for (var j = 0; j < required.length; j++){
             if (fileArray[i][required[j]].length < 1){
-                console.log(fileArray[i])
-                console.log(required[j])
                 reqErrors ++;
             }
         }
