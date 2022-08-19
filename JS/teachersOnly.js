@@ -13,9 +13,12 @@ function teachersStart(){
     //add the event listener for the Template button
     addTemplateEventListener ();
     //add the event listener for the Delete button
-    // addDeleteEventListener ();
+    addDeleteEventListener ();
     //add the event listener for the Teacher table
     addTeacherTableEventListener ();
+
+    //add teacher load
+    //add defaults
 }
 
 ///////////////////
@@ -213,4 +216,37 @@ function addTemplateEventListener (){
     var button = document.getElementById("template");
 
     button.addEventListener("click", function() {saveAsCSV(teacherFileHeaders,[], "teachers.csv")});
+}
+
+////////////
+
+////////////////////
+
+function addDeleteEventListener (){
+    //get the item that has "delSub" as an ID
+    var button = document.getElementById("delTeacher");
+
+    button.addEventListener("click", delTeacher);
+}
+
+function delTeacher(){
+    //get the item that has "delTeacher" as an ID
+    var table = document.getElementById("teacherList");
+    var tableRows = table.getElementsByTagName("tr");
+
+    for (var i = 0; i < tableRows.length; i++){
+        if (getActiveRow(tableRows[i])){
+            //find the location of the data in the array
+            var dataLoc = findData(teacherData, tableRows[i].id, 0);
+            
+            //delete the row from the array 
+            deleteRow(teacherData, teacherData[dataLoc])
+
+            //redraw the table
+            drawTeachers();
+
+            //end function
+            return;
+        }    
+    }
 }
