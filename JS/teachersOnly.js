@@ -1,24 +1,33 @@
+//global variable for default periods
+var defaultPeriodsSet; 
+
 function teachersStart(){
     //draw the subject list to screen
     drawTeachers(); 
-    //add the event listener for the subject Add button
+    //add the event listener for the teacher Add button
     addTeacherEventListener (); 
+
     //add the event listener for the subjects Load button
     addSubLoadEventListener (); 
     //add the event listeners for the subject style buttons
     addSubStyleEventListener (); 
+
     //add the event listener for the Save button
     addSaveEventListener ();
-    
     //add the event listener for the Template button
     addTemplateEventListener ();
+
     //add the event listener for the Delete button
     addDeleteEventListener ();
     //add the event listener for the Teacher table
     addTeacherTableEventListener ();
 
+    //add the event listener to the set defaults button
+    addDefaultsEventListener ();
+
+
+
     //add teacher load
-    //add defaults
 }
 
 ///////////////////
@@ -108,7 +117,14 @@ function addTeacher(){
     if (added == "completed"){
         document.getElementById("teacherName").value = "";
         document.getElementById("teacherCode").value = "";
-        document.getElementById("teacherPeriods").value = document.getElementById("defaultPeriods").value;
+        if (defaultPeriodsSet > 0){
+            document.getElementById("teacherPeriods").value = defaultPeriodsSet;
+            hideError("noPeriods")
+        }
+        else {
+            document.getElementById("teacherPeriods").value = "";
+            showError("noPeriods");
+        }
         document.getElementById("primarySub").value = "";
         document.getElementById("secondarySub").value = "";
     }
@@ -250,3 +266,46 @@ function delTeacher(){
         }    
     }
 }
+
+////////////////
+
+function addDefaultsEventListener (){
+    //get the items that has "setDefaults" as an ID
+    var button = document.getElementById("setDefaults");
+
+    button.addEventListener("click", setDefaults);
+}
+
+function setDefaults(){
+    var subjectsSet = checkForSubjects();
+
+    //if no subjects found end function
+    if (subjectsSet == "noSubjects"){
+        return
+    }
+
+    var defaultPeriods = document.getElementById("defaultPeriods").value;
+
+    //if default periods isn't larger than 0...
+    if (defaultPeriods < 1){
+        //display error
+        showError("noPeriods")
+        //end function
+        return
+    }
+    //larger than 0
+    else {
+        //set value to readd to form 
+        defaultPeriodsSet = defaultPeriods;
+        //set value in form
+        document.getElementById("teacherPeriods").value = defaultPeriodsSet;
+        //hide error
+        hideError("noPeriods");
+
+    }
+
+    //set dropdows for subject style
+    teacherDropDowns();
+
+}
+

@@ -446,6 +446,21 @@ function addActive (section, value){
 
 /////////////////
 
+function checkForSubjects(){
+    //if length of SubjectData is less than 1 (empty)...
+    if (subjectData.length < 1){
+        //display the error message
+        showError("noSubjects");
+        return "noSubjects";
+    }
+    //otherwise, must have data...
+    else {
+        //hide the error message
+        hideError("noSubjects");
+        return "subjectsFound";
+    }
+}
+
 //filler function - does nothing (used as input to loadCSV if no drawing required)
 // function emptyDraw(){
 //     return
