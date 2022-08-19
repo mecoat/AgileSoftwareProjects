@@ -11,7 +11,7 @@ function teachersStart(){
     addSaveEventListener ();
     
     //add the event listener for the Template button
-    // addTemplateEventListener ();
+    addTemplateEventListener ();
     //add the event listener for the Delete button
     // addDeleteEventListener ();
     //add the event listener for the Teacher table
@@ -204,4 +204,13 @@ function processTeachersToSave(){
     }
 
     saveAsCSV(teacherFileHeaders,teachersHolding, "teachers.csv")
+}
+
+///////////////
+
+function addTemplateEventListener (){
+    //get the items that has "addSub" as an ID
+    var button = document.getElementById("template");
+
+    button.addEventListener("click", function() {saveAsCSV(teacherFileHeaders,[], "teachers.csv")});
 }
