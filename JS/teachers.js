@@ -75,15 +75,15 @@ function loadTeachersArray(values){
 
     var primarySubArr = subjectData[primarySubLoc];
     
-    if (secondarySubLoc != undefined && values[4] != undefined){
-        // if (secondarySubLoc != undefined){
-            var secondarySubArr = subjectData[secondarySubLoc];
+    //if secondary subject found
+    // if (secondarySubLoc != undefined && values[4] != undefined){
+    if (secondarySubLoc != undefined){
+        var secondarySubArr = subjectData[secondarySubLoc];
         var teachArr = [values[0], values[1], values[2], primarySubArr[0], primarySubArr[1], secondarySubArr[0], secondarySubArr[1]];
     }
     //if secondary subject code added, but not found in Subjects List
-    else if (secondarySubLoc == undefined && values[4].trim() != undefined && values[4] != "\r") {
+    else if (secondarySubLoc == undefined && values[4] != undefined && values[4] != "\r") {
         //show the errors
-        console.log(values)
         showError("shortInput");
         //end the function
         return "error";
