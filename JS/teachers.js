@@ -75,9 +75,6 @@ function loadTeachersArray(values){
 
     var primarySubArr = subjectData[primarySubLoc];
     
-    console.log(values[0])
-    console.log(values[4])
-    console.log(subjectData[secondarySubLoc])
     if (secondarySubLoc != undefined){
         var secondarySubArr = subjectData[secondarySubLoc];
         var teachArr = [values[0], values[1], values[2], primarySubArr[0], primarySubArr[1], secondarySubArr[0], secondarySubArr[1]];
