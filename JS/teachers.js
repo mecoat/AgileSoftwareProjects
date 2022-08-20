@@ -8,7 +8,6 @@ var teacherFileHeaders = ["Teacher Code", "Teacher Name", "Teaching Sessions", "
 
 function addTeachArray(values){
     values = trimValues(values);
-    // console.log (values)
     var teacherCode = values[0];
     var teacherName = values[1];
     var teachingSessions = values[2];
@@ -52,7 +51,7 @@ function addTeachArray(values){
 /////////////////
 
 function loadTeachersArray(values){
-    console.log(values);
+
     //add primary subject code
     var primaryCode = values[3];
 
@@ -65,7 +64,15 @@ function loadTeachersArray(values){
     }
     //get code and subject
     var primarySubLoc = findData(subjectData, primaryCode, 0);
-    
+
+    //empty value/not found in subjects list
+    if (primarySubLoc == undefined){
+        //show the error
+        showError("shortInput")
+        //end the function
+        return "error";
+    }
+
     var primarySubArr = subjectData[primarySubLoc];
 
     if (secondarySubLoc != undefined){

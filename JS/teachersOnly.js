@@ -100,6 +100,14 @@ function addTeacher(){
     var primarySubLoc = findData(subjectData, primarySub, subjectStyle);
     var secondarySubLoc = findData(subjectData, secondarySub, subjectStyle);
     
+    //empty value/not found in subjects list
+    if (primarySubLoc == undefined){
+        //show the error
+        showError("shortInput")
+        //end the function
+        return
+    }
+
     var primarySubArr = subjectData[primarySubLoc];
 
     if (secondarySubLoc != undefined){
