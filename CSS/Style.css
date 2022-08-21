@@ -62,11 +62,11 @@ div.mainPage{
     margin-top: 3rem;
 }
 
-input[type="file"]{
+input[type="file"], input[type="text"], input[type="number"]{
     font-size:100%;
 }
 
-input[type="text"]{
+select {
     font-size:100%;
 }
 

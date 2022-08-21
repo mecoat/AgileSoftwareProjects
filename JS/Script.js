@@ -165,63 +165,94 @@ async function loadCSV(file, headers, drawFunc, addArrayFunc, required = [0]){
     var fileArray = [];
     //turn these values into separate array objects
     for (var i = 0; i < fileText.length; i++){
-        fileArray.push(fileText[i].split(","))
+        var sanitised = mySanitise(fileText[i])
+        fileArray.push(sanitised.split(","))
     }
 
-        var fileHeader = [];
-        fileHeader = fileArray[0];
+    var fileHeader = [];
+    fileHeader = fileArray[0];
         
-        //check the file header is correct
-        for (var i = 0; i < fileHeader.length; i++){
-            //check for longer headers in file
-            if (typeof headers[i] == undefined){
-                showError("invalidHeaders");
-                return;
-            }
-            //check for incorect values afer strippng white space from edges
-            if (fileHeader[i].trim() != headers[i].trim()){
-                showError("invalidHeaders");
-               
-                return;
-            }
-            //check if the file headers are too short
-            if (i == fileHeader.length -1 
-                && headers[i+1] != undefined){
-                showError("invalidHeaders");
-                return;
+    //check the file header is correct
+    for (var i = 0; i < fileHeader.length; i++){
+        //check for longer headers in file
+        if (typeof headers[i] == undefined){
+            showError("invalidHeaders");
+            return;
+        }
+        //check for incorect values afer strippng white space from edges
+        if (fileHeader[i].trim() != headers[i].trim()){
+            showError("invalidHeaders");
+            
+            return;
+        }
+        //check if the file headers are too short
+        if (i == fileHeader.length -1 
+            && headers[i+1] != undefined){
+            showError("invalidHeaders");
+            return;
+        }
+    }
+
+    //remove empty values
+    for (var i = fileArray.length-1; i > 0; i--){
+        if (fileArray[i].length == 1){
+            var tempVal = fileArray[i][0].trim();
+            if (tempVal.length == 0){
+                //remove from array
+                fileArray.splice(i, 1);
             }
         }
+    }
 
-        //everything's basically OK with the file, so...
+    //everything's basically OK with the file, so...
 
-        //put the elements (without the header) into the array
-        for (var i = 1; i < fileArray.length; i++){
-            //check for an empty required value
-            var reqErrors = 0;
-            for (var j = 0; j < required.length; j++){
-                if (fileArray[i][j].length < 1){
-                    reqErrors ++;
+    //put the elements (without the header) into the array
+    for (var i = 1; i < fileArray.length; i++){
+        //look for a short row
+        if (fileArray[i].length < required[length-1]){
+
+            //completey empty, should never trigger
+            if (fileArray[i].length == 1){
+                var tempVal = fileArray[i][0].trim();
+                if (tempVal.length == 0){
+                    //skip this iteration
+                    continue;
                 }
             }
-            //check value of req errors against length of required values
-            if (reqErrors == required.length){
-                //skip this iteration
-                continue;
+            showError("invalidContents");
+            //end this iteration
+            continue;
+
+        }
+
+        //check for an empty required value
+        var reqErrors = 0;
+        for (var j = 0; j < required.length; j++){
+            if (fileArray[i][required[j]].length < 1){
+                reqErrors ++;
             }
-            if (reqErrors > 0){
-                showError("invalidContents");
-                //end this iteration
-                continue;
-            }
+        }
+        //check value of req errors against length of required values
+        if (reqErrors == required.length){
+            //skip this iteration
+            continue;
+        }
+        else if (reqErrors > 0){
+            showError("invalidContents");
+            //end this iteration
+            continue;
+        }
             
 
-            //check that there's enough data in a row
-            if (fileArray[i].length < headers.length){
-                //if there isn't, show error message
-                showError("invalidContents");
-                //end this iteration
-                continue;
-            }
+        //check that there's enough data in a row
+        // if (fileArray[i].length < headers.length){
+        //     //if there isn't, show error message
+        //     console.log("error")
+
+        //     showError("invalidContents");
+        //     //end this iteration
+        //     continue;
+        // }
 
             //check if data is too long (there may be commas in the last column)
             if (fileArray[i].length > headers.length){
@@ -241,12 +272,11 @@ async function loadCSV(file, headers, drawFunc, addArrayFunc, required = [0]){
             if (errorAdding == "error"){
                 showError("invalidRow");
             }
-                // data.push(fileArray[i]);
+
         }
 
         drawFunc();
-
-        
+       
 }
 
 function showError(idName){
@@ -286,8 +316,13 @@ function mySanitise(value){
 
 
 function getActiveRow(row){
+    //if there's no class list it can't be active
+    if (row.classList.length == 0){
+        return false;
+    }
     //if it's already active...
     try {
+        
         if (row.getAttribute("class").includes("active")){
             return true;
         }
@@ -317,3 +352,147 @@ function rowSelect(row, allRows){
     }
 
 }
+
+////////////////
+
+function findData(array, searchVal, valLoc){
+    for (var i = 0; i < array.length; i++){
+        if (array[i][valLoc] == searchVal){
+            return i;
+        }
+    }
+}
+
+
+////////
+
+//gets the active value within elements with a name
+function getActiveElement(name){
+    //Get elements from document    
+    var elements = document.getElementsByName(name);
+    //call function to get active value
+    var active = getActive (elements);
+    return active;
+}
+
+
+//iterates through inputs and returns current ative value
+function getActive (input){
+    var retVal;
+    for (var i=0; i<input.length; i++){
+        if (input[i].getAttribute("class").includes("active")){
+            retVal = input[i].value;
+        }
+    }
+    return (retVal);
+}
+
+
+///////////
+
+function trimValues(values){
+    //trim blank spaces 
+    for (var i = 0; i < values.length; i ++){
+        values[i] = values[i].trim();
+    }
+    return values;
+}
+
+/////////////
+
+function checkAlphaNum(checkVal){
+    var regEx = /^[0-9a-zA-Z]+$/;
+    if (!checkVal.match(regEx)){
+        return "error";
+    }
+}
+
+////////////////////
+
+function addToDropdown(ddID, array, index){
+    var element = document.getElementById(ddID);
+
+    var content = "";
+
+    content += '<option value=""></option>';
+
+    for (var i = 0; i < array.length; i++){
+        content += '<option value="';
+        content += array[i][index];
+        content += '">';
+        content += array[i][index];
+        content +='</option>';
+
+    }
+    element.innerHTML = content;
+}
+
+/////////////
+
+function swapActiveButton(name, value){
+    //Get section from document    
+    var section = document.getElementsByName(name);
+    //call function to get active value
+    var oldActive = getActive (section);
+    //check if user has selected currently active setting
+    if (oldActive == value){
+        //do nothing if they have
+        return false;
+    } else { //otherwise...
+
+        //delete old active class
+        section = deleteActive(section, oldActive);
+        //set new active class
+        section = addActive(section, value);
+        return true;
+    }
+}
+
+function deleteActive (section, value){
+    //iterate through the section
+    for (var i=0; i<section.length; i++){
+        //find the value
+        if (section[i].getAttribute("value")==value){
+            //change the classname so that it no longer includes active
+            section[i].classList.remove("active");
+        }
+    }
+    //return the amended section
+    return (section);
+}
+
+function addActive (section, value){
+    //iterate through the section
+    for (var i=0; i<section.length; i++){
+        //find the value
+        if (section[i].getAttribute("value")==value){
+            //change the class name so that it includes active
+            section[i].classList.add("active");
+        }
+    }
+    //return the amended section
+    return (section);
+}
+
+
+/////////////////
+
+function checkForSubjects(){
+    //if length of SubjectData is less than 1 (empty)...
+    if (subjectData.length < 1){
+        //display the error message
+        showError("noSubjects");
+        return "noSubjects";
+    }
+    //otherwise, must have data...
+    else {
+        //hide the error message
+        hideError("noSubjects");
+        return "subjectsFound";
+    }
+}
+
+//filler function - does nothing (used as input to loadCSV if no drawing required)
+// function emptyDraw(){
+//     return
+// }
