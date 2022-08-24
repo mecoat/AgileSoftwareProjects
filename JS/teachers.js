@@ -2,9 +2,9 @@
 // var teacherData = [["ASm", "Amelia Smith", 35, "En", "English", "Dr", "Drama"], ["JJO", "Jane Jones", 35, "Ma", "Maths"]];
 var teacherData = [];
 //headers
-var teacherHeaders = ["Teacher Code", "Teacher Name", "Teaching Sessions", "Primary Subject Code", "Primary Subject Name", "Secondary Subject Code", "Secondary Subject Name"];
+var teacherHeaders = ["Teacher Code", "Teacher Name", "Teaching Sessions", "Main Subject Code", "Main Subject Name", "Secondary Subject Code", "Secondary Subject Name"];
 //file headers
-var teacherFileHeaders = ["Teacher Code", "Teacher Name", "Teaching Sessions", "Primary Subject Code", "Secondary Subject Code"];
+var teacherFileHeaders = ["Teacher Code", "Teacher Name", "Teaching Sessions", "Main Subject Code", "Secondary Subject Code"];
 
 function addTeachArray(values){
     values = trimValues(values);
