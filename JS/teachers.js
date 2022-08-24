@@ -17,7 +17,7 @@ function addTeachArray(values){
     //display error if input incomplete (secondary subject is not required)
     if (teacherCode.length < 1 || teacherName.length < 1 || 
         primarySubCode.length < 1 || primarySubName.length < 1 || 
-        teachingSessions < 1 || teachingSessions == undefined){
+        teachingSessions < 1 || teachingSessions == undefined || floor(teachingSessions) != teachingSessions){
         //show the error to the user
         showError("shortInput");
         //end function as can do no more
