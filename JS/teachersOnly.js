@@ -162,6 +162,9 @@ function addSubLoadEventListener (){
 }
 
 function loadSubFile(){
+    //hide error message
+    hideError("noSubjects")
+
     //get the input file
     var input = document.querySelector('input#subFile[type="file"]');
     var file = input.files[0];
@@ -285,6 +288,10 @@ function addDefaultsEventListener (){
 }
 
 function setDefaults(){
+    //hide error if already showing
+    hideError("noPeriods")
+    hideError("noSubjects")
+
     var subjectsSet = checkForSubjects();
 
     //if no subjects found end function
@@ -294,8 +301,9 @@ function setDefaults(){
 
     var defaultPeriods = document.getElementById("defaultPeriods").value;
 
-    //if default periods isn't larger than 0...
-    if (defaultPeriods < 1){
+    //if default periods isn't larger than 0, or isn't an integer
+    //(floors of non-integer don't equal the same as the input)...
+    if (defaultPeriods < 1 || floor(defaultPeriods) != defaultPeriods ){
         //display error
         showError("noPeriods")
         //end function
