@@ -2,6 +2,9 @@ function classesStart(){
 
     //add the event listener for the subjects Load button
     addSubLoadEventListener (); 
+    //add the event listeners for the subject style buttons
+    addSubStyleEventListener (); 
+
 
     //draw the subject list to screen
     // drawTeachers(); 
@@ -9,8 +12,7 @@ function classesStart(){
     // addTeacherEventListener (); 
 
     
-    //add the event listeners for the subject style buttons
-    // addSubStyleEventListener (); 
+    
 
     //add the event listener for the Save button
     // addSaveEventListener ();
@@ -63,13 +65,32 @@ function loadSubFile(){
         deleteRow(subjectData, subjectData[i])
     }
 
-    loadCSV(file, subHeaders, teacherDropDowns, addSubArray, [0,1]);
+    loadCSV(file, subHeaders, subjectDropDowns, addSubArray, [0,1]);
     
     
 }
 
-function teacherDropDowns (){
+function subjectDropDowns (){
     var subIndex = getActiveElement("subjectStyle");
 
     addToDropdown("classSub", subjectData, subIndex);
 }
+
+////////////////
+
+function addSubStyleEventListener (){
+    //get all the items that have "subjectStyle" as a Class name
+    var subStyleBtns = document.getElementsByClassName("subStyleBtn");
+    //iterate through them and add an event listener that calls the activate button with appropriate parameters when clicked
+    for (var i = 0; i < subStyleBtns.length; i++){
+        subStyleBtns[i].addEventListener("click", function(){ 
+            //change current active setting
+            swapActiveButton(this.name, this.value); 
+
+            //set dropdowns by subject style
+            subjectDropDowns ();
+
+        });
+    }
+}
+

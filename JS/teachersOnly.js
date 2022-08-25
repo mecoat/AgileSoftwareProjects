@@ -320,7 +320,7 @@ function setDefaults(){
 
     }
 
-    //set dropdows for subject style
+    //set dropdows by subject style
     teacherDropDowns();
 
 }
