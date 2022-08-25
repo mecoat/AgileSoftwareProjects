@@ -2,7 +2,7 @@
 var defaultPeriodsSet; 
 
 function teachersStart(){
-    //draw the subject list to screen
+    //draw the teacher list to screen
     drawTeachers(); 
     //add the event listener for the teacher Add button
     addTeacherEventListener (); 
