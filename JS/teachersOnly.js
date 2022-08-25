@@ -281,7 +281,7 @@ function delTeacher(){
 ////////////////
 
 function addDefaultsEventListener (){
-    //get the items that has "setDefaults" as an ID
+    //get the item that has "setDefaults" as an ID
     var button = document.getElementById("setDefaults");
 
     button.addEventListener("click", setDefaults);

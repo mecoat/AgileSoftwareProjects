@@ -1,3 +1,13 @@
+//global variables to hold values for processing on classes page
+//block
+var currentBlockName = "";
+var currentBlockPeriods = 0;
+var blockData = [];
+//band
+var currentBandName = "";
+var bandData = [];
+
+
 function classesStart(){
 
     //add the event listener for the subjects Load button
@@ -5,6 +15,8 @@ function classesStart(){
     //add the event listeners for the subject style buttons
     addSubStyleEventListener (); 
 
+    //add the event listener for the Set Block Button
+    addBlockEventListener ();
 
     //draw the subject list to screen
     // drawTeachers(); 
@@ -31,8 +43,6 @@ function classesStart(){
     // addLoadEventListener (); 
 
 }
-
-/////////////////////////
 
 ////////////////////////
 
@@ -94,3 +104,58 @@ function addSubStyleEventListener (){
     }
 }
 
+////////////////////
+
+function addBlockEventListener (){
+    //get the item that has "setBlock" as an ID
+    var button = document.getElementById("setBlock");
+    //add the event listener
+    button.addEventListener("click", setBlock);
+}
+
+function setBlock (){
+    //hide error messages
+    hideError("blockShortInput");
+    hideError("blockNameComma");
+    hideError("blockPeriodsInvalid");
+    
+    //get values from input
+    var blockName = document.getElementById("blockName").value;
+    var blockPeriods = document.getElementById("blockPeriods").value;
+
+    //sanitise blockname
+    blockName = mySanitise(blockName);
+
+    //verify entries are both there
+    if (blockName.length < 1 || blockPeriods.length < 1){
+        //display error
+        showError("blockShortInput");
+        //end function
+        return
+    }
+
+    //verify name has no commas
+    if (blockName.includes(",")){
+        //display error
+        showError("blockNameComma");
+        //end function
+        return
+    }
+
+    //verify periods is positive integer 
+    if (blockPeriods < 0 || floor(blockPeriods) != blockPeriods){
+        //display error
+        showError("blockPeriodsInvalid");
+        //end function
+        return
+    }
+
+    //set the values to global variables
+    currentBlockName = blockName;
+    currentBlockPeriods = blockPeriods;
+
+    //amend text in html to display set values to user
+    document.getElementById("currentBlock").innerHTML = currentBlockName;
+    document.getElementById("currentBlockPeriods").innerHTML = currentBlockPeriods;
+    
+}
