@@ -18,6 +18,9 @@ function classesStart(){
     //add the event listener for the Set Block Button
     addBlockEventListener ();
 
+    //add the event listener for the Set Band Button
+    addBandEventListener ();
+
     //draw the subject list to screen
     // drawTeachers(); 
     //add the event listener for the teacher Add button
@@ -126,6 +129,9 @@ function setBlock (){
     //sanitise blockname
     blockName = mySanitise(blockName);
 
+    //trim blockName
+    blockName = blockName.trim();
+
     //verify entries are both there
     if (blockName.length < 1 || blockPeriods.length < 1){
         //display error
@@ -158,4 +164,73 @@ function setBlock (){
     document.getElementById("currentBlock").innerHTML = currentBlockName;
     document.getElementById("currentBlockPeriods").innerHTML = currentBlockPeriods;
     
+}
+
+/////////////////////////////
+
+function addBandEventListener (){
+    //get the item that has "setBand" as an ID
+    var button = document.getElementById("setBand");
+    //add the event listener
+    button.addEventListener("click", setBand);
+}
+
+function setBand(){
+    // console.log ("called")
+
+    //hide error messages
+    hideError("bandShortInput");
+    hideError("bandNameComma");
+    hideError("noBlockSet");
+    hideError("bandAlreadyInBlock")
+
+    //check for block values
+    if (currentBlockName == "" || currentBlockPeriods == 0){
+        //show error message to user
+        showError("noBlockSet");
+        //end function
+        return;
+    }
+
+    //get values from input
+    var bandName = document.getElementById("bandName").value;
+ 
+    //sanitise bandName
+    bandName = mySanitise(bandName);
+
+    //trim bandName
+    bandName = bandName.trim();
+ 
+    //verify entry is there
+    if (bandName.length < 1){
+        //display error
+        showError("bandShortInput");
+        //end function
+        return
+    }
+ 
+    //verify name has no commas
+    if (bandName.includes(",")){
+        //display error
+        showError("bandNameComma");
+        //end function
+        return
+    }
+
+    //verify band not already in block
+    for (var i = 0; i < blockData.length; i++){
+        if (blockData[i][0] == bandName){
+            //display error
+            showError("bandAlreadyInBlock");
+            //end function
+            return
+        }
+    }
+ 
+    //set the value to global variable
+    currentBandName = bandName;
+ 
+    //amend text in html to display set values to user
+    document.getElementById("currentBand").innerHTML = currentBandName;
+
 }
