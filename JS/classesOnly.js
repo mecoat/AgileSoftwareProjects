@@ -6,6 +6,7 @@ var blockData = [];
 //band
 var currentBandName = "";
 var bandData = [];
+var bandHeaders = ["Class Code", "Periods", "Subject Code", "Subject Name"]
 
 
 function classesStart(){
@@ -23,6 +24,14 @@ function classesStart(){
 
     //add the event listener for the Set Class Button
     addClassEventListener ();
+
+    //draw the band list to screen
+    drawBand (); 
+
+    //add the event listener for the Delete button
+    addBandDeleteEventListener ();
+    //add the event listener for the Band table
+    addBandTableEventListener ();
 
     //draw the subject list to screen
     // drawTeachers(); 
@@ -353,5 +362,40 @@ function addClass (){
 /////////
 
 function drawBand (){
-    console.log("drawing table")
+
+    //get the element we want to make changes to
+    var bandList = document.getElementById("bandList");
+    //create an empty placeholder for content
+    var bandListContent = "";
+
+    //add the header row to the placeholder to add to the DOM
+    bandListContent += createHeaderRow(bandHeaders);
+
+    //iterate through global variable of bandData to create rows in the table
+    for (var i = 0; i < bandData.length; i++){
+        bandListContent += createTableRow(bandData[i], bandData[i][0]);
+    }
+
+    //add the content to the DOM
+    bandList.innerHTML = bandListContent;
+
+    //check there's an event listener on them all
+    addBandTableEventListener ();
+}
+
+///////////////
+
+function addBandTableEventListener (){
+    //get the item that has "bandList" as an ID
+    var table = document.getElementById("bandList");
+    var tableRows = table.getElementsByTagName("tr");
+
+    for (var i = 0; i < tableRows.length; i++){
+        tableRows[i].addEventListener("click", function(){ rowSelect(this, tableRows); });
+    }
+
+}
+
+function addBandDeleteEventListener (){
+    
 }

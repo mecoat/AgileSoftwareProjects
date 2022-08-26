@@ -104,7 +104,7 @@ table , td, th{
     display: none;
 }
 
-#subList {
+#subList, #bandList {
     display: inline;
     border : none;
 }

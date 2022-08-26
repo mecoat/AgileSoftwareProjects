@@ -42,7 +42,7 @@ function drawTeachers(){
     //add the header row to the placeholder to add to the DOM
     teacherListContent += createHeaderRow(teacherHeaders);
 
-    //iterate through global variable of subjectdata to create rows in the table
+    //iterate through global variable of teacherdata to create rows in the table
     for (var i = 0; i < teacherData.length; i++){
         teacherListContent += createTableRow(teacherData[i], teacherData[i][0]);
     }
@@ -51,13 +51,13 @@ function drawTeachers(){
     teacherList.innerHTML = teacherListContent;
 
     //check there's an event listener on them all
-    addTeacherTableEventListener ()
+    addTeacherTableEventListener ();
 }
 
 ///////////////////////////////////
 
 function addTeacherTableEventListener (){
-    //get the item that has "subList" as an ID
+    //get the item that has "teacherList" as an ID
     var table = document.getElementById("teacherList");
     var tableRows = table.getElementsByTagName("tr");
 
