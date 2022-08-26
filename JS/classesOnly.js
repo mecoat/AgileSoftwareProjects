@@ -21,6 +21,9 @@ function classesStart(){
     //add the event listener for the Set Band Button
     addBandEventListener ();
 
+    //add the event listener for the Set Class Button
+    addClassEventListener ();
+
     //draw the subject list to screen
     // drawTeachers(); 
     //add the event listener for the teacher Add button
@@ -176,7 +179,6 @@ function addBandEventListener (){
 }
 
 function setBand(){
-    // console.log ("called")
 
     //hide error messages
     hideError("bandShortInput");
@@ -233,4 +235,123 @@ function setBand(){
     //amend text in html to display set values to user
     document.getElementById("currentBand").innerHTML = currentBandName;
 
+}
+
+////////////////////
+
+function addClassEventListener (){
+    //get the item that has "setBand" as an ID
+    var button = document.getElementById("addClass");
+    //add the event listener
+    button.addEventListener("click", addClass);
+}
+
+function addClass (){
+
+    //hide error messages
+    hideError("noSubjects1");
+    hideError("noBandSet");
+    hideError("shortInput");
+    hideError("classCodeComma");
+    hideError("alreadyAdded");
+    hideError("classPeriodsInvalid");
+
+
+    // hideError("bandNameComma");
+    // hideError("noBlockSet");
+    // hideError("bandAlreadyInBlock")
+
+    //check for subjects
+    if (subjectData.length < 1){
+        //show error message
+        showError("noSubjects1");
+        //end function
+        return;
+    }
+
+    //check for band values (note, although block details will also be 
+    // required, because it is not posible to set band without block, this is 
+    // sufficient for now)
+    if (currentBandName == ""){
+        //show error message to user
+        showError("noBandSet");
+        //end function
+        return;
+    }
+
+    //get values from input
+    var classCode = document.getElementById("classCode").value;
+    var classSub = document.getElementById("classSub").value;
+    var classPeriods = document.getElementById("classPeriods").value;
+    var subIndex = getActiveElement("subjectStyle");
+
+    //sanitise values (subject doesn't need doing as done on import,
+    // periods shouldn't either as number input, but doing in case)
+    classCode = mySanitise(classCode);
+    classPeriods = mySanitise(classPeriods);
+
+    //trim classCode
+    classCode = classCode.trim();
+ 
+    //verify entries are there
+    if (classCode.length < 1 || classSub.length < 1 || classPeriods.length < 1){
+        //display error
+        showError("shortInput");
+        //end function
+        return
+    }
+ 
+    //verify classcode has no commas
+    if (classCode.includes(",")){
+        //display error
+        showError("classCodeComma");
+        //end function
+        return
+    }
+
+    //verify class not already in band
+    for (var i = 0; i < bandData.length; i++){
+        if (bandData[i][0] == classCode){
+            //display error
+            showError("alreadyAdded");
+            //end function
+            return
+        }
+    }
+
+    //verify periods is positive integer 
+    if (classPeriods < 0 || floor(classPeriods) != classPeriods){
+        //display error
+        showError("classPeriodsInvalid");
+        //end function
+        return
+    }
+
+    //get the class subject name and code
+    var subloc = findData(subjectData, classSub, subIndex);
+    var classSubCode = subjectData[subloc][0];
+    var classSubName = subjectData[subloc][1];
+
+    //create array of data
+    var classData = [classCode, classPeriods, classSubCode, classSubName];
+
+ 
+    //add the value to global array
+    bandData.push(classData);
+ 
+    //redraw table
+    drawBand();
+
+    //enpty values in entry
+    document.getElementById("classCode").value = "";
+    document.getElementById("classSub").value = "";
+    document.getElementById("classPeriods").value = "";
+
+
+}
+
+/////////
+
+function drawBand (){
+    console.log("drawing table")
 }
