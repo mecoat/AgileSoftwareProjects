@@ -48,9 +48,9 @@ function classesStart(){
     //add the event listener for the Save Block button
     addSaveBlockEventListener (); 
 
+    //draw the total list to screen
+    drawTotal(); 
 
-    //draw the subject list to screen
-    // drawTeachers(); 
     //add the event listener for the teacher Add button
     // addTeacherEventListener (); 
 
@@ -200,10 +200,16 @@ function setBlock (){
     currentBlockPeriods = blockPeriods;
 
     //amend text in html to display set values to user
+    setBlockHTML ();
+}
+
+///////////////////
+
+function setBlockHTML () {
     document.getElementById("currentBlock").innerHTML = currentBlockName;
     document.getElementById("currentBlockPeriods").innerHTML = currentBlockPeriods;
-    
 }
+
 
 /////////////////////////////
 
@@ -713,49 +719,66 @@ function saveBlock(){
         
     }
 
-
-
-    // //variable to hold count of periods
-    // var bandPeriods = 0;
-
-    // //get total of periods of classes in band
-    // for (var i = 0; i < bandData.length; i++){
-    //     bandPeriods += parseInt(bandData[i][1]);
-    // }
-
-    // //if too many periods
-    // if (bandPeriods > currentBlockPeriods){
-    //     //display error
-    //     showError("bandOverPeriods");
-    //     //end function
-    //     return
-    // }
-    // //or too few periods
-    // else if (bandPeriods < currentBlockPeriods){
-    //     //display error
-    //     showError("bandShortPeriods");
-    //     //end function
-    //     return
-    // }
-    // //just right
-    // else {
-    //     blockData.push ([currentBandName, bandData]);
-    // }
-
-
     //add to master array
-    allBlockData.push([currentBlockName, blockData])
-    // //empty band data variables
-    // currentBandName = "";
-    // bandData = [];
+    allBlockData.push([currentBlockName, blockData]);
 
-    // //redraw html for band data
-    // setBandHTML();
+    //empty block data variables
+    currentBlockName = "";
+    currentBlockPeriods = 0;
+    blockData = [];
 
-    // //redraw band table
-    // drawBand();
+    //redraw html for band data
+    setBlockHTML ();
 
-    // //redraw block table
-    // drawBlock();
+    //redraw block table
+    drawBlock();
+
+    //redraw master table
+    drawTotal();
 
 }
+
+//////////
+
+function drawTotal() {
+    
+    //get the element we want to make changes to
+    var totalList = document.getElementById("totalList");
+    //create an empty placeholder for content
+    var totalListContent = "";
+
+    //add the header row to the placeholder to add to the DOM
+    totalListContent += createHeaderRow(allBlockHeaders);
+
+    //iterate through global variable of blockData to create rows in the table
+    for (var i = 0; i < allBlockData.length; i++){
+        var makeID = allBlockData[i][0];
+        //take out any spaces
+        makeID = makeID.replace(/ /g,"");
+
+        for (var j = 0; j < allBlockData[i][1].length; j++){
+            
+            var tempArray = [];
+            tempArray.push(allBlockData[i][0]);
+
+            for (var k = 0; k < allBlockData[i][1][j].length; k++){
+                tempArray.push(allBlockData[i][1][j][k]);
+            }
+            
+            var tempID = makeID+allBlockData[i][1][j][0];
+            //take out any spaces
+            tempID = makeID.replace(/ /g,"");
+
+            totalListContent += createTableRow(tempArray, tempID);
+        }
+        
+    }
+
+    //add the content to the DOM
+    totalList.innerHTML = totalListContent;
+
+    //check there's an event listener on them all
+    // addBlockTableEventListener ();
+
+}
+
