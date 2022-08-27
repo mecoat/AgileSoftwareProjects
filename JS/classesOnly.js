@@ -3,10 +3,11 @@
 var currentBlockName = "";
 var currentBlockPeriods = 0;
 var blockData = [];
+var blockHeaders = ["Band Name", "Class Code", "Periods", "Subject Code", "Subject Name"];
 //band
 var currentBandName = "";
 var bandData = [];
-var bandHeaders = ["Class Code", "Periods", "Subject Code", "Subject Name"]
+var bandHeaders = ["Class Code", "Periods", "Subject Code", "Subject Name"];
 
 
 function classesStart(){
@@ -35,6 +36,14 @@ function classesStart(){
 
     //add the event listener for the Save Band button
     addSaveBandEventListener (); 
+
+    //draw the block list to screen
+    drawBlock (); 
+
+    //add the event listener for the Class Delete button (within Band)
+    // addBandDeleteEventListener ();
+    //add the event listener for the Block table
+    addBlockTableEventListener ();
 
     //draw the subject list to screen
     // drawTeachers(); 
@@ -245,7 +254,7 @@ function setBand(){
     currentBandName = bandName;
  
     //amend text in html to display set values to user
-    document.getElementById("currentBand").innerHTML = currentBandName;
+    setBandHTML();
 
 }
 
@@ -464,10 +473,8 @@ function saveBand(){
 
     //get total of periods of classes in band
     for (var i = 0; i < bandData.length; i++){
-        bandPeriods += bandData[i][1];
+        bandPeriods += parseInt(bandData[i][1]);
     }
-
-    console.log(bandPeriods);
 
     //if too many periods
     if (bandPeriods > currentBlockPeriods){
@@ -485,16 +492,79 @@ function saveBand(){
     }
     //just right
     else {
-        blockData.push (currentBandName, bandData);
+        blockData.push ([currentBandName, bandData]);
     }
 
-    console.log (blockData);
-
-    //empty band data
-
-    //redraw band table
-
-    //redraw block table
+    //empty band data variables
+    currentBandName = "";
+    bandData = [];
 
     //redraw html for band data
+    setBandHTML();
+
+    //redraw band table
+    drawBand();
+
+    //redraw block table
+    drawBlock();
+
+}
+
+/////////////////
+
+function setBandHTML () {
+    document.getElementById("currentBand").innerHTML = currentBandName;
+    document.getElementById("bandName").value = "";
+}
+
+////////////
+
+function drawBlock (){
+    //get the element we want to make changes to
+    var blockList = document.getElementById("blockList");
+    //create an empty placeholder for content
+    var blockListContent = "";
+
+    //add the header row to the placeholder to add to the DOM
+    blockListContent += createHeaderRow(blockHeaders);
+
+    //iterate through global variable of blockData to create rows in the table
+    for (var i = 0; i < blockData.length; i++){
+        var makeID = blockData[i][0];
+        makeID = makeID.replace(/ /g,"");
+
+        for (var j = 0; j < blockData[i][1].length; j++){
+            
+            var tempArray = [];
+            tempArray.push(blockData[i][0]);
+
+            for (var k = 0; k < blockData[i][1][j].length; k++){
+                tempArray.push(blockData[i][1][j][k]);
+            }
+            
+            var tempID = makeID+blockData[i][1][j][0];
+            
+            blockListContent += createTableRow(tempArray, tempID);
+        }
+        
+    }
+
+    //add the content to the DOM
+    blockList.innerHTML = blockListContent;
+
+    //check there's an event listener on them all
+    addBlockTableEventListener ();
+}
+
+////////////////
+
+function addBlockTableEventListener (){
+    //get the item that has "blockList" as an ID
+    var table = document.getElementById("blockList");
+    var tableRows = table.getElementsByTagName("tr");
+
+    for (var i = 0; i < tableRows.length; i++){
+    tableRows[i].addEventListener("click", function(){ rowSelect(this, tableRows); });
+}
+
 }
