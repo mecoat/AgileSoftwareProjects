@@ -531,6 +531,7 @@ function drawBlock (){
     //iterate through global variable of blockData to create rows in the table
     for (var i = 0; i < blockData.length; i++){
         var makeID = blockData[i][0];
+        //take out any spaces
         makeID = makeID.replace(/ /g,"");
 
         for (var j = 0; j < blockData[i][1].length; j++){
@@ -543,7 +544,9 @@ function drawBlock (){
             }
             
             var tempID = makeID+blockData[i][1][j][0];
-            
+            //take out any spaces
+            tempID = makeID.replace(/ /g,"");
+
             blockListContent += createTableRow(tempArray, tempID);
         }
         
@@ -563,8 +566,50 @@ function addBlockTableEventListener (){
     var table = document.getElementById("blockList");
     var tableRows = table.getElementsByTagName("tr");
 
-    for (var i = 0; i < tableRows.length; i++){
-    tableRows[i].addEventListener("click", function(){ rowSelect(this, tableRows); });
+    for (var i = 1; i < tableRows.length; i++){
+        // tableRows[i].addEventListener("click", function(){ rowSelect(this, tableRows); });
+        
+        tableRows[i].addEventListener("click", function(){ bandSelect(this, tableRows); });
+    }
+
 }
+
+function bandSelect (row, allRows){
+    
+    var bandName = row.getElementsByTagName("td")[0].innerHTML;
+
+
+    //if it's already active...
+    if (getActiveRow(row)){
+        //remove the active value - deselect
+        for (var i = 1; i < allRows.length; i++){
+            // row.classList.remove("active");
+            if (allRows[i].getElementsByTagName("td")[0].innerHTML == bandName){
+                allRows[i].classList.remove("active");
+            }
+
+        }
+
+        
+    }
+    //not already active
+    else {
+        //so search to see if someting else is...
+        for (var i = 0; i < allRows.length; i++){
+            if (getActiveRow(allRows[i])){
+                allRows[i].classList.remove("active");
+            }
+        }
+        
+
+
+        for (var i = 1; i < allRows.length; i++){
+            // row.classList.remove("active");
+            if (allRows[i].getElementsByTagName("td")[0].innerHTML == bandName){
+                allRows[i].classList.add("active");
+            }
+
+        }
+    }
 
 }
