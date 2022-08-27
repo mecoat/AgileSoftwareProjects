@@ -40,10 +40,14 @@ function classesStart(){
     //draw the block list to screen
     drawBlock (); 
 
-    //add the event listener for the Class Delete button (within Band)
-    // addBandDeleteEventListener ();
+    //add the event listener for the Band Delete button (within Block)
+    addBandDeleteEventListener ();
     //add the event listener for the Block table
     addBlockTableEventListener ();
+
+    //add the event listener for the Save Band button
+    addSaveBandEventListener (); 
+
 
     //draw the subject list to screen
     // drawTeachers(); 
@@ -412,7 +416,7 @@ function addBandTableEventListener (){
 
 function addClassDeleteEventListener (){
 
-    //get the item that has "delSub" as an ID
+    //get the item that has "delClass" as an ID
     var button = document.getElementById("delClass");
 
     button.addEventListener("click", delClass);
@@ -597,12 +601,13 @@ function bandSelect (row, allRows){
         //so search to see if someting else is...
         for (var i = 0; i < allRows.length; i++){
             if (getActiveRow(allRows[i])){
+                //... and remove the active status there
                 allRows[i].classList.remove("active");
             }
         }
         
 
-
+        //add active to the band in question
         for (var i = 1; i < allRows.length; i++){
             // row.classList.remove("active");
             if (allRows[i].getElementsByTagName("td")[0].innerHTML == bandName){
@@ -612,4 +617,47 @@ function bandSelect (row, allRows){
         }
     }
 
+}
+
+/////////////////
+
+function addBandDeleteEventListener (){
+    //get the item that has "delBand" as an ID
+    var button = document.getElementById("delBand");
+
+    button.addEventListener("click", delBand);
+
+}
+
+function delBand (){
+
+    //get the item that has "blockList" as an ID
+    var table = document.getElementById("blockList");
+    var tableRows = table.getElementsByTagName("tr");
+
+    for (var i = 0; i < tableRows.length; i++){
+        //if the row is active
+        if (getActiveRow(tableRows[i])){
+            //get the band name
+            var bandName = tableRows[i].getElementsByTagName("td")[0].innerHTML;
+
+            //find the location of the data in the array
+            var dataLoc = findData(blockData, bandName, 0);
+            
+            //delete the row from the array 
+            deleteRow(blockData, blockData[dataLoc])
+
+            //redraw the table
+            drawBlock();
+
+            //end function
+            return;
+        }    
+    }
+}
+
+//////////////////
+
+function addSaveBandEventListener (){
+    
 }
