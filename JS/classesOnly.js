@@ -149,6 +149,7 @@ function setBlock (){
     hideError("blockShortInput");
     hideError("blockNameComma");
     hideError("blockPeriodsInvalid");
+    hideError("blockAlreadyUsed");
     
     //get values from input
     var blockName = document.getElementById("blockName").value;
@@ -166,6 +167,16 @@ function setBlock (){
         showError("blockShortInput");
         //end function
         return
+    }
+
+    //verify block isn't already in the master list
+    for (var i = 0; i < allBlockData.length; i ++){
+        if (allBlockData[i][0] == blockName){
+            //display error
+            showError("blockAlreadyUsed");
+            //end function
+            return
+        }
     }
 
     //verify name has no commas
@@ -731,6 +742,9 @@ function saveBlock(){
     //     blockData.push ([currentBandName, bandData]);
     // }
 
+
+    //add to master array
+    allBlockData.push([currentBlockName, blockData])
     // //empty band data variables
     // currentBandName = "";
     // bandData = [];
