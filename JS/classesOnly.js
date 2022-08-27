@@ -28,10 +28,13 @@ function classesStart(){
     //draw the band list to screen
     drawBand (); 
 
-    //add the event listener for the Delete button
-    addBandDeleteEventListener ();
+    //add the event listener for the Class Delete button (within Band)
+    addClassDeleteEventListener ();
     //add the event listener for the Band table
     addBandTableEventListener ();
+
+    //add the event listener for the Save Band button
+    addSaveBandEventListener (); 
 
     //draw the subject list to screen
     // drawTeachers(); 
@@ -396,6 +399,102 @@ function addBandTableEventListener (){
 
 }
 
-function addBandDeleteEventListener (){
+////////////
+
+function addClassDeleteEventListener (){
+
+    //get the item that has "delSub" as an ID
+    var button = document.getElementById("delClass");
+
+    button.addEventListener("click", delClass);
+
+}
+
+function delClass (){
     
+    //get the item that has "bandList" as an ID
+    var table = document.getElementById("bandList");
+    var tableRows = table.getElementsByTagName("tr");
+
+    for (var i = 0; i < tableRows.length; i++){
+        if (getActiveRow(tableRows[i])){
+            //find the location of the data in the array
+            var dataLoc = findData(bandData, tableRows[i].id, 0);
+            
+            //delete the row from the array 
+            deleteRow(bandData, bandData[dataLoc])
+
+            //redraw the table
+            drawBand();
+
+            //end function
+            return;
+        }    
+    }
+}
+
+////////////////////
+
+function addSaveBandEventListener (){
+    //get the item that has "setBand" as an ID
+    var button = document.getElementById("saveBand");
+    //add the event listener
+    button.addEventListener("click", saveBand);
+}
+
+function saveBand(){
+
+    //hide errors is already showing
+    hideError("bandTooShort");
+    hideError("bandOverPeriods");
+    hideError("bandShortPeriods");
+
+
+
+    //check if band data has data
+    if (bandData.length < 1){
+        //display error
+        showError("bandTooShort");
+        //end function
+        return
+    }
+
+    //variable to hold count of periods
+    var bandPeriods = 0;
+
+    //get total of periods of classes in band
+    for (var i = 0; i < bandData.length; i++){
+        bandPeriods += bandData[i][1];
+    }
+
+    console.log(bandPeriods);
+
+    //if too many periods
+    if (bandPeriods > currentBlockPeriods){
+        //display error
+        showError("bandOverPeriods");
+        //end function
+        return
+    }
+    //or too few periods
+    else if (bandPeriods < currentBlockPeriods){
+        //display error
+        showError("bandShortPeriods");
+        //end function
+        return
+    }
+    //just right
+    else {
+        blockData.push (currentBandName, bandData);
+    }
+
+    console.log (blockData);
+
+    //empty band data
+
+    //redraw band table
+
+    //redraw block table
+
+    //redraw html for band data
 }
