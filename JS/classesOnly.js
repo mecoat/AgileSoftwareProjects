@@ -45,8 +45,8 @@ function classesStart(){
     //add the event listener for the Block table
     addBlockTableEventListener ();
 
-    //add the event listener for the Save Band button
-    addSaveBandEventListener (); 
+    //add the event listener for the Save Block button
+    addSaveBlockEventListener (); 
 
 
     //draw the subject list to screen
@@ -449,7 +449,7 @@ function delClass (){
 ////////////////////
 
 function addSaveBandEventListener (){
-    //get the item that has "setBand" as an ID
+    //get the item that has "saveBand" as an ID
     var button = document.getElementById("saveBand");
     //add the event listener
     button.addEventListener("click", saveBand);
@@ -457,7 +457,7 @@ function addSaveBandEventListener (){
 
 function saveBand(){
 
-    //hide errors is already showing
+    //hide errors if already showing
     hideError("bandTooShort");
     hideError("bandOverPeriods");
     hideError("bandShortPeriods");
@@ -658,6 +658,90 @@ function delBand (){
 
 //////////////////
 
-function addSaveBandEventListener (){
-    
+function addSaveBlockEventListener (){
+    //get the item that has "saveBlock" as an ID
+    var button = document.getElementById("saveBlock");
+    //add the event listener
+    button.addEventListener("click", saveBlock);
+}
+
+function saveBlock(){
+
+    //hide errors if already showing
+    hideError("blockTooShort");
+    hideError("blockUnequalPeriods");
+    // hideError("bandOverPeriods");
+    // hideError("bandShortPeriods");
+
+
+
+    //check if block data has data
+    if (blockData.length < 1){
+        //display error
+        showError("blockTooShort");
+        //end function
+        return
+    }
+
+    console.log(blockData)
+
+    //check all bands in block add up to the same value (shouldn't ever trigger)
+    for (var i = 0; i < blockData.length; i++){
+        var bandTotal = 0;
+
+        for (var j = 0; j < blockData[i][1].length; j ++){
+            bandTotal += parseInt(blockData[i][1][j][1])
+        }
+
+        if (bandTotal != currentBlockPeriods){
+            //display error
+            showError("blockUnequalPeriods");
+            //end function
+            return
+        }
+        
+    }
+
+
+
+    // //variable to hold count of periods
+    // var bandPeriods = 0;
+
+    // //get total of periods of classes in band
+    // for (var i = 0; i < bandData.length; i++){
+    //     bandPeriods += parseInt(bandData[i][1]);
+    // }
+
+    // //if too many periods
+    // if (bandPeriods > currentBlockPeriods){
+    //     //display error
+    //     showError("bandOverPeriods");
+    //     //end function
+    //     return
+    // }
+    // //or too few periods
+    // else if (bandPeriods < currentBlockPeriods){
+    //     //display error
+    //     showError("bandShortPeriods");
+    //     //end function
+    //     return
+    // }
+    // //just right
+    // else {
+    //     blockData.push ([currentBandName, bandData]);
+    // }
+
+    // //empty band data variables
+    // currentBandName = "";
+    // bandData = [];
+
+    // //redraw html for band data
+    // setBandHTML();
+
+    // //redraw band table
+    // drawBand();
+
+    // //redraw block table
+    // drawBlock();
+
 }
