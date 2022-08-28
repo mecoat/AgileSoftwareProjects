@@ -50,9 +50,8 @@ function classesStart(){
 
     //draw the total list to screen
     drawTotal(); 
-
-    //add the event listener for the teacher Add button
-    // addTeacherEventListener (); 
+    //add the event listener for the total table
+    addTotalTableEventListener (); 
 
     
     
@@ -206,8 +205,13 @@ function setBlock (){
 ///////////////////
 
 function setBlockHTML () {
+
     document.getElementById("currentBlock").innerHTML = currentBlockName;
     document.getElementById("currentBlockPeriods").innerHTML = currentBlockPeriods;
+
+    document.getElementById("blockName").value = "";
+    document.getElementById("blockPeriods").value = "";
+
 }
 
 
@@ -687,11 +691,7 @@ function saveBlock(){
     //hide errors if already showing
     hideError("blockTooShort");
     hideError("blockUnequalPeriods");
-    // hideError("bandOverPeriods");
-    // hideError("bandShortPeriods");
-
-
-
+    
     //check if block data has data
     if (blockData.length < 1){
         //display error
@@ -699,8 +699,6 @@ function saveBlock(){
         //end function
         return
     }
-
-    console.log(blockData)
 
     //check all bands in block add up to the same value (shouldn't ever trigger)
     for (var i = 0; i < blockData.length; i++){
@@ -757,33 +755,26 @@ function drawTotal() {
         makeID = makeID.replace(/ /g,"");
 
         for (var j = 0; j < allBlockData[i][1].length; j++){
-            
-            var tempArray = [];
-            tempArray.push(allBlockData[i][0]);
 
-            for (var k = 0; k < allBlockData[i][1][j].length; k++){
+            for (var k = 0; k < allBlockData[i][1][j][1].length; k++){
+                
+                var tempArray = [];
+                tempArray.push(allBlockData[i][0]);
                 tempArray.push(allBlockData[i][1][j][0]);
+                tempArray.push(allBlockData[i][1][j][1][k][0]);
+                tempArray.push(allBlockData[i][1][j][1][k][1]);
+                tempArray.push(allBlockData[i][1][j][1][k][2]);
+                tempArray.push(allBlockData[i][1][j][1][k][3]);
 
-                for (var m = 0; m < allBlockData[i][1][j][1][k].length; m++){
-                    console.log(allBlockData[i][1][j][1])
-                    console.log(allBlockData[i][1][j][1][k])
-                    console.log(allBlockData[i][1][j][1][k][m])
-                    tempArray.push(allBlockData[i][1][j][1][k][m]);
+                var tempID = makeID+allBlockData[i][1][j][0];
+                tempID += allBlockData[i][1][j][1][k][0];
+                //take out any spaces
+                tempID = makeID.replace(/ /g,"");
 
-                }
-                // tempArray.push(allBlockData[i][1][j][k]);
-
-                // tempArray.push(allBlockData[i][1][j][k][0]);
-                // tempArray.push(allBlockData[i][1][j][k][1]);
-                // tempArray.push(allBlockData[i][1][j][k][2]);
-                // tempArray.push(allBlockData[i][1][j][k][3]);
+                totalListContent += createTableRow(tempArray, tempID);
             }
             
-            var tempID = makeID+allBlockData[i][1][j][0];
-            //take out any spaces
-            tempID = makeID.replace(/ /g,"");
-
-            totalListContent += createTableRow(tempArray, tempID);
+            
         }
         
     }
@@ -792,7 +783,96 @@ function drawTotal() {
     totalList.innerHTML = totalListContent;
 
     //check there's an event listener on them all
-    // addBlockTableEventListener ();
+    addTotalTableEventListener ();
 
 }
 
+///////////
+
+function addTotalTableEventListener (){
+    //get the item that has "totalList" as an ID
+    var table = document.getElementById("totalList");
+    var tableRows = table.getElementsByTagName("tr");
+
+    for (var i = 1; i < tableRows.length; i++){      
+        tableRows[i].addEventListener("click", function(){ blockSelect(this, tableRows); });
+    }
+
+}
+
+function blockSelect (row, allRows){
+
+    var blockName = row.getElementsByTagName("td")[0].innerHTML;
+
+
+    //if it's already active...
+    if (getActiveRow(row)){
+        //remove the active value - deselect
+        for (var i = 1; i < allRows.length; i++){
+            // row.classList.remove("active");
+            if (allRows[i].getElementsByTagName("td")[0].innerHTML == blockName){
+                allRows[i].classList.remove("active");
+            }
+
+        }
+
+        
+    }
+    //not already active
+    else {
+        //so search to see if someting else is...
+        for (var i = 0; i < allRows.length; i++){
+            if (getActiveRow(allRows[i])){
+                //... and remove the active status there
+                allRows[i].classList.remove("active");
+            }
+        }
+        
+
+        //add active to the band in question
+        for (var i = 1; i < allRows.length; i++){
+            if (allRows[i].getElementsByTagName("td")[0].innerHTML == bandName){
+                allRows[i].classList.add("active");
+            }
+
+        }
+    }
+
+}
+
+// /////////////////
+
+// function addBandDeleteEventListener (){
+// //get the item that has "delBand" as an ID
+// var button = document.getElementById("delBand");
+
+// button.addEventListener("click", delBand);
+
+// }
+
+// function delBand (){
+
+// //get the item that has "blockList" as an ID
+// var table = document.getElementById("blockList");
+// var tableRows = table.getElementsByTagName("tr");
+
+// for (var i = 0; i < tableRows.length; i++){
+//     //if the row is active
+//     if (getActiveRow(tableRows[i])){
+//         //get the band name
+//         var bandName = tableRows[i].getElementsByTagName("td")[0].innerHTML;
+
+//         //find the location of the data in the array
+//         var dataLoc = findData(blockData, bandName, 0);
+        
+//         //delete the row from the array 
+//         deleteRow(blockData, blockData[dataLoc])
+
+//         //redraw the table
+//         drawBlock();
+
+//         //end function
+//         return;
+//     }    
+// }
+// }
