@@ -53,21 +53,18 @@ function addMainArray(values){
 
     //check if class code is already in array in that band and block (making both lower case to check as not necesarrily case sensitive in SMS)
     for (var i = 0; i < allBlockData.length; i++){
-        console.log (allBlockData[i][0])
+        
         //if block no match, ignore 
         if (allBlockData[i][0].toLowerCase() != blockName.toLowerCase()){
-            console.log ("continuing - no  match")
             continue;
         }
+        
         for (var j = 0; j < allBlockData[i][1].length; j++){
-            console.log (allBlockData[i][0])
             //if band no match, ignore
             if (allBlockData[i][1][j][0].toLowerCase() != bandName.toLowerCase()){
-                console.log ("continuing - no match")
                 continue;
             }
             for (var k = 0; k < allBlockData[i][1][j][1].length; k++){
-                console.log(allBlockData[i][1][j][1][k][0])
                 if (classCode.toLowerCase() == allBlockData[i][1][j][1][k][0].toLowerCase()){
                     showError("alreadyAdded");
                     //end function as can do no more
@@ -92,6 +89,65 @@ function addMainArray(values){
 }
 
 function addToBlocksArray (values){
+
+    //array is empty
+    if (allBlockData.length == 0){
+        //add the block
+        addToArray(allBlockData, [values[0], []]);
+        
+        //add the class data to temp array
+        var tempArray = []
+        for (var i = 2; i < values.length; i++){
+            tempArray.push(values [i]);
+        }
+
+        //add the band and class data to the block
+        addToArray(allBlockData[0][1], [values[1], [tempArray]]);
+    }
+    //array not empty
+    else {
+        //get the class data into an array to be placed once determined where 
+        // it belongs
+        var tempArray = []
+        for (var i = 2; i < values.length; i++){
+            tempArray.push(values [i]);
+        }
+
+        //iterate through blocks
+        for (var i = 0; i < allBlockData.length; i ++){
+            //if block name the same
+            if (allBlockData[i][0].toLowerCase() == values[0].toLowerCase()){
+                //iterate through the bands
+                for (var j = 0; j < allBlockData[i][1].length; j++){
+                    //if band name the same
+                    if (allBlockData[i][1][j][0].toLowerCase() == values[1].toLowerCase()){
+                        //add class to band
+                        addToArray(allBlockData[i][1][j][1], tempArray);
+                        //end function
+                        return
+                    }
+                    //if not, and last iteration...
+                    else if (j == allBlockData[i][1].length -1){
+                        //add band and class because not in there
+                        addToArray(allBlockData[i][1], [values[1], [tempArray]]);
+                        //end function
+                        return
+                    }
+                } // end j for loop
+            }
+            //if not, and last iteration ...
+            else if (i == allBlockData.length - 1){
+                //add all because not in there
+                //add the block
+                addToArray(allBlockData, [values[0], []]);
+                //add the band and class data to the block
+                addToArray(allBlockData[0][1], [values[1], [tempArray]]);
+                // addToArray(allBlockData, [values[0], [values[1], [tempArray]]]);
+                //end function
+                return
+            }
+        }
+    }
     // var comparitor = 0;
 
     // //if array is empty, add the emelent in

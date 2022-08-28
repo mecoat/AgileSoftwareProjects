@@ -42,7 +42,7 @@ function createTableRow(rowData, idName = ""){
 
 function addToArray(array, valToAdd){
     var comparitor = 0;
-
+    
     //if array is empty, add the emelent in
     if (array.length == 0){
         array.push(valToAdd);
