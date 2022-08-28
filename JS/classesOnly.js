@@ -854,7 +854,9 @@ function addLoadEventListener (){
     chkUploadBtn.addEventListener("click", loadClassesFile);
 }
 
-function loadClassesFile(){
+//needs to be aswync so we can await the load before we do a final check 
+// for periods within the bands within the blocks
+async function loadClassesFile(){
     //get the input file
     var input = document.querySelector('input#clasesFile[type="file"]');
     var file = input.files[0];
@@ -867,7 +869,8 @@ function loadClassesFile(){
 
     //hide errors
     hideError("noSubjects");
-    showError("shortInput");
+    hideError("shortInput");
+    hideError("periodsDontMatch")
 
     //check the subjects file is loaded
     if (subjectData.length < 1){
@@ -877,6 +880,8 @@ function loadClassesFile(){
         return ;
     }
 
-    loadCSV(file, allBlockFileHeaders, drawTotal, loadTotalArray, [0,1,2,3,4]);
+    await loadCSV(file, allBlockFileHeaders, drawTotal, loadTotalArray, [0,1,2,3,4]);
     
+    //once all loaded, check periods in bands in blocks all match
+    checkBandPeriods();
 }

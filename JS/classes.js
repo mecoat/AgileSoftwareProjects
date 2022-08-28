@@ -126,7 +126,7 @@ function addToBlocksArray (values){
                         return
                     }
                 } // end j for loop
-            }
+            }//end if block name check
             //if not, and last iteration ...
             else if (i == allBlockData.length - 1){
 
@@ -142,61 +142,67 @@ function addToBlocksArray (values){
                         //end function
                         return
                     }
+                }//end j loop
+                
+            }//end block check
+        }//end i loop
+    }//end else
+    
+}
+
+///////////////
+
+function checkBandPeriods(){
+
+    //iterate through each block in the Master array
+    for (var i = 0; i < allBlockData.length; i++){
+
+        var blockPeriods = 0;
+
+        //iterate through each band within
+        for (var j = 0; j < allBlockData[i][1].length; j++){
+
+            var bandPeriods = 0;
+
+            //iterate through each class within
+            for (var k = 0; k < allBlockData[i][1][j][1].length; k++){
+                var classPeriods = parseInt(allBlockData[i][1][j][1][k][1]);
+                if (j == 0) {
+
+                    blockPeriods += classPeriods;
                 }
                 
+                bandPeriods += classPeriods;
+
+                //if on the last class in the band and blockPeriods and Band Periods don't match...
+                if (k == allBlockData[i][1][j][1].length - 1 && blockPeriods != bandPeriods){
+                    //show error
+                    showError("periodsDontMatch");
+                    
+                    //select the error blocks on the table
+                    selectErrorRows(allBlockData[i][0])
+
+                }
             }
         }
     }
-    // var comparitor = 0;
 
-    // //if array is empty, add the emelent in
-    // if (array.length == 0){
-    //     array.push(valToAdd);
-    // }
-    // //if array has only 1 value...
-    // else if (array.length == 1){
-    //     var searchVal = valToAdd[comparitor].toLowerCase();
-    //     var initComp = array[0][comparitor].toLowerCase();
+}
 
-    //     //if lower than first value add to front
-    //     if (searchVal < initComp){
-    //         array.unshift(valToAdd)
-    //     }
-    //     //otherwise must be bigger, add to end
-    //     else {
-    //         array.push(valToAdd);
-    //     }
-
-    // }
-    // //if array has 2 or more values...
-    // else{
-    //     var searchVal = valToAdd[comparitor].toLowerCase();
-    //     var initComp = array[0][comparitor].toLowerCase();
-    //     var endComp = array[array.length -1][comparitor].toLowerCase();
-        
-    //     //if lower than first value add to front
-    //     if (searchVal < initComp){
-    //         array.unshift(valToAdd)
-    //     }
-    //     //if larger than last value, add to end
-    //     else if (searchVal > endComp){
-    //         array.push(valToAdd);
-    //     }
-    //     //otherwise must be somewhere in the middle
-    //     else {
-    //         for (var i = 0; i < array.length -1 ; i++){
-    //             var compVal1 = array[i][comparitor].toLowerCase();
-    //             var compVal2 = array[i+1][comparitor].toLowerCase();
-                
-    //             if (searchVal > compVal1 && searchVal < compVal2){
-    //                 array.splice(i+1, 0, valToAdd);
-    //                 return;
-    //             }
-                
-    //         }
-    //     }
-        
-    // }
-    
+function selectErrorRows (errorBlock){
+    //get the item that has "totalList" as an ID
+    var table = document.getElementById("totalList");
+    //get the rows
+    var tableRows = table.getElementsByTagName("tr");
+    //iterate through the rows
+    for (var i = 1; i < tableRows.length; i++){
+        //get the block name from the table
+        var groupName = tableRows[i].getElementsByTagName("td")[0].innerHTML;
+        //if it's the same as the errorBlock input
+        if (groupName == errorBlock){
+            //mark as active
+            tableRows[i].classList.add("active");
+        }
+    }
     
 }
