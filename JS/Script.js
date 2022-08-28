@@ -242,40 +242,29 @@ async function loadCSV(file, headers, drawFunc, addArrayFunc, required = [0]){
             //end this iteration
             continue;
         }
-            
 
-        //check that there's enough data in a row
-        // if (fileArray[i].length < headers.length){
-        //     //if there isn't, show error message
-        //     console.log("error")
-
-        //     showError("invalidContents");
-        //     //end this iteration
-        //     continue;
-        // }
-
-            //check if data is too long (there may be commas in the last column)
-            if (fileArray[i].length > headers.length){
-                //join the end values together
-                for (var j = headers.length; j < fileArray[i].length; j++){
-                    fileArray[i][headers.length - 1].concat(",", fileArray[i][j]);
-                }
-                //remove the other elements from the array
-                while (fileArray[i].length > headers.length){
-                    fileArray[i].pop();
-                }
+        //check if data is too long (there may be commas in the last column)
+        if (fileArray[i].length > headers.length){
+            //join the end values together
+            for (var j = headers.length; j < fileArray[i].length; j++){
+                fileArray[i][headers.length - 1].concat(",", fileArray[i][j]);
             }
-
-            //add the element to the data array in the argument
-            var errorAdding = addArrayFunc(fileArray[i]);
-
-            if (errorAdding == "error"){
-                showError("invalidRow");
+            //remove the other elements from the array
+            while (fileArray[i].length > headers.length){
+                fileArray[i].pop();
             }
-
         }
 
-        drawFunc();
+        //add the element to the data array in the argument
+        var errorAdding = addArrayFunc(fileArray[i]);
+
+        if (errorAdding == "error"){
+            showError("invalidRow");
+        }
+
+    }
+
+    drawFunc();
        
 }
 

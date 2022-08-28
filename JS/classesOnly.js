@@ -62,16 +62,8 @@ function classesStart(){
     //add the event listener for the Template button
     addTemplateEventListener ();
 
-    //add the event listener for the Delete button
-    // addDeleteEventListener ();
-    //add the event listener for the Teacher table
-    // addTeacherTableEventListener ();
-
-    //add the event listener to the set defaults button
-    // addDefaultsEventListener ();
-
     //add the event listener for the Load button
-    // addLoadEventListener (); 
+    addLoadEventListener (); 
 
 }
 
@@ -845,3 +837,34 @@ function addTemplateEventListener (){
 
 ///////////////
 
+function addLoadEventListener (){
+    //get the check it button
+    var chkUploadBtn = document.getElementById("checkIt");
+
+     //get the file input element
+     var classesFile = document.getElementById("clasesFile");
+ 
+     //add an event listener that adds active to the Change it button
+     // to make it more obvious to press once user has uploaded a file
+     classesFile.addEventListener("change", function(){ 
+        chkUploadBtn.classList.add("active"); 
+     });
+
+    //listen for a click to load the data from the file
+    chkUploadBtn.addEventListener("click", loadClassesFile);
+}
+
+function loadClassesFile(){
+    //get the input file
+    var input = document.querySelector('input#clasesFile[type="file"]');
+    var file = input.files[0];
+
+    for (var i = allBlockData.length - 1; i >= 0; i--){
+        deleteRow(allBlockData, allBlockData[i])
+    }
+
+    drawTotal();
+
+    loadCSV(file, allBlockFileHeaders, drawTotal, loadTotalArray, [0,1,2,3,4]);
+    
+}
