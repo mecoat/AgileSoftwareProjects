@@ -50,10 +50,11 @@ function classesStart(){
 
     //draw the total list to screen
     drawTotal(); 
+
     //add the event listener for the total table
     addTotalTableEventListener (); 
-
-    
+    //add the event listener for the Band Delete button (within Total)
+    addBlockDeleteEventListener ();
     
 
     //add the event listener for the Save button
@@ -759,37 +760,40 @@ function addTotalTableEventListener (){
 
 // /////////////////
 
-// function addBandDeleteEventListener (){
-// //get the item that has "delBand" as an ID
-// var button = document.getElementById("delBand");
+function addBlockDeleteEventListener (){
+    // //get the item that has "delBlock" as an ID
+    var button = document.getElementById("delBlock");
 
-// button.addEventListener("click", delBand);
+    button.addEventListener("click", delBlock);
 
-// }
+}
 
-// function delBand (){
+function delBlock (){
+ 
+    //get the item that has "totalList" as an ID
+    var table = document.getElementById("totalList");
+    var tableRows = table.getElementsByTagName("tr");
 
-// //get the item that has "blockList" as an ID
-// var table = document.getElementById("blockList");
-// var tableRows = table.getElementsByTagName("tr");
+    for (var i = 0; i < tableRows.length; i++){
+        //if the row is active
+        if (getActiveRow(tableRows[i])){
+            //get the band name
+            var blockName = tableRows[i].getElementsByTagName("td")[0].innerHTML;
 
-// for (var i = 0; i < tableRows.length; i++){
-//     //if the row is active
-//     if (getActiveRow(tableRows[i])){
-//         //get the band name
-//         var bandName = tableRows[i].getElementsByTagName("td")[0].innerHTML;
+            //find the location of the data in the array
+            var dataLoc = findData(allBlockData, blockName, 0);
+            
+            //delete the row from the array 
+            deleteRow(allBlockData, allBlockData[dataLoc])
 
-//         //find the location of the data in the array
-//         var dataLoc = findData(blockData, bandName, 0);
-        
-//         //delete the row from the array 
-//         deleteRow(blockData, blockData[dataLoc])
+            //redraw the table
+            drawTotal();
 
-//         //redraw the table
-//         drawBlock();
+            //end function
+            return;
+        }    
+    }
+}
 
-//         //end function
-//         return;
-//     }    
-// }
-// }
+////////////////////
+
