@@ -494,7 +494,44 @@ function checkForSubjects(){
 
 /////////////
 
+function multiRowSelect (row, allRows){
 
+    var groupName = row.getElementsByTagName("td")[0].innerHTML;
+
+    //if it's already active...
+    if (getActiveRow(row)){
+        //remove the active value - deselect
+        for (var i = 1; i < allRows.length; i++){
+            // row.classList.remove("active");
+            if (allRows[i].getElementsByTagName("td")[0].innerHTML == groupName){
+                allRows[i].classList.remove("active");
+            }
+
+        }
+
+        
+    }
+    //not already active
+    else {
+        //so search to see if someting else is...
+        for (var i = 0; i < allRows.length; i++){
+            if (getActiveRow(allRows[i])){
+                //... and remove the active status there
+                allRows[i].classList.remove("active");
+            }
+        }
+        
+
+        //add active to the band in question
+        for (var i = 1; i < allRows.length; i++){
+            if (allRows[i].getElementsByTagName("td")[0].innerHTML == groupName){
+                allRows[i].classList.add("active");
+            }
+
+        }
+    }
+
+}
 
 
 //filler function - does nothing (used as input to loadCSV if no drawing required)
