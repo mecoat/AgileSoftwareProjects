@@ -82,7 +82,6 @@ function addMainArray(values){
 }
 
 function addToBlocksArray (values){
-
     //array is empty
     if (allBlockData.length == 0){
         //add the block
@@ -130,14 +129,21 @@ function addToBlocksArray (values){
             }
             //if not, and last iteration ...
             else if (i == allBlockData.length - 1){
-                //add all because not in there
+
+                //add band because not in there
                 //add the block
                 addToArray(allBlockData, [values[0], []]);
-                //add the band and class data to the block
-                addToArray(allBlockData[0][1], [values[1], [tempArray]]);
-                // addToArray(allBlockData, [values[0], [values[1], [tempArray]]]);
-                //end function
-                return
+
+                //find where the entry went
+                for (var j =0; j < allBlockData.length; j++){
+                    if (allBlockData[j][0] == values[0]){
+                        //add the band and class
+                        addToArray(allBlockData[j][1], [values[1], [tempArray]]);
+                        //end function
+                        return
+                    }
+                }
+                
             }
         }
     }
