@@ -239,7 +239,7 @@ function processTeachersToSave(){
 ///////////////
 
 function addTemplateEventListener (){
-    //get the items that has "addSub" as an ID
+    //get the items that has "template" as an ID
     var button = document.getElementById("template");
 
     button.addEventListener("click", function() {saveAsCSV(teacherFileHeaders,[], "teachers.csv")});
