@@ -3,56 +3,35 @@ var allBlockData = [];
 var allBlockHeaders = ["Block Name", "Band Name", "Class Code", "Periods", "Subject Code", "Subject Name"]
 var allBlockFileHeaders = ["Block Name", "Band Name", "Class Code", "Periods", "Subject Code"]
 
+///////////
+
 function loadTotalArray (values){
-    console.log (values)
-    // //add primary subject code
-    // var primaryCode = values[3].trim();
 
-    // //if there's a secondary subject...
-    // if (values[4] != undefined){
-    //     //add secondary subject code
-    //     var secondaryCode = values[4].trim();
-    //     var secondarySubLoc = findData(subjectData, secondaryCode, 0);
+    //get subject code
+    var subCode = values[4].trim();
 
-    // }
-    // //get code and subject
-    // var primarySubLoc = findData(subjectData, primaryCode, 0);
+    //get subject location
+    var subLoc = findData(subjectData, subCode, 0);
 
-    // //empty value/not found in subjects list
-    // if (primarySubLoc == undefined){
-    //     //show the errors
-    //     showError("shortInput");
-    //     //end the function
-    //     return "error";
-    // }
+    //empty value/not found in subjects list
+    if (subLoc == undefined){
+        //show the errors
+        showError("shortInput");
+        //end the function
+        return "error";
+    }
 
-    // var primarySubArr = subjectData[primarySubLoc];
+    var subArr = subjectData[subLoc];
     
-    // //if secondary subject found
-    // if (secondarySubLoc != undefined){
-    //     var secondarySubArr = subjectData[secondarySubLoc];
-    //     var teachArr = [values[0], values[1], values[2], primarySubArr[0], primarySubArr[1], secondarySubArr[0], secondarySubArr[1]];
-    // }
-    // //if secondary subject code added, but not found in Subjects List
-    // else if (secondarySubLoc == undefined && values[4] != undefined && values[4] != "\r") {
-    //     //show the errors
-    //     showError("shortInput");
-    //     //end the function
-    //     return "error";
-    // }
-    // else {
-    //     var teachArr = [values[0], values[1], values[2], primarySubArr[0], primarySubArr[1]];
-        
-    // }
+    var blockArr = [values[0], values[1], values[2], values[3], subArr[0], subArr[1]];
 
-    var teachArr = values
-
-    var added = addMainArray(teachArr);
+    var added = addMainArray(blockArr);
 
     return added;
 }
 
 function addMainArray(values){
+    console.log (values)
     // values = trimValues(values);
     // var teacherCode = values[0];
     // var teacherName = values[1];

@@ -865,6 +865,18 @@ function loadClassesFile(){
 
     drawTotal();
 
+    //hide errors
+    hideError("noSubjects");
+    showError("shortInput");
+
+    //check the subjects file is loaded
+    if (subjectData.length < 1){
+        //show the errors
+        showError("noSubjects");
+        //end the function
+        return ;
+    }
+
     loadCSV(file, allBlockFileHeaders, drawTotal, loadTotalArray, [0,1,2,3,4]);
     
 }
