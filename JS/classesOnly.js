@@ -362,7 +362,7 @@ function addClass (){
     }
 
     //verify periods is positive integer 
-    if (classPeriods < 0 || floor(classPeriods) != classPeriods){
+    if (classPeriods < 1 || floor(classPeriods) != classPeriods){
         //display error
         showError("classPeriodsInvalid");
         //end function
@@ -762,7 +762,21 @@ function drawTotal() {
             tempArray.push(allBlockData[i][0]);
 
             for (var k = 0; k < allBlockData[i][1][j].length; k++){
-                tempArray.push(allBlockData[i][1][j][k]);
+                tempArray.push(allBlockData[i][1][j][0]);
+
+                for (var m = 0; m < allBlockData[i][1][j][1][k].length; m++){
+                    console.log(allBlockData[i][1][j][1])
+                    console.log(allBlockData[i][1][j][1][k])
+                    console.log(allBlockData[i][1][j][1][k][m])
+                    tempArray.push(allBlockData[i][1][j][1][k][m]);
+
+                }
+                // tempArray.push(allBlockData[i][1][j][k]);
+
+                // tempArray.push(allBlockData[i][1][j][k][0]);
+                // tempArray.push(allBlockData[i][1][j][k][1]);
+                // tempArray.push(allBlockData[i][1][j][k][2]);
+                // tempArray.push(allBlockData[i][1][j][k][3]);
             }
             
             var tempID = makeID+allBlockData[i][1][j][0];
