@@ -592,51 +592,7 @@ function addBlockTableEventListener (){
     var tableRows = table.getElementsByTagName("tr");
 
     for (var i = 1; i < tableRows.length; i++){
-        // tableRows[i].addEventListener("click", function(){ rowSelect(this, tableRows); });
-        
-        // tableRows[i].addEventListener("click", function(){ bandSelect(this, tableRows); });
         tableRows[i].addEventListener("click", function(){ multiRowSelect(this, tableRows); });
-    }
-
-}
-
-function bandSelect (row, allRows){
-    
-    var bandName = row.getElementsByTagName("td")[0].innerHTML;
-
-
-    //if it's already active...
-    if (getActiveRow(row)){
-        //remove the active value - deselect
-        for (var i = 1; i < allRows.length; i++){
-            // row.classList.remove("active");
-            if (allRows[i].getElementsByTagName("td")[0].innerHTML == bandName){
-                allRows[i].classList.remove("active");
-            }
-
-        }
-
-        
-    }
-    //not already active
-    else {
-        //so search to see if someting else is...
-        for (var i = 0; i < allRows.length; i++){
-            if (getActiveRow(allRows[i])){
-                //... and remove the active status there
-                allRows[i].classList.remove("active");
-            }
-        }
-        
-
-        //add active to the band in question
-        for (var i = 1; i < allRows.length; i++){
-            // row.classList.remove("active");
-            if (allRows[i].getElementsByTagName("td")[0].innerHTML == bandName){
-                allRows[i].classList.add("active");
-            }
-
-        }
     }
 
 }
@@ -796,50 +752,10 @@ function addTotalTableEventListener (){
     var tableRows = table.getElementsByTagName("tr");
 
     for (var i = 1; i < tableRows.length; i++){      
-        // tableRows[i].addEventListener("click", function(){ blockSelect(this, tableRows); });
         tableRows[i].addEventListener("click", function(){ multiRowSelect(this, tableRows); });
     }
 
 }
-
-// function blockSelect (row, allRows){
-
-//     var blockName = row.getElementsByTagName("td")[0].innerHTML;
-
-//     //if it's already active...
-//     if (getActiveRow(row)){
-//         //remove the active value - deselect
-//         for (var i = 1; i < allRows.length; i++){
-//             // row.classList.remove("active");
-//             if (allRows[i].getElementsByTagName("td")[0].innerHTML == blockName){
-//                 allRows[i].classList.remove("active");
-//             }
-
-//         }
-
-        
-//     }
-//     //not already active
-//     else {
-//         //so search to see if someting else is...
-//         for (var i = 0; i < allRows.length; i++){
-//             if (getActiveRow(allRows[i])){
-//                 //... and remove the active status there
-//                 allRows[i].classList.remove("active");
-//             }
-//         }
-        
-
-//         //add active to the band in question
-//         for (var i = 1; i < allRows.length; i++){
-//             if (allRows[i].getElementsByTagName("td")[0].innerHTML == blockName){
-//                 allRows[i].classList.add("active");
-//             }
-
-//         }
-//     }
-
-// }
 
 // /////////////////
 
