@@ -58,7 +58,7 @@ function addMainArray(values){
         if (allBlockData[i][0].toLowerCase() != blockName.toLowerCase()){
             continue;
         }
-        
+
         for (var j = 0; j < allBlockData[i][1].length; j++){
             //if band no match, ignore
             if (allBlockData[i][1][j][0].toLowerCase() != bandName.toLowerCase()){
@@ -73,13 +73,6 @@ function addMainArray(values){
             }
         }
 
-
-
-        // if (teacherCode.toLowerCase() == teacherData[i][0].toLowerCase()){
-        //     showError("alreadyAdded");
-        //     //end function as can do no more
-        //     return "error";
-        // }
     }
 
     //add values to global variable
