@@ -58,9 +58,9 @@ function classesStart(){
     
 
     //add the event listener for the Save button
-    // addSaveEventListener ();
+    addSaveEventListener ();
     //add the event listener for the Template button
-    // addTemplateEventListener ();
+    addTemplateEventListener ();
 
     //add the event listener for the Delete button
     // addDeleteEventListener ();
@@ -796,4 +796,52 @@ function delBlock (){
 }
 
 ////////////////////
+
+function addSaveEventListener () {
+    //get the items that has "save" as an ID
+    var button = document.getElementById("save");
+
+    button.addEventListener("click", processBlocksToSave);
+}
+
+function processBlocksToSave(){
+
+    //placeholder array
+    var blocksHolding = [];
+
+    //iterate through totalblocks array the table is made from...
+    for (var i = 0; i < allBlockData.length; i++){
+        for (var j = 0; j < allBlockData[i][1].length; j++){
+            for (var k = 0; k < allBlockData[i][1][j][1].length; k++){
+                var tempData = [];
+       
+                //add block name
+                tempData.push(allBlockData[i][0]);
+                //add band name
+                tempData.push(allBlockData[i][1][j][0]);
+                //add class code
+                tempData.push(allBlockData[i][1][j][1][k][0]);
+                //add periods
+                tempData.push(allBlockData[i][1][j][1][k][1]);
+                //add subject code
+                tempData.push(allBlockData[i][1][j][1][k][2]);
+        
+                blocksHolding.push(tempData)
+            }
+        }
+       
+        
+    }
+
+    saveAsCSV(allBlockFileHeaders, blocksHolding, "classes.csv")
+}
+
+function addTemplateEventListener (){
+    //get the items that has "template" as an ID
+    var button = document.getElementById("template");
+
+    button.addEventListener("click", function() {saveAsCSV(allBlockFileHeaders,[], "classes.csv")});
+}
+
+///////////////
 
