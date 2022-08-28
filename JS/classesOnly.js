@@ -376,7 +376,7 @@ function addClass (){
 
  
     //add the value to global array
-    bandData.push(classData);
+    addToArray(bandData, classData)
  
     //redraw table
     drawBand();
@@ -510,7 +510,7 @@ function saveBand(){
     }
     //just right
     else {
-        blockData.push ([currentBandName, bandData]);
+        addToArray(blockData, [currentBandName, bandData])
     }
 
     //empty band data variables
@@ -668,7 +668,7 @@ function saveBlock(){
     }
 
     //add to master array
-    allBlockData.push([currentBlockName, blockData]);
+    addToArray(allBlockData, [currentBlockName, blockData])
 
     //empty block data variables
     currentBlockName = "";

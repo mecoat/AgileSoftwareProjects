@@ -92,8 +92,6 @@ function addToArray(array, valToAdd){
         
     }
     
-    
-    // sortArray(array, 0);
 }
 
 function saveAsCSV(header, data, fileName){
