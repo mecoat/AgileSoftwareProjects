@@ -17,12 +17,12 @@
 	  <script src="JS/libraries/p5.min.js"></script>
 	  <script src="JS/Script.js"></script>
 	  <script src="JS/subjects.js"></script>
-	  <script src="JS/teachers.js"></script>
-	  <script src="JS/teachersOnly.js"></script>
+	  <script src="JS/classes.js"></script>
+	  <script src="JS/classesOnly.js"></script>
 	  <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0">
 	  <meta name="description" content="Coates Consultancy provides D&amp;TA accredited Health and Safety training for Design &amp; Technology (DT) Departments in secondary schools in London and South-East England." /> -->
 </head>
-<body id="top" onload="teachersStart()">
+<body id="top" onload="classesStart()">
     <nav class="nav" id="nav">
 		<ul>
 			<li>
@@ -31,10 +31,10 @@
 			<li>
 				<a href='subjects.html'>Subjects</a>
 			</li>
-			<li id="navActive">
+			<li>
 				<a href='teachers.html'>Teachers</a>
 			</li>
-			<li>
+			<li id="navActive">
 				<a href='classes.html'>Classes</a>
 			</li>
 			<li>
@@ -49,86 +49,152 @@
 		<button type="button" id="template" name="template" value="template">Template</button>
 		<br>
 		<br>
-		<p>You can either complete the form below for each teacher, or download and fill in the template file using the button above.  This will allow you to input the data offline, and in bulk, eg by copying from an export from your School Management Software.</p>
+		<p>You can either complete the form below for each block and band, or download and fill in the template file using the button above.  This will allow you to input the data offline, and in bulk, eg by copying from an export from your School Management Software.</p>
 		<br>
 		<br>
 		<br>
 
 		<form>
 		    
-			<label for="uploadSub">Upload Subjects File (required for both file check and/or manual input).  Don't forget to press the "Add Subjects" button once you have selected your file. : </label>
+			<label for="subFile">Upload Subjects File (required for both file check and/or manual input).  Don't forget to press the "Add Subjects" button once you have selected your file. : </label>
 			<input type="file" id="subFile" name="uploadSub" accept=".csv">
             <button type="button" id="checkItSub" name="uploadSub" value="uploadSub">Add Subjects</button>
 			<br>
 			<br>
-			<label for="uploadTeacher">Upload previous Teacher File : </label>
-			<input type="file" id="teacherFile" name="uploadTeacher" accept=".csv">
-            <button type="button" id="checkIt" name="uploadTeacher" value="uploadTeacher">Check it</button>
+			<label for="clasesFile">Upload previous Classes File : </label>
+			<input type="file" id="clasesFile" name="uploadClasses" accept=".csv">
+            <button type="button" id="checkIt" name="uploadClasses" value="uploadClasses">Check it</button>
 			<p class="hide invalidFile" id="invalidFile">Sorry this is an invalid file type, please upload a valid csv file from this software.</p>
 			<p class="hide invalidHeaders" id="invalidHeaders">Sorry, this doesn't seem to the the right file, please ensure you are using a file based upon the templates provided.</p>
 			<p class="hide invalidContents" id="invalidContents">Sorry, it seems that one or more of your data rows is incomplete. Please either try to upload another file, or check the values below against expected outcomes, correct and save file again.</p>
 			<p class="hide invalidRow" id="invalidRow">Sorry, it seems that one or more of your data rows has produced an error. Please check the error messages below the user input for more information, try to upload another file, or check the values below against expected outcomes, correct and save file again.</p>
 			<p class="hide noSubjects" id="noSubjects">Sorry, it seems you haven't uploaded a valid Subjects file. Please upload a valid Subjects csv file from this software in the area above, click the "Add Subjects" button, then try again.</p>
+			<p class="hide periodsDontMatch" id="periodsDontMatch">Sorry, it seems your file has blocks with bands that have differnt numbers of periods in the bands.  Please check that all classes within bands within a block add up to the same number of periods and try again.  Check the table below for the problem block(s).</p>
+
 			<br>
 			<br>
 			<br>
-			<label for="defaultPeriods">What is the default number of periods taught by teachers per timetable? (eg what number of lessons are taught by most teachers - must be a whole number greater than 0) :</label>
-  			<input type="number" id="defaultPeriods" name="defaultPeriods">
-			<br>
-			<br>
-			<p>Would you prefer to input teacher subjects by :</p>
+			<p>Would you prefer to input class subjects by :</p>
 			<button type="button" id="subCode" name="subjectStyle" value="0" class="subStyleBtn active">Subject Code</button>
 			<button type="button" id="subName" name="subjectStyle" value="1" class="subStyleBtn">Subject Name</button>
 			<br>
 			<br>
-			<label for="setDefaults">Set Defaults : </label>
-            <button type="button" id="setDefaults" name="setDefaults" value="setDefaults">Set Defaults</button>
-			<p class="hide noPeriods" id="noPeriods">Sorry, it seems you haven't set a value for the default number of periods taught.  This should be a whole number greater than 0, recommended to be the number of periods taught by the majority of your staff. Please amend your value above and try again.</p>
+			<br>
+			<p>A block is a collection of classes that will all be timetabled at the same time as each other.  This could be your year 7 English block, or your year 10 options A block, as examples.</p>
+			<br>
+			<label for="blockName">Give your Block a Unique Name :</label>
+  			<input type="text" id="blockName" name="blockName">
+			<br>
+			<br>
+			<label for="blockPeriods">What is the number of periods taught in this block per timetable? (eg what number of lessons will each band add up to - must be a whole number greater than 0) :</label>
+  			<input type="number" id="blockPeriods" name="blockPeriods">
+			<br>
+			<br>
+			<label for="setBlock">Set Block : </label>
+            <button type="button" id="setBlock" name="setBlock" value="setBlock">Set Block</button>
+			<p class="hide blockShortInput" id="blockShortInput">Sorry, it seems you haven't completed all fields above.  Please ensure all above fields are completed correctly and try again.</p>
+			<p class="hide blockNameComma" id="blockNameComma">Sorry, commas aren't accepted characters. Please amend your block name and try again.</p>
+			<p class="hide blockPeriodsInvalid" id="blockPeriodsInvalid">Sorry, you don't seem to have entered a valid value for the periods for this block.  Please enter a whole number greater than 0 and try again.</p>
+			<p class="hide blockAlreadyUsed" id="blockAlreadyUsed">Sorry, this block name already appears to be in use.  Please amend your block name and try again.</p>
 			<br>
 			<br>
 			<br>
- 	 		<label for="teacherName">Teacher Name :</label>
-  			<input type="text" id="teacherName" name="teacherName">
+			<p>A band is a class or collection of classes that all have the same set of students within a block.  This could be your year 7 English set 1 class, or your year 10 options A Geography class, or your 8G class, as examples.</p>
 			<br>
 			<br>
-			<label for="teacherCode">Teacher Code :</label>
-  			<input type="text" id="teacherCode" name="teacherCode">
+			<p class="inline">You are currently working on block : </p>
+			<p class="whiteBG inline" id="currentBlock"></p>
 			<br>
 			<br>
-            <label for="teacherPeriods">Periods taught (must be a whole number greater than 0):</label>
-  			<input type="number" id="teacherPeriods" name="teacherPeriods">
+			<label for="bandName">Give the Band a unique Name within the Block :</label>
+  			<input type="text" id="bandName" name="bandName">
 			<br>
 			<br>
-			<label for="primarySub">Main Subject :</label>
-			<select name="primarySub" id="primarySub">
+			<label for="setBand">Set Band : </label>
+            <button type="button" id="setBand" name="setBand" value="setBand">Set Band</button>
+			<p class="hide bandShortInput" id="bandShortInput">Sorry, it seems you haven't given your band a name.  Please ensure all above fields are completed correctly and try again.</p>
+			<p class="hide bandNameComma" id="bandNameComma">Sorry, commas aren't accepted characters. Please amend your band name and try again.</p>
+			<p class="hide noBlockSet" id="noBlockSet">Sorry, it seems you've not set the values for your block. Please set your block values, press the "Set Block" button, and try again.</p>
+			<p class="hide bandAlreadyInBlock" id="bandAlreadyInBlock">Sorry, it seems you already have this band in your block.  Please amend the value above and try again.</p>
+			<br>
+			<br>
+			<br>
+			<p class="inline">You are currently working on band : </p>
+			<p class="whiteBG inline" id="currentBand"></p>
+			<br>
+			<br>
+			<p class="inline">Total periods in this band should add up to : </p>
+			<p class="whiteBG inline" id="currentBlockPeriods"></p>
+			<br>
+			<br>
+			<label for="classCode">Class Code :</label>
+  			<input type="text" id="classCode" name="classCode">
+			<br>
+			<br>
+            <label for="classSub">Class Subject :</label>
+			<select name="classSub" id="classSub">
 				<option value=""></option>
 			</select>
 			<br>
 			<br>
-			<label for="secondarySub">Secondary Subject :</label>
-			<select name="secondarySub" id="secondarySub" >
-				<option value=""></option>
-			</select>
+			<label for="classPeriods">Class Periods (must be a whole number greater than 0):</label>
+  			<input type="number" id="classPeriods" name="classPeriods">
 			<br>
 			<br>
-			<button type="button" id="addTeacher" name="addTeacher" value="addTeacher">Add teacher</button>
+			<button type="button" id="addClass" name="addClass" value="addClass">Add class</button>
 			<br>
+			<p class="hide noSubjects" id="noSubjects1">Sorry, it seems you haven't uploaded a valid Subjects file. Please upload a valid Subjects csv file from this software in the area above, click the "Add Subjects" button, then try again.</p>
+			<p class="hide noBandSet" id="noBandSet">Sorry, you don't seem to have set a current Band. Please set a Band name above and try again.</p>
 			<p class="hide shortInput" id="shortInput">Sorry, you don't appear to have completed all required fields above correctly.  All fields are required with the exception of the Secondary Subject. Contact Periods should be a whole number higher than 0. If you are inputting from file, please also check your Subject Codes match those in your Subjects file. Please complete all the input boxes.</p>
-			<p class="hide notAlphaNum" id="notAlphaNum">Sorry, the Teacher Code can only be Letters or Numbers.  Please amend your Teacher Code above.</p>
-			<p class="hide alreadyAdded" id="alreadyAdded">Sorry, the Teacher Code you have added is already in the list.  Please amend your Teacher Code above.</p>
+			<p class="hide classCodeComma" id="classCodeComma">Sorry, commas aren't accepted characters. Please amend your class code and try again.</p>
+			<p class="hide notAlphaNum" id="notAlphaNum">Sorry, the Subject Code can only be Letters or Numbers.  Please amend your Subject Code(s) in your file and try again.</p>
+			<p class="hide alreadyAdded" id="alreadyAdded">Sorry, the Class Code you have added is already in the list.  Please amend your Class Code above.</p>
+			<p class="hide classPeriodsInvalid" id="classPeriodsInvalid">Sorry, you don't seem to have entered a valid value for the periods for this class.  Please enter a whole number greater than 0 and try again.</p>
 			<br>
 			<br>
-			<p>Check your Teachers: (don't forget to scroll down to save your template)</p>
+			<p>Check your Band: (don't forget to scroll down to set your band)</p>
 			<br>
-			<table id="teacherList" ></table>
-			<button type="button" id="delTeacher" name="delTeacher" value="delTeacher">Delete Row</button>
+			<table id="bandList" ></table>
+			<button type="button" id="delClass" name="delClass" value="delClass">Delete Class</button>
+			<br>
+			<br>
+			<label for="saveBand">If this is correct : </label>
+            <button type="button" id="saveBand" name="saveBand" value="saveBand">Set Band</button>
+			<p class="hide bandTooShort" id="bandTooShort">Sorry, it seems you haven't got any classes in your band.  Please add at least one class to your band and try again.</p>
+			<p class="hide bandShortPeriods" id="bandShortPeriods">Sorry, it seems you haven't got enough periods for this band.  Please add additional class periods until the band has sufficient periods to meet the value set as as the default by your block and try again.</p>
+			<p class="hide bandOverPeriods" id="bandOverPeriods">Sorry, it seems you have too many periods for this band.  Please remove class periods until the band has been reduced to the number of periods to meet the value set as as the default by your block and try again.</p>
+			<br>
+			<p>If this is not correct, please click a row to select, and then click delete to delete the faulty row.</p>
+			<br>
+			<br>
+			<p>Check your Block: (don't forget to scroll down to set your block)</p>
+			<br>
+			<table id="blockList" ></table>
+			<button type="button" id="delBand" name="delBand" value="delBand">Delete Band</button>
+			<br>
+			<br>
+			<label for="saveBlock">If this is correct : </label>
+            <button type="button" id="saveBlock" name="saveBlock" value="saveBlock">Set Block</button>
+			<p class="hide blockTooShort" id="blockTooShort">Sorry, it seems you haven't got any bands in your block.  Please add at least one band to your block and try again.</p>
+			<p class="hide blockUnequalPeriods" id="blockUnequalPeriods">Sorry, it seems the number of periods isn't the same across all bands/as set above.  Please check your bands, and remove the band(s) that don't match the correct number of periods.</p>
+
+			<br>
+			<p>If this is not correct, please click a row to select, and then click delete to delete the faulty row.</p>
+			<br>
+			<br>
+			<p>Check your settings: (don't forget to scroll down to save your classes, bands and blocks)</p>
+			<br>
+			<table id="totalList" ></table>
+			<button type="button" id="delBlock" name="delBlock" value="delBlock">Delete Block</button>
 			<br>
 			<br>
 			<label for="save">If this is correct : </label>
             <button type="button" id="save" name="save" value="Save">Save</button>
 			<br>
 			<p>If this is not correct, please click a row to select, and then click delete to delete the faulty row.</p>
-    </div>
+    
+		</form>
+	</div>
 
 </body>
 </html>

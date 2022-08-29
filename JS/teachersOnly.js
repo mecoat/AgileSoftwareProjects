@@ -2,7 +2,7 @@
 var defaultPeriodsSet; 
 
 function teachersStart(){
-    //draw the subject list to screen
+    //draw the teacher list to screen
     drawTeachers(); 
     //add the event listener for the teacher Add button
     addTeacherEventListener (); 
@@ -42,7 +42,7 @@ function drawTeachers(){
     //add the header row to the placeholder to add to the DOM
     teacherListContent += createHeaderRow(teacherHeaders);
 
-    //iterate through global variable of subjectdata to create rows in the table
+    //iterate through global variable of teacherdata to create rows in the table
     for (var i = 0; i < teacherData.length; i++){
         teacherListContent += createTableRow(teacherData[i], teacherData[i][0]);
     }
@@ -51,13 +51,13 @@ function drawTeachers(){
     teacherList.innerHTML = teacherListContent;
 
     //check there's an event listener on them all
-    addTeacherTableEventListener ()
+    addTeacherTableEventListener ();
 }
 
 ///////////////////////////////////
 
 function addTeacherTableEventListener (){
-    //get the item that has "subList" as an ID
+    //get the item that has "teacherList" as an ID
     var table = document.getElementById("teacherList");
     var tableRows = table.getElementsByTagName("tr");
 
@@ -239,7 +239,7 @@ function processTeachersToSave(){
 ///////////////
 
 function addTemplateEventListener (){
-    //get the items that has "addSub" as an ID
+    //get the items that has "template" as an ID
     var button = document.getElementById("template");
 
     button.addEventListener("click", function() {saveAsCSV(teacherFileHeaders,[], "teachers.csv")});
@@ -281,7 +281,7 @@ function delTeacher(){
 ////////////////
 
 function addDefaultsEventListener (){
-    //get the items that has "setDefaults" as an ID
+    //get the item that has "setDefaults" as an ID
     var button = document.getElementById("setDefaults");
 
     button.addEventListener("click", setDefaults);
@@ -320,7 +320,7 @@ function setDefaults(){
 
     }
 
-    //set dropdows for subject style
+    //set dropdows by subject style
     teacherDropDowns();
 
 }

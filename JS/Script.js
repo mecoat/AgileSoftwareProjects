@@ -42,7 +42,7 @@ function createTableRow(rowData, idName = ""){
 
 function addToArray(array, valToAdd){
     var comparitor = 0;
-
+    
     //if array is empty, add the emelent in
     if (array.length == 0){
         array.push(valToAdd);
@@ -92,8 +92,6 @@ function addToArray(array, valToAdd){
         
     }
     
-    
-    // sortArray(array, 0);
 }
 
 function saveAsCSV(header, data, fileName){
@@ -242,40 +240,29 @@ async function loadCSV(file, headers, drawFunc, addArrayFunc, required = [0]){
             //end this iteration
             continue;
         }
-            
 
-        //check that there's enough data in a row
-        // if (fileArray[i].length < headers.length){
-        //     //if there isn't, show error message
-        //     console.log("error")
-
-        //     showError("invalidContents");
-        //     //end this iteration
-        //     continue;
-        // }
-
-            //check if data is too long (there may be commas in the last column)
-            if (fileArray[i].length > headers.length){
-                //join the end values together
-                for (var j = headers.length; j < fileArray[i].length; j++){
-                    fileArray[i][headers.length - 1].concat(",", fileArray[i][j]);
-                }
-                //remove the other elements from the array
-                while (fileArray[i].length > headers.length){
-                    fileArray[i].pop();
-                }
+        //check if data is too long (there may be commas in the last column)
+        if (fileArray[i].length > headers.length){
+            //join the end values together
+            for (var j = headers.length; j < fileArray[i].length; j++){
+                fileArray[i][headers.length - 1].concat(",", fileArray[i][j]);
             }
-
-            //add the element to the data array in the argument
-            var errorAdding = addArrayFunc(fileArray[i]);
-
-            if (errorAdding == "error"){
-                showError("invalidRow");
+            //remove the other elements from the array
+            while (fileArray[i].length > headers.length){
+                fileArray[i].pop();
             }
-
         }
 
-        drawFunc();
+        //add the element to the data array in the argument
+        var errorAdding = addArrayFunc(fileArray[i]);
+
+        if (errorAdding == "error"){
+            showError("invalidRow");
+        }
+
+    }
+
+    drawFunc();
        
 }
 
@@ -491,6 +478,48 @@ function checkForSubjects(){
         return "subjectsFound";
     }
 }
+
+/////////////
+
+function multiRowSelect (row, allRows){
+
+    var groupName = row.getElementsByTagName("td")[0].innerHTML;
+
+    //if it's already active...
+    if (getActiveRow(row)){
+        //remove the active value - deselect
+        for (var i = 1; i < allRows.length; i++){
+            // row.classList.remove("active");
+            if (allRows[i].getElementsByTagName("td")[0].innerHTML == groupName){
+                allRows[i].classList.remove("active");
+            }
+
+        }
+
+        
+    }
+    //not already active
+    else {
+        //so search to see if someting else is...
+        for (var i = 0; i < allRows.length; i++){
+            if (getActiveRow(allRows[i])){
+                //... and remove the active status there
+                allRows[i].classList.remove("active");
+            }
+        }
+        
+
+        //add active to the band in question
+        for (var i = 1; i < allRows.length; i++){
+            if (allRows[i].getElementsByTagName("td")[0].innerHTML == groupName){
+                allRows[i].classList.add("active");
+            }
+
+        }
+    }
+
+}
+
 
 //filler function - does nothing (used as input to loadCSV if no drawing required)
 // function emptyDraw(){
