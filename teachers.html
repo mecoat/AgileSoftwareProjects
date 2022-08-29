@@ -56,12 +56,12 @@
 
 		<form>
 		    
-			<label for="uploadSub">Upload Subjects File (required for both file check and/or manual input).  Don't forget to press the "Add Subjects" button once you have selected your file. : </label>
+			<label for="subFile">Upload Subjects File (required for both file check and/or manual input).  Don't forget to press the "Add Subjects" button once you have selected your file. : </label>
 			<input type="file" id="subFile" name="uploadSub" accept=".csv">
             <button type="button" id="checkItSub" name="uploadSub" value="uploadSub">Add Subjects</button>
 			<br>
 			<br>
-			<label for="uploadTeacher">Upload previous Teacher File : </label>
+			<label for="teacherFile">Upload previous Teacher File : </label>
 			<input type="file" id="teacherFile" name="uploadTeacher" accept=".csv">
             <button type="button" id="checkIt" name="uploadTeacher" value="uploadTeacher">Check it</button>
 			<p class="hide invalidFile" id="invalidFile">Sorry this is an invalid file type, please upload a valid csv file from this software.</p>
@@ -128,7 +128,8 @@
             <button type="button" id="save" name="save" value="Save">Save</button>
 			<br>
 			<p>If this is not correct, please click a row to select, and then click delete to delete the faulty row.</p>
-    </div>
+		</form>
+	</div>
 
 </body>
 </html>
