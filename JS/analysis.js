@@ -3,9 +3,10 @@
 var subjectTableHeaders = ["Subject Code", "Subject", "Main Teacher Periods"];
 var swapsTableHeaders = ["Teacher Code", "Teacher", "Periods", "Subject Code", "Subject"]
 //arrays for data
-var subjectPeriods = [];
-var teacherSubjectPeriods = [];
-var totalledSubjectPeriods = [];
+var subjectPeriods = {};
+var teacherMainSubjectPeriods = {};
+var totalledSubjectPeriods = {};
+var teacherSecondSubjectPeriods = {};
 var teacherSwaps = [];
 
 
@@ -20,9 +21,11 @@ function analysisStart(){
     //add the event listener for the subjects Load button
     addClassesLoadEventListener (); 
 
+    //add the event listeners for the Initial check button
+    addInitialCheckEventListener (); 
 
-    // //add the event listeners for the subject style buttons
-    // addSubStyleEventListener (); 
+    //draw the initial results table
+    drawInitialTable ();
 
     // //add the event listener for the Set Block Button
     // addBlockEventListener ();
@@ -95,7 +98,7 @@ function addSubLoadEventListener (){
 
 function loadSubFile(){
     //hide error message
-    hideError("noSubjects")
+    hideError("noSubjects");
 
     //get the input file
     var input = document.querySelector('input#subFile[type="file"]');
@@ -129,6 +132,9 @@ function addTeacherLoadEventListener (){
 }
 
 function loadTeacherFile(){
+    //hide error message
+    hideError("noTeachers");
+
     //get the input file
     var input = document.querySelector('input#teacherFile[type="file"]');
     var file = input.files[0];
@@ -171,6 +177,9 @@ function addClassesLoadEventListener (){
 //needs to be aswync so we can await the load before we do a final check 
 // for periods within the bands within the blocks
 async function loadClassesFile(){
+    //hide error message
+    hideError("noClasses");
+
     //get the input file
     var input = document.querySelector('input#classesFile[type="file"]');
     var file = input.files[0];
@@ -198,3 +207,95 @@ async function loadClassesFile(){
 
 ////////////////////
 
+function addInitialCheckEventListener (){
+    //get the check it button
+    var initialChkBtn = document.getElementById("mainSubjects");
+
+    //listen for a click to run the initial check
+    initialChkBtn.addEventListener("click", initialCheck);
+}
+
+function initialCheck(){
+    //hide any previos error messages
+    hideError("noSubjects")
+    hideError("noTeachers")
+    hideError("noClasses")
+
+    //check all data present...
+    if (subjectData.length < 1){
+        //show error message
+        showError("noSubjects");
+        //end function
+        return
+    }
+    if (teacherData.length < 1){
+        //show error message
+        showError("noTeachers");
+        //end function
+        return
+    }
+    if (allBlockData.length < 1){
+        //show error message
+        showError("noClasses");
+        //end function
+        return
+    }
+
+    //Initialise subject codes to global objects as
+    // key in object with value of 0
+    for (var i = 0; i < subjectData.length; i++){
+        var keyName = subjectData[i][0];
+
+        subjectPeriods[keyName] = 0;
+        teacherMainSubjectPeriods[keyName] = 0;
+        
+        teacherSecondSubjectPeriods[keyName] = 0;
+
+    }
+
+    //iterate through teacher array and total the periods available
+    for (var i = 0; i < teacherData.length; i++){
+        var newVal = teacherMainSubjectPeriods[teacherData[i][3]] + parseInt(teacherData[i][2]);
+        teacherMainSubjectPeriods[teacherData[i][3]] = newVal;
+    }
+
+    //iterate through the classes data and total the eriods required
+    for (var i = 0; i < allBlockData.length; i++){ //block
+        for (var j = 0; j < allBlockData[i][1].length; j++){ //band
+            for (var k = 0; k < allBlockData[i][1][j][1].length; k ++){ //class
+                var newVal = subjectPeriods[allBlockData[i][1][j][1][k][2]] + parseInt(allBlockData[i][1][j][1][k][1]);
+                subjectPeriods[allBlockData[i][1][j][1][k][2]] = newVal;
+            }
+        }
+    }
+
+    //work through subjectPeriods, check value against teacherMainSubjectPeriods
+    // and add that to totalledSubjectPeriods
+    for (key in subjectPeriods){
+        console.log(`${key}: ${subjectPeriods[key]}`);
+
+        if (subjectPeriods[key] > 0){
+            var tempval = teacherMainSubjectPeriods[key] - subjectPeriods[key];
+            totalledSubjectPeriods[key] = tempval;
+        }
+        
+    }
+
+    //draw the results table
+    drawInitialTable();
+
+
+    console.log(subjectPeriods);
+    console.log(teacherMainSubjectPeriods);
+    console.log(totalledSubjectPeriods);
+
+    //show secondary analysis
+    showSection("secondarySubjects");
+
+}
+
+///////////
+
+function drawInitialTable (){
+
+}
