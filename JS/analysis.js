@@ -272,7 +272,6 @@ function initialCheck(){
     //work through subjectPeriods, check value against teacherMainSubjectPeriods
     // and add that to totalledSubjectPeriods
     for (key in subjectPeriods){
-        console.log(`${key}: ${subjectPeriods[key]}`);
 
         if (subjectPeriods[key] > 0){
             var tempval = teacherMainSubjectPeriods[key] - subjectPeriods[key];
@@ -284,11 +283,6 @@ function initialCheck(){
     //draw the results table
     drawInitialTable();
 
-
-    console.log(subjectPeriods);
-    console.log(teacherMainSubjectPeriods);
-    console.log(totalledSubjectPeriods);
-
     //show secondary analysis
     showSection("secondarySubjects");
 
@@ -297,5 +291,49 @@ function initialCheck(){
 ///////////
 
 function drawInitialTable (){
+
+    //get the element we want to make changes to
+    var mainTable = document.getElementById("mainTable");
+    //create an empty placeholder for content
+    var mainTableContent = "";
+
+    //add the header row to the placeholder to add to the DOM
+    mainTableContent += createHeaderRow(subjectTableHeaders);
+
+    //create an array of the data to display in the table
+    var tempArray = [];
+    for (key in totalledSubjectPeriods){
+        var nameLoc = findData(subjectData, key, 0);
+        tempArray.push([key, subjectData[nameLoc][1], totalledSubjectPeriods[key]]);
+    }
+
+    //iterate through global variable of teacherdata to create rows in the table
+    for (var i = 0; i < tempArray.length; i++){
+        mainTableContent += createTableRow(tempArray[i], tempArray[i][0]);
+    }
+
+    //add the content to the DOM
+    mainTable.innerHTML = mainTableContent;
+
+    //colour the table according to over/under staffed
+    colourTable("mainTable");
+
+}
+
+function colourTable (tableID){
+    var table = document.getElementById(tableID);
+    var tableRows = table.getElementsByTagName("tr");
+
+    for (var i = 1; i < tableRows.length; i++){
+
+        var periodVal = tableRows[i].getElementsByTagName("td")[2].innerHTML;
+
+        if (periodVal < 0){
+            tableRows[i].classList.add("whiteBG");
+        }
+        else if (periodVal > 0){
+            tableRows[i].classList.add("active")
+        }
+    }
 
 }
