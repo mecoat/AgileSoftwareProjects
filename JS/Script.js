@@ -522,6 +522,6 @@ function multiRowSelect (row, allRows){
 
 
 //filler function - does nothing (used as input to loadCSV if no drawing required)
-// function emptyDraw(){
-//     return
-// }
+function emptyDraw(){
+    return
+}
