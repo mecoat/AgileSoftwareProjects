@@ -412,17 +412,59 @@ function secondCheck(){
         }
     }
 
+    //create count of main subjects available so can check if multiples 
+    // var overMains = {};
+    // for (var i = 0; i < extraPeriodsAvailable.length; i++){
+    //     var key = extraPeriodsAvailable[i][3];
+    //     var key2 = extraPeriodsAvailable[i][5];
+    //     if (key in overMains){
+    //         overMains[key]["value"] = overMains[key]["value"] + 1;
+    //         if (key2 in overMains[key]){
+    //             overMains[key][key2] = overMains[key][key2] + 1;
+    //         }
+    //         else {
+    //             overMains[key][key2] = 1;
+    //         }
+
+    //     }
+    //     else {
+    //         overMains[key] = {};
+    //         overMains[key]["value"] = 1;
+    //         overMains[key][key2] = 1;
+    //     }
+    // }
+    // console.log(overMains)
     //create list of potential periods available to fill understaffed classes
     var potentialCover = {};
     for (var i = 0; i < extraPeriodsAvailable.length; i++){
-        keySecond = extraPeriodsAvailable[i][5];
-        keyMain = extraPeriodsAvailable[i][3]
-        potentialCover[keySecond] = overSubjects[keyMain];
-    }
+        
+        var keySecond = extraPeriodsAvailable[i][5];
+        // var keyMain = extraPeriodsAvailable[i][3];
+        var hours = parseInt(extraPeriodsAvailable[i][2]);
 
-    console.log(overSubjects);
-    console.log(underSubjects);
-    console.log(extraPeriodsAvailable);
+        // //if this is the only teacher for the main subject
+        // if (overMains[keyMain] == 1){
+            //if already in list
+            if (keySecond in potentialCover){
+                //add the hours on
+                potentialCover[keySecond] = potentialCover[keySecond] + hours;
+            }
+            //not already in list
+            else{ 
+                //add to list
+                potentialCover[keySecond] = hours;
+            }
+        // } 
+        // //
+        // else {
+
+        // }
+    }
+    console.log(potentialCover)
+
+    // console.log(overSubjects);
+    // console.log(underSubjects);
+    // console.log(extraPeriodsAvailable);
     
 
 
