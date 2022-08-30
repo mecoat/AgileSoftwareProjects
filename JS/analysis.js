@@ -27,6 +27,15 @@ function analysisStart(){
     //draw the initial results table
     drawInitialTable ();
 
+    //add the event listeners for the secondary check button
+    addSecondCheckEventListener (); 
+
+    //draw the secondary results table
+    drawSecondTable ();
+
+    //draw swaps table
+    drawSwapsTable ();
+
     // //add the event listener for the Set Block Button
     // addBlockEventListener ();
 
@@ -285,6 +294,8 @@ function initialCheck(){
 
     //show secondary analysis
     showSection("secondarySubjects");
+    //rehide the error message within secondary analysis
+    hideError("noInitial");
 
 }
 
@@ -335,5 +346,165 @@ function colourTable (tableID){
             tableRows[i].classList.add("active")
         }
     }
+
+}
+
+///////////////////////////
+
+function addSecondCheckEventListener (){
+    //get the check it button
+    var initialChkBtn = document.getElementById("secondarySubjects");
+
+    //listen for a click to run the initial check
+    initialChkBtn.addEventListener("click", secondCheck);
+}
+
+function secondCheck(){
+
+    //hide any previous error messages
+    hideError("noInitial")
+    
+    //check all data present...
+    if (Object.keys(totalledSubjectPeriods).length < 1){
+        //show error message
+        showError("noInitial");
+        //end function
+        return
+    }
+
+    //variables of over and under subjects
+    var overSubjects = {};
+    var underSubjects = {};
+    //list of potential secondary subjects from overstaffed subjects
+    var extraPeriodsAvailable = [];
+
+    //fill above objects
+    for (key in totalledSubjectPeriods){
+        //overstaffed
+        if (totalledSubjectPeriods[key] > 0){
+            overSubjects[key] = totalledSubjectPeriods[key];
+
+
+            var extraTeacherSubjects = []
+            extraTeacherSubjects.push(findTeachers(key));
+            if (extraTeacherSubjects[0].length > 0){
+                // console.log(extraTeacherSubjects)
+                for (var i = 0; i < extraTeacherSubjects[0].length; i++){
+                    extraPeriodsAvailable.push(extraTeacherSubjects[0][i])
+                }
+            }
+            
+        }
+        //understaffed
+        else if (totalledSubjectPeriods[key] < 0){
+            underSubjects[key] = totalledSubjectPeriods[key];
+        }
+        
+    }
+
+    //check if secondary subjects for overstaffing subjects are in 
+    // understaffed subjects and remove if not
+    for (var i = extraPeriodsAvailable.length-1; i > -1; i--){
+        //if it's not in...
+        if (!(extraPeriodsAvailable[i][5] in underSubjects)){
+            //remove teacher
+            extraPeriodsAvailable.splice(i, 1);
+        }
+    }
+
+    //create list of potential periods available to fill understaffed classes
+    var potentialCover = {};
+    for (var i = 0; i < extraPeriodsAvailable.length; i++){
+        keySecond = extraPeriodsAvailable[i][5];
+        keyMain = extraPeriodsAvailable[i][3]
+        potentialCover[keySecond] = overSubjects[keyMain];
+    }
+
+    console.log(overSubjects);
+    console.log(underSubjects);
+    console.log(extraPeriodsAvailable);
+    
+
+
+    // if (teacherData.length < 1){
+    //     //show error message
+    //     showError("noTeachers");
+    //     //end function
+    //     return
+    // }
+    // if (allBlockData.length < 1){
+    //     //show error message
+    //     showError("noClasses");
+    //     //end function
+    //     return
+    // }
+
+    // //Initialise subject codes to global objects as
+    // // key in object with value of 0
+    // for (var i = 0; i < subjectData.length; i++){
+    //     var keyName = subjectData[i][0];
+
+    //     subjectPeriods[keyName] = 0;
+    //     teacherMainSubjectPeriods[keyName] = 0;
+        
+    //     teacherSecondSubjectPeriods[keyName] = 0;
+
+    // }
+
+    // //iterate through teacher array and total the periods available
+    // for (var i = 0; i < teacherData.length; i++){
+    //     var newVal = teacherMainSubjectPeriods[teacherData[i][3]] + parseInt(teacherData[i][2]);
+    //     teacherMainSubjectPeriods[teacherData[i][3]] = newVal;
+    // }
+
+    // //iterate through the classes data and total the eriods required
+    // for (var i = 0; i < allBlockData.length; i++){ //block
+    //     for (var j = 0; j < allBlockData[i][1].length; j++){ //band
+    //         for (var k = 0; k < allBlockData[i][1][j][1].length; k ++){ //class
+    //             var newVal = subjectPeriods[allBlockData[i][1][j][1][k][2]] + parseInt(allBlockData[i][1][j][1][k][1]);
+    //             subjectPeriods[allBlockData[i][1][j][1][k][2]] = newVal;
+    //         }
+    //     }
+    // }
+
+    // //work through subjectPeriods, check value against teacherMainSubjectPeriods
+    // // and add that to totalledSubjectPeriods
+    // for (key in subjectPeriods){
+
+    //     if (subjectPeriods[key] > 0){
+    //         var tempval = teacherMainSubjectPeriods[key] - subjectPeriods[key];
+    //         totalledSubjectPeriods[key] = tempval;
+    //     }
+        
+    // }
+
+    // //draw the results table
+    // drawInitialTable();
+
+    // //show secondary analysis
+    // showSection("secondarySubjects");
+
+}
+
+function findTeachers(key){
+    var tempArray = []
+    //iterate through teachers array
+    for (var i = 0; i < teacherData.length; i ++){
+        if (teacherData[i][3] == key && teacherData[i][5] != undefined){
+            tempArray.push(teacherData[i]);
+        }
+    }
+    return tempArray
+}
+
+//////////
+
+function drawSecondTable (){
+
+}
+
+//////////////
+
+function drawSwapsTable (){
 
 }
