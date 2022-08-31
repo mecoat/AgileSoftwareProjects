@@ -1,7 +1,8 @@
 //global variables for processing
 //table headers
-var subjectTableHeaders = ["Subject Code", "Subject", "Main Teacher Periods"];
-var swapsTableHeaders = ["Teacher Code", "Teacher", "Periods", "Subject Code", "Subject"]
+var subjectTableHeaders = ["Subject Code", "Subject", "Teacher Periods"];
+var swapsTableHeaders = ["Teacher Code", "Teacher", "Periods", "Subject Code", "Subject"];
+var swapsFileHeaders = ["Teacher Code", "Periods", "Subject Code"];
 //arrays for data
 var subjectPeriods = {};
 var teacherMainSubjectPeriods = {};
@@ -38,25 +39,8 @@ function analysisStart(){
     //draw swaps table
     drawSwapsTable ();
 
-    // //add the event listener for the Set Block Button
-    // addBlockEventListener ();
-
-    // //add the event listener for the Set Band Button
-    // addBandEventListener ();
-
-    // //add the event listener for the Set Class Button
-    // addClassEventListener ();
-
-    // //draw the band list to screen
-    // drawBand (); 
-
-    // //add the event listener for the Class Delete button (within Band)
-    // addClassDeleteEventListener ();
-    // //add the event listener for the Band table
-    // addBandTableEventListener ();
-
-    // //add the event listener for the Save Band button
-    // addSaveBandEventListener (); 
+    //add the event listener for the Save button
+    addSaveEventListener (); 
 
     // //draw the block list to screen
     // drawBlock (); 
@@ -393,7 +377,6 @@ function secondCheck(){
             var extraTeacherSubjects = []
             extraTeacherSubjects.push(findTeachers(key));
             if (extraTeacherSubjects[0].length > 0){
-                // console.log(extraTeacherSubjects)
                 for (var i = 0; i < extraTeacherSubjects[0].length; i++){
                     extraPeriodsAvailable.push(extraTeacherSubjects[0][i])
                 }
@@ -466,15 +449,8 @@ function secondCheck(){
         }
     }
 
-    // console.log("main")
-    // console.log(mainToSecond)
-    // console.log("second")
-    // console.log(secondToMain)
-
     //array to hold teachers to check again
     var tryAgainTeachers = [];
-
-
 
     //create list of potential periods available to fill understaffed classes
     for (var i = 0; i < extraPeriodsAvailable.length; i++){
@@ -511,18 +487,20 @@ function secondCheck(){
                 //add the hours on
                 potentialCover[keySecond]["hours"] = potentialCover[keySecond]["hours"] + allocHrs;
                 //add the teacher code
-                potentialCover[keySecond]["teachers"].push(teacher);
+                // potentialCover[keySecond]["teachers"].push(teacher);
+                potentialCover[keySecond]["teachers"][teacher] = potentialCover[keySecond]["teachers"][teacher] + allocHrs; 
+
             }
             //not already in list
             else{ 
                 //add to list
                 potentialCover[keySecond] = {}
-                potentialCover[keySecond]["teachers"] = [teacher]
+                // potentialCover[keySecond]["teachers"] = [teacher]
+                potentialCover[keySecond]["teachers"] = {}; 
+                potentialCover[keySecond]["teachers"][teacher] = allocHrs; 
                 potentialCover[keySecond]["hours"] = allocHrs;
 
             }
-
-            console.log(keySecond + " only main")
 
             if (potentialCover[keySecond]["hours"] >= reqHrs){
                 secondToMain[keySecond]["covered"] = true;
@@ -549,17 +527,18 @@ function secondCheck(){
                 potentialCover[keySecond]["hours"] = potentialCover[keySecond]["hours"] + allocHrs;
 
                 //add the teacher code
-                potentialCover[keySecond]["teachers"].push(teacher);
+                // potentialCover[keySecond]["teachers"].push(teacher);
+                potentialCover[keySecond]["teachers"][teacher] = potentialCover[keySecond]["teachers"][teacher] + allocHrs; 
             }
             //not already in list
             else{ 
                 //add to list
                 potentialCover[keySecond] = {}
-                potentialCover[keySecond]["teachers"] = [teacher]
+                // potentialCover[keySecond]["teachers"] = [teacher]
+                potentialCover[keySecond]["teachers"] = {}; 
+                potentialCover[keySecond]["teachers"][teacher] = allocHrs; 
                 potentialCover[keySecond]["hours"] = allocHrs;
             }
-
-            console.log(keySecond + " 1-1 subject link")
 
             if (potentialCover[keySecond]["hours"] >= reqHrs){
                 secondToMain[keySecond]["covered"] = true;
@@ -584,18 +563,19 @@ function secondCheck(){
                 //add the hours on
                 potentialCover[keySecond]["hours"] = potentialCover[keySecond]["hours"] + allocHrs;
                 //add the teacher code
-                potentialCover[keySecond]["teachers"].push(teacher);
+                // potentialCover[keySecond]["teachers"].push(teacher);
+                potentialCover[keySecond]["teachers"][teacher] = potentialCover[keySecond]["teachers"][teacher] + allocHrs; 
             }
             //not already in list
             else{ 
                 //add to list
                 potentialCover[keySecond] = {}
                 potentialCover[keySecond]["hours"] = allocHrs;
-                potentialCover[keySecond]["teachers"] = [teacher]
+                // potentialCover[keySecond]["teachers"] = [teacher]
+                potentialCover[keySecond]["teachers"] = {}; 
+                potentialCover[keySecond]["teachers"][teacher] = allocHrs; 
             }
             
-            console.log(keySecond + " any second, only main (main with other options")
-
             if (potentialCover[keySecond]["hours"] >= reqHrs){
                 secondToMain[keySecond]["covered"] = true;
             }
@@ -720,14 +700,19 @@ function allocateManyToMany (secondToMain, mainToSecond, potentialCover, tryAgai
                 potentialCover[keySecond]["hours"] = potentialCover[keySecond]["hours"] + allocHrs;
                 //add the teacher code
                 if (i==0){
-                    potentialCover[keySecond]["teachers"].push(teacher);
+                    // potentialCover[keySecond]["teachers"].push(teacher);
+                    potentialCover[keySecond]["teachers"][teacher] = allocHrs; 
+                }
+                else {
+                    potentialCover[keySecond]["teachers"][teacher] = potentialCover[keySecond]["teachers"][teacher] + allocHrs;
                 }
             }
             //not already in list
-            else{ 
+            else { 
                 //add to list
                 potentialCover[keySecond] = {}
-                potentialCover[keySecond]["teachers"] = [teacher]
+                // potentialCover[keySecond]["teachers"] = [teacher]
+                potentialCover[keySecond]["teachers"][teacher] = hours;
                 potentialCover[keySecond]["hours"] = allocHrs;
 
             }
@@ -784,24 +769,58 @@ function drawSwapsTable (){
     //add the header row to the placeholder to add to the DOM
     teacherSwapsTableContent += createHeaderRow(swapsTableHeaders);
 
-    console.log(potentialCover)
-
     //create an array of the data to display in the table
-    // var tempArray = [];
-    // for (key in totalledSubjectPeriods){
-    //     var nameLoc = findData(subjectData, key, 0);
-    //     tempArray.push([key, subjectData[nameLoc][1], totalledSubjectPeriods[key]]);
-    // }
+    var tempArray = [];
+    for (key in potentialCover){
+        for (teacher in potentialCover[key]["teachers"]){
+            var nameLoc = findData(subjectData, key, 0);
+            var teacherLoc = findData(teacherData, teacher, 0);
+            var periods = potentialCover[key]["teachers"][teacher];
+            tempArray.push([teacher, teacherData[teacherLoc][1], periods, key, subjectData[nameLoc][1]]);
+        }
+    }
+
+    teacherSwaps = tempArray;
 
     //iterate through global variable of teacherdata to create rows in the table
-    // for (var i = 0; i < tempArray.length; i++){
-    //     teacherSwapsTableContent += createTableRow(tempArray[i], tempArray[i][0]);
-    // }
+    for (var i = 0; i < tempArray.length; i++){
+        teacherSwapsTableContent += createTableRow(tempArray[i], tempArray[i][0]);
+    }
 
     //add the content to the DOM
     teacherSwapsTable.innerHTML = teacherSwapsTableContent;
 
-    //colour the table according to over/under staffed
-    colourTable("teacherSwaps");
-
 }
+
+//////////////
+
+function addSaveEventListener (){
+    //get the items that has "save" as an ID
+    var button = document.getElementById("save");
+
+    button.addEventListener("click", processSwapsToSave);
+}
+
+function processSwapsToSave(){
+
+    //placeholder array
+    var swapsHolding = [];
+
+    //iterate through teachers array the table is made from...
+    for (var i = 0; i < teacherSwaps.length; i++){
+        var tempData = [];
+       
+        //add teacher code
+        tempData.push(teacherSwaps[i][0]);
+        //add periods
+        tempData.push(teacherSwaps[i][2]);
+        //add subject code
+        tempData.push(teacherSwaps[i][3]);
+        
+        //add temp data to placeolder
+        swapsHolding.push(tempData)
+    }
+
+    saveAsCSV(swapsFileHeaders, swapsHolding, "swaps.csv")
+}
+
