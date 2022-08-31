@@ -412,53 +412,168 @@ function secondCheck(){
         }
     }
 
-    //create count of main subjects available so can check if multiples 
-    // var overMains = {};
-    // for (var i = 0; i < extraPeriodsAvailable.length; i++){
-    //     var key = extraPeriodsAvailable[i][3];
-    //     var key2 = extraPeriodsAvailable[i][5];
-    //     if (key in overMains){
-    //         overMains[key]["value"] = overMains[key]["value"] + 1;
-    //         if (key2 in overMains[key]){
-    //             overMains[key][key2] = overMains[key][key2] + 1;
-    //         }
-    //         else {
-    //             overMains[key][key2] = 1;
-    //         }
+    //create maps of main to secondary and secondary to main subjects 
+    // so can keep track of spare hours 
+    var mainToSecond = {};
+    var secondToMain = {};
 
-    //     }
-    //     else {
-    //         overMains[key] = {};
-    //         overMains[key]["value"] = 1;
-    //         overMains[key][key2] = 1;
-    //     }
-    // }
-    // console.log(overMains)
+    for (var i = 0; i < extraPeriodsAvailable.length; i++){
+        var key = extraPeriodsAvailable[i][3];
+        var key2 = extraPeriodsAvailable[i][5];
+        if (key in mainToSecond){
+            mainToSecond[key]["count"] = mainToSecond[key]["count"] + 1;
+            if (key2 in mainToSecond[key]){
+                mainToSecond[key]["subjects"][key2] = mainToSecond[key]["subjects"][key2] + 1;
+            }
+            else {
+                mainToSecond[key]["subjects"][key2] = 1;
+            }
+
+        }
+        else {
+            mainToSecond[key] = {};
+            mainToSecond[key]["count"] = 1;
+            mainToSecond[key]["subjects"] = {};
+            mainToSecond[key]["subjects"][key2] = 1;
+            mainToSecond[key]["hours"] = totalledSubjectPeriods[key];
+            mainToSecond[key]["allocated"] = 0;
+            mainToSecond[key]["allocatedHrs"] = 0;
+        }
+
+        if (key2 in secondToMain){
+            secondToMain[key2]["count"] = secondToMain[key2]["count"] + 1;
+            if (key in secondToMain[key2]){
+                secondToMain[key2]["subjects"][key] = secondToMain[key2]["subjects"][key] + 1;
+            }
+            else {
+                secondToMain[key2]["subjects"][key] = 1;
+            }
+        }
+        else {
+            secondToMain[key2] = {};
+            secondToMain[key2]["count"] = 1;
+            secondToMain[key2]["subjects"] = {};
+            secondToMain[key2]["subjects"][key] = 1;
+            secondToMain[key2]["allocated"] = 0;
+            secondToMain[key2]["allocatedHrs"] = 0;
+        }
+    }
+
+    // console.log("main")
+    // console.log(mainToSecond)
+    // console.log("second")
+    // console.log(secondToMain)
+
+
     //create list of potential periods available to fill understaffed classes
     var potentialCover = {};
     for (var i = 0; i < extraPeriodsAvailable.length; i++){
         
         var keySecond = extraPeriodsAvailable[i][5];
-        // var keyMain = extraPeriodsAvailable[i][3];
+        var keyMain = extraPeriodsAvailable[i][3];
         var hours = parseInt(extraPeriodsAvailable[i][2]);
+        var teacher = extraPeriodsAvailable[i][0];
 
-        // //if this is the only teacher for the main subject
-        // if (overMains[keyMain] == 1){
+        //if this is the only teacher for the main subject then all hours can
+        // be given to the secndary subject if needed
+        if (mainToSecond[keyMain]["count"] == 1){
+            //mark as allocated
+            secondToMain[keySecond]["allocated"] = secondToMain[keySecond]["allocated"] + 1;
+            secondToMain[keySecond]["allocatedHrs"] = secondToMain[keySecond]["allocatedHrs"] + hours;
+            mainToSecond[keyMain]["allocated"] = mainToSecond[keyMain]["allocated"] + 1;
+            mainToSecond[keyMain]["allocatedHrs"] = mainToSecond[keyMain]["allocated"] + hours;
+            
             //if already in list
             if (keySecond in potentialCover){
                 //add the hours on
-                potentialCover[keySecond] = potentialCover[keySecond] + hours;
+                potentialCover[keySecond]["hours"] = potentialCover[keySecond]["hours"] + hours;
+                //add the teacher code
+                potentialCover[keySecond]["teachers"] = potentialCover[keySecond]["teachers"].push(teacher)
             }
             //not already in list
             else{ 
                 //add to list
-                potentialCover[keySecond] = hours;
-            }
-        // } 
-        // //
-        // else {
+                potentialCover[keySecond] = {}
+                potentialCover[keySecond]["teachers"] = [teacher]
+                potentialCover[keySecond]["hours"] = 0;                
+                // console.log(potentialCover[keySecond]["hours"])                
 
-        // }
+                potentialCover[keySecond]["hours"] = hours;
+                // console.log(potentialCover[keySecond]["hours"])
+
+            }
+        } 
+        // if only 1 subject for mainToSecnd and secondToMain, regardless of
+        // the value of count, there is a 1-to-1 relationship between main
+        // and secondary subjects for secondary subjects that are understaffed
+        // with main subject teachers that are overstaffed
+        else if (Object.keys(mainToSecond[keyMain]["subjects"]).length == 1 && 
+            Object.keys(secondToMain[keySecond]["subjects"]).length == 1){
+            //mark as allocated
+            secondToMain[key2]["allocated"] = secondToMain[key2]["allocated"] + 1;
+            secondToMain[key2]["allocatedHrs"] = secondToMain[key2]["allocatedHrs"] + hours;
+            mainToSecond[keyMain]["allocated"] = mainToSecond[keyMain]["allocated"] + 1;
+            mainToSecond[keyMain]["allocatedHrs"] = mainToSecond[keyMain]["allocated"] + hours;
+
+            //if already in list
+            if (keySecond in potentialCover){
+                //add the hours on
+
+                potentialCover[keySecond]["hours"] = potentialCover[keySecond]["hours"] + hours;
+
+
+
+                //add the teacher code
+                console.log(typeof(potentialCover[keySecond]["teachers"]))
+                console.log(potentialCover[keySecond]["teachers"])
+                console.log(potentialCover[keySecond])
+                potentialCover[keySecond]["teachers"] = potentialCover[keySecond]["teachers"].push(teacher)
+            }
+            //not already in list
+            else{ 
+                //add to list
+                potentialCover[keySecond] = {}
+                potentialCover[keySecond]["teachers"] = [teacher]
+                // potentialCover[keySecond]["hours"] = 0;
+                // console.log(potentialCover[keySecond]["hours"])
+                // console.log(typeof(potentialCover[keySecond]["hours"]))
+                potentialCover[keySecond]["hours"] = hours;
+                console.log(potentialCover[keySecond]["hours"])
+                // console.log(typeof(potentialCover[keySecond]["hours"]))
+
+            }
+        }
+        // if only one option for secondary subject, needs to come from there,
+        // but also need to check if capacity (main will be able to do multiple 
+        // secondary)
+        else if (Object.keys(secondToMain[keySecond]["subjects"]).length == 1){
+
+            //mark as allocated
+            secondToMain[key2]["allocated"] = secondToMain[key2]["allocated"] + 1;
+            secondToMain[key2]["allocatedHrs"] = secondToMain[key2]["allocatedHrs"] + hours;
+            mainToSecond[keyMain]["allocated"] = mainToSecond[keyMain]["allocated"] + 1;
+            mainToSecond[keyMain]["allocatedHrs"] = mainToSecond[keyMain]["allocated"] + hours;
+
+            //if already in list
+            if (keySecond in potentialCover){
+                //add the hours on
+                potentialCover[keySecond]["hours"] = potentialCover[keySecond]["hours"] + hours;
+                //add the teacher code
+                potentialCover[keySecond]["teachers"] = potentialCover[keySecond]["teachers"].push(teacher)
+            }
+            //not already in list
+            else{ 
+                //add to list
+                potentialCover[keySecond] = {}
+                potentialCover[keySecond]["hours"] = 0;
+                potentialCover[keySecond]["hours"] = hours;
+                potentialCover[keySecond]["teachers"] = [teacher]
+            }
+        }
+        //otherwise must have multiple main subject options
+        else {
+
+        }
     }
     console.log(potentialCover)
 
