@@ -7,7 +7,9 @@ var subjectPeriods = {};
 var teacherMainSubjectPeriods = {};
 var totalledSubjectPeriods = {};
 var teacherSecondSubjectPeriods = {};
+var totalledSubjectPeriodsSecond = {};
 var teacherSwaps = [];
+var potentialCover = {};
 
 
 function analysisStart(){
@@ -364,6 +366,9 @@ function secondCheck(){
     //hide any previous error messages
     hideError("noInitial")
     
+    //copy totalledSubjectPeriods into totalledSubjectPeriodsSecond
+    totalledSubjectPeriodsSecond = totalledSubjectPeriods;
+
     //check all data present...
     if (Object.keys(totalledSubjectPeriods).length < 1){
         //show error message
@@ -454,8 +459,10 @@ function secondCheck(){
             secondToMain[key2]["count"] = 1;
             secondToMain[key2]["subjects"] = {};
             secondToMain[key2]["subjects"][key] = 1;
+            secondToMain[key2]["hours"] = totalledSubjectPeriods[key2] * (-1);
             secondToMain[key2]["allocated"] = 0;
             secondToMain[key2]["allocatedHrs"] = 0;
+            secondToMain[key2]["covered"] = false;
         }
     }
 
@@ -464,43 +471,61 @@ function secondCheck(){
     // console.log("second")
     // console.log(secondToMain)
 
+    //array to hold teachers to check again
+    var tryAgainTeachers = [];
+
+
 
     //create list of potential periods available to fill understaffed classes
-    var potentialCover = {};
     for (var i = 0; i < extraPeriodsAvailable.length; i++){
         
         var keySecond = extraPeriodsAvailable[i][5];
         var keyMain = extraPeriodsAvailable[i][3];
         var hours = parseInt(extraPeriodsAvailable[i][2]);
         var teacher = extraPeriodsAvailable[i][0];
+        var reqHrs = underSubjects[keySecond] * (-1); // make a positive integer
+        var extraHrs = overSubjects[keyMain];
+        //lowest number of hours of required hours, teacher hours, and over hours for main subject
+        var allocHrs = calcHours(extraHrs, reqHrs, hours);
+
+        //check if subject already covered...
+        if (secondToMain[keySecond]["covered"] == true){
+            //end this iteraction
+            continue;
+        }
 
         //if this is the only teacher for the main subject then all hours can
         // be given to the secndary subject if needed
         if (mainToSecond[keyMain]["count"] == 1){
             //mark as allocated
             secondToMain[keySecond]["allocated"] = secondToMain[keySecond]["allocated"] + 1;
-            secondToMain[keySecond]["allocatedHrs"] = secondToMain[keySecond]["allocatedHrs"] + hours;
+            secondToMain[keySecond]["allocatedHrs"] = secondToMain[keySecond]["allocatedHrs"] + allocHrs;
             mainToSecond[keyMain]["allocated"] = mainToSecond[keyMain]["allocated"] + 1;
-            mainToSecond[keyMain]["allocatedHrs"] = mainToSecond[keyMain]["allocated"] + hours;
+            mainToSecond[keyMain]["allocatedHrs"] = mainToSecond[keyMain]["allocatedHrs"] + allocHrs;
             
+            totalledSubjectPeriodsSecond[keyMain] = totalledSubjectPeriodsSecond[keyMain] - allocHrs;
+            totalledSubjectPeriodsSecond[keySecond] = totalledSubjectPeriodsSecond[keySecond] + allocHrs;
+
             //if already in list
             if (keySecond in potentialCover){
                 //add the hours on
-                potentialCover[keySecond]["hours"] = potentialCover[keySecond]["hours"] + hours;
+                potentialCover[keySecond]["hours"] = potentialCover[keySecond]["hours"] + allocHrs;
                 //add the teacher code
-                potentialCover[keySecond]["teachers"] = potentialCover[keySecond]["teachers"].push(teacher)
+                potentialCover[keySecond]["teachers"].push(teacher);
             }
             //not already in list
             else{ 
                 //add to list
                 potentialCover[keySecond] = {}
                 potentialCover[keySecond]["teachers"] = [teacher]
-                potentialCover[keySecond]["hours"] = 0;                
-                // console.log(potentialCover[keySecond]["hours"])                
+                potentialCover[keySecond]["hours"] = allocHrs;
 
-                potentialCover[keySecond]["hours"] = hours;
-                // console.log(potentialCover[keySecond]["hours"])
+            }
 
+            console.log(keySecond + " only main")
+
+            if (potentialCover[keySecond]["hours"] >= reqHrs){
+                secondToMain[keySecond]["covered"] = true;
             }
         } 
         // if only 1 subject for mainToSecnd and secondToMain, regardless of
@@ -511,135 +536,88 @@ function secondCheck(){
             Object.keys(secondToMain[keySecond]["subjects"]).length == 1){
             //mark as allocated
             secondToMain[key2]["allocated"] = secondToMain[key2]["allocated"] + 1;
-            secondToMain[key2]["allocatedHrs"] = secondToMain[key2]["allocatedHrs"] + hours;
+            secondToMain[key2]["allocatedHrs"] = secondToMain[key2]["allocatedHrs"] + allocHrs;
             mainToSecond[keyMain]["allocated"] = mainToSecond[keyMain]["allocated"] + 1;
-            mainToSecond[keyMain]["allocatedHrs"] = mainToSecond[keyMain]["allocated"] + hours;
+            mainToSecond[keyMain]["allocatedHrs"] = mainToSecond[keyMain]["allocatedHrs"] + allocHrs;
+
+            totalledSubjectPeriodsSecond[keyMain] = totalledSubjectPeriodsSecond[keyMain] - allocHrs;
+            totalledSubjectPeriodsSecond[keySecond] = totalledSubjectPeriodsSecond[keySecond] + allocHrs;
 
             //if already in list
             if (keySecond in potentialCover){
                 //add the hours on
-
-                potentialCover[keySecond]["hours"] = potentialCover[keySecond]["hours"] + hours;
-
-
+                potentialCover[keySecond]["hours"] = potentialCover[keySecond]["hours"] + allocHrs;
 
                 //add the teacher code
-                console.log(typeof(potentialCover[keySecond]["teachers"]))
-                console.log(potentialCover[keySecond]["teachers"])
-                console.log(potentialCover[keySecond])
-                potentialCover[keySecond]["teachers"] = potentialCover[keySecond]["teachers"].push(teacher)
+                potentialCover[keySecond]["teachers"].push(teacher);
             }
             //not already in list
             else{ 
                 //add to list
                 potentialCover[keySecond] = {}
                 potentialCover[keySecond]["teachers"] = [teacher]
-                // potentialCover[keySecond]["hours"] = 0;
-                // console.log(potentialCover[keySecond]["hours"])
-                // console.log(typeof(potentialCover[keySecond]["hours"]))
-                potentialCover[keySecond]["hours"] = hours;
-                console.log(potentialCover[keySecond]["hours"])
-                // console.log(typeof(potentialCover[keySecond]["hours"]))
+                potentialCover[keySecond]["hours"] = allocHrs;
+            }
 
+            console.log(keySecond + " 1-1 subject link")
+
+            if (potentialCover[keySecond]["hours"] >= reqHrs){
+                secondToMain[keySecond]["covered"] = true;
             }
         }
-        // if only one option for secondary subject, needs to come from there,
-        // but also need to check if capacity (main will be able to do multiple 
-        // secondary)
+        // if only one main option for secondary subject, hours need to come from 
+        // there
         else if (Object.keys(secondToMain[keySecond]["subjects"]).length == 1){
+
 
             //mark as allocated
             secondToMain[key2]["allocated"] = secondToMain[key2]["allocated"] + 1;
-            secondToMain[key2]["allocatedHrs"] = secondToMain[key2]["allocatedHrs"] + hours;
+            secondToMain[key2]["allocatedHrs"] = secondToMain[key2]["allocatedHrs"] + allocHrs;
             mainToSecond[keyMain]["allocated"] = mainToSecond[keyMain]["allocated"] + 1;
-            mainToSecond[keyMain]["allocatedHrs"] = mainToSecond[keyMain]["allocated"] + hours;
+            mainToSecond[keyMain]["allocatedHrs"] = mainToSecond[keyMain]["allocatedHrs"] + allocHrs;
+
+            totalledSubjectPeriodsSecond[keyMain] = totalledSubjectPeriodsSecond[keyMain] - allocHrs;
+            totalledSubjectPeriodsSecond[keySecond] = totalledSubjectPeriodsSecond[keySecond] + allocHrs;
 
             //if already in list
             if (keySecond in potentialCover){
                 //add the hours on
-                potentialCover[keySecond]["hours"] = potentialCover[keySecond]["hours"] + hours;
+                potentialCover[keySecond]["hours"] = potentialCover[keySecond]["hours"] + allocHrs;
                 //add the teacher code
-                potentialCover[keySecond]["teachers"] = potentialCover[keySecond]["teachers"].push(teacher)
+                potentialCover[keySecond]["teachers"].push(teacher);
             }
             //not already in list
             else{ 
                 //add to list
                 potentialCover[keySecond] = {}
-                potentialCover[keySecond]["hours"] = 0;
-                potentialCover[keySecond]["hours"] = hours;
+                potentialCover[keySecond]["hours"] = allocHrs;
                 potentialCover[keySecond]["teachers"] = [teacher]
+            }
+            
+            console.log(keySecond + " any second, only main (main with other options")
+
+            if (potentialCover[keySecond]["hours"] >= reqHrs){
+                secondToMain[keySecond]["covered"] = true;
             }
         }
         //otherwise must have multiple main subject options
         else {
 
+            //push to try again
+            tryAgainTeachers.push(extraPeriodsAvailable[i]);
+
         }
     }
-    console.log(potentialCover)
-
-    // console.log(overSubjects);
-    // console.log(underSubjects);
-    // console.log(extraPeriodsAvailable);
     
 
+    //try again with many-to-many remaining subjects
+    allocateManyToMany(secondToMain, mainToSecond, potentialCover, tryAgainTeachers);
 
-    // if (teacherData.length < 1){
-    //     //show error message
-    //     showError("noTeachers");
-    //     //end function
-    //     return
-    // }
-    // if (allBlockData.length < 1){
-    //     //show error message
-    //     showError("noClasses");
-    //     //end function
-    //     return
-    // }
+    //draw the results table
+    drawSecondTable  ();
 
-    // //Initialise subject codes to global objects as
-    // // key in object with value of 0
-    // for (var i = 0; i < subjectData.length; i++){
-    //     var keyName = subjectData[i][0];
-
-    //     subjectPeriods[keyName] = 0;
-    //     teacherMainSubjectPeriods[keyName] = 0;
-        
-    //     teacherSecondSubjectPeriods[keyName] = 0;
-
-    // }
-
-    // //iterate through teacher array and total the periods available
-    // for (var i = 0; i < teacherData.length; i++){
-    //     var newVal = teacherMainSubjectPeriods[teacherData[i][3]] + parseInt(teacherData[i][2]);
-    //     teacherMainSubjectPeriods[teacherData[i][3]] = newVal;
-    // }
-
-    // //iterate through the classes data and total the eriods required
-    // for (var i = 0; i < allBlockData.length; i++){ //block
-    //     for (var j = 0; j < allBlockData[i][1].length; j++){ //band
-    //         for (var k = 0; k < allBlockData[i][1][j][1].length; k ++){ //class
-    //             var newVal = subjectPeriods[allBlockData[i][1][j][1][k][2]] + parseInt(allBlockData[i][1][j][1][k][1]);
-    //             subjectPeriods[allBlockData[i][1][j][1][k][2]] = newVal;
-    //         }
-    //     }
-    // }
-
-    // //work through subjectPeriods, check value against teacherMainSubjectPeriods
-    // // and add that to totalledSubjectPeriods
-    // for (key in subjectPeriods){
-
-    //     if (subjectPeriods[key] > 0){
-    //         var tempval = teacherMainSubjectPeriods[key] - subjectPeriods[key];
-    //         totalledSubjectPeriods[key] = tempval;
-    //     }
-        
-    // }
-
-    // //draw the results table
-    // drawInitialTable();
-
-    // //show secondary analysis
-    // showSection("secondarySubjects");
+    //draw swaps table
+    drawSwapsTable ();
 
 }
 
@@ -654,14 +632,176 @@ function findTeachers(key){
     return tempArray
 }
 
+function calcHours(overHrs, underHrs, teacherHrs){
+    //find lowest value and return it
+
+    //if overHrs larger than underHrs
+    if (overHrs > underHrs){
+        //underHrs mush be lower, so...
+
+        //if teacherHrs larger than underHrs
+        if (teacherHrs > underHrs){
+            //underHrs must be lower, so return underHrs
+            return underHrs;
+        }
+        //otherwise, teacherHrs must be lower (or equal)
+        else {
+            //so return teacherHrs
+            return teacherHrs;
+        }
+    }
+    // otherwise, overHrs must be smaller, or equal, sp...
+    else {
+        //if teacherHrs larger than overHrs
+        if (teacherHrs > overHrs){
+            //overHrs must be lower, so return overHrs
+            return overHrs;
+        }
+        //otherwise, teacherHrs must be lower (or equal)
+        else {
+            //so return teacherHrs
+            return teacherHrs;
+        }
+    }
+}
+
+function allocateManyToMany (secondToMain, mainToSecond, potentialCover, tryAgainTeachers){
+    //get value of most hours required
+    var mostHrs = 0;
+
+    for (key in secondToMain){
+        if (secondToMain[key]["hours"] - secondToMain[key]["allocatedHrs"] > mostHrs){
+            mostHrs = secondToMain[key]["hours"] - secondToMain[key]["allocatedHrs"];
+        }
+    }
+
+    //iterate through the array the nnumber of times of the most hours sharing
+    // out the subjects
+    for (var i = 0; i < mostHrs; i ++){
+        for (var j = 0; j < tryAgainTeachers.length; j++){
+            var keySecond = tryAgainTeachers[j][5];
+            var keyMain = tryAgainTeachers[j][3];
+            var hours = parseInt(tryAgainTeachers[j][2]);
+            var teacher = tryAgainTeachers[j][0];
+            var reqHrs = secondToMain[keySecond]["hours"] - secondToMain[keySecond]["allocatedHrs"]; // make a positive integer
+            var extraHrs = mainToSecond[keyMain]["hours"] - mainToSecond[keyMain]["allocatedHrs"];
+            var allocHrs = 1;
+
+            //check if subject already covered...
+            if (secondToMain[keySecond]["covered"] == true){
+                //end this iteraction
+                continue;
+            }
+
+            //check if hours already allocated
+            if (extraHrs <= 0){
+                continue;
+            }
+
+            //check if teacher out of hours
+            if (i >= hours){
+                continue;
+            }
+
+            totalledSubjectPeriodsSecond[keyMain] = totalledSubjectPeriodsSecond[keyMain] - allocHrs;
+            totalledSubjectPeriodsSecond[keySecond] = totalledSubjectPeriodsSecond[keySecond] + allocHrs;
+
+            //mark as allocated
+            if (i==0){
+                secondToMain[keySecond]["allocated"] = secondToMain[keySecond]["allocated"] + 1;
+                mainToSecond[keyMain]["allocated"] = mainToSecond[keyMain]["allocated"] + 1;
+            }
+            secondToMain[keySecond]["allocatedHrs"] = secondToMain[keySecond]["allocatedHrs"] + allocHrs;
+            mainToSecond[keyMain]["allocatedHrs"] = mainToSecond[keyMain]["allocatedHrs"] + allocHrs;
+            
+            //if already in list
+            if (keySecond in potentialCover){
+                //add the hours on
+                potentialCover[keySecond]["hours"] = potentialCover[keySecond]["hours"] + allocHrs;
+                //add the teacher code
+                if (i==0){
+                    potentialCover[keySecond]["teachers"].push(teacher);
+                }
+            }
+            //not already in list
+            else{ 
+                //add to list
+                potentialCover[keySecond] = {}
+                potentialCover[keySecond]["teachers"] = [teacher]
+                potentialCover[keySecond]["hours"] = allocHrs;
+
+            }
+
+            if (potentialCover[keySecond]["hours"] >= reqHrs){
+                secondToMain[keySecond]["covered"] = true;
+            }
+
+        }
+    }
+
+}
+
 //////////
 
 function drawSecondTable (){
+    //get the element we want to make changes to
+    var secondaryTable = document.getElementById("secondaryTable");
+    //create an empty placeholder for content
+    var secondaryTableContent = "";
+
+    //add the header row to the placeholder to add to the DOM
+    secondaryTableContent += createHeaderRow(subjectTableHeaders);
+
+    //create an array of the data to display in the table
+    var tempArray = [];
+    for (key in totalledSubjectPeriods){
+        var nameLoc = findData(subjectData, key, 0);
+        var newHrs = totalledSubjectPeriodsSecond[key]
+        tempArray.push([key, subjectData[nameLoc][1], newHrs]);
+    }
+
+    // iterate through global variable of teacherdata to create rows in the table
+    for (var i = 0; i < tempArray.length; i++){
+        secondaryTableContent += createTableRow(tempArray[i], tempArray[i][0]);
+    }
+
+    //add the content to the DOM
+    secondaryTable.innerHTML = secondaryTableContent;
+
+    //colour the table according to over/under staffed
+    colourTable("secondaryTable");
 
 }
 
 //////////////
 
 function drawSwapsTable (){
+    //get the element we want to make changes to
+    var teacherSwapsTable = document.getElementById("teacherSwaps");
+    //create an empty placeholder for content
+    var teacherSwapsTableContent = "";
+
+    //add the header row to the placeholder to add to the DOM
+    teacherSwapsTableContent += createHeaderRow(swapsTableHeaders);
+
+    console.log(potentialCover)
+
+    //create an array of the data to display in the table
+    // var tempArray = [];
+    // for (key in totalledSubjectPeriods){
+    //     var nameLoc = findData(subjectData, key, 0);
+    //     tempArray.push([key, subjectData[nameLoc][1], totalledSubjectPeriods[key]]);
+    // }
+
+    //iterate through global variable of teacherdata to create rows in the table
+    // for (var i = 0; i < tempArray.length; i++){
+    //     teacherSwapsTableContent += createTableRow(tempArray[i], tempArray[i][0]);
+    // }
+
+    //add the content to the DOM
+    teacherSwapsTable.innerHTML = teacherSwapsTableContent;
+
+    //colour the table according to over/under staffed
+    colourTable("teacherSwaps");
 
 }
