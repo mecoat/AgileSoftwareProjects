@@ -178,9 +178,16 @@ function checkBandPeriods(){
                 if (k == allBlockData[i][1][j][1].length - 1 && blockPeriods != bandPeriods){
                     //show error
                     showError("periodsDontMatch");
+
+                    //put in a try catch block for other pages
+                    try {
+                        //select the error blocks on the table
+                        selectErrorRows(allBlockData[i][0])
+                    }
+                    catch {
+
+                    }
                     
-                    //select the error blocks on the table
-                    selectErrorRows(allBlockData[i][0])
 
                 }
             }
