@@ -520,8 +520,22 @@ function multiRowSelect (row, allRows){
 
 }
 
+/////////////////
 
 //filler function - does nothing (used as input to loadCSV if no drawing required)
-// function emptyDraw(){
-//     return
-// }
+function emptyDraw(){
+    return
+}
+
+/////////////
+
+
+function showSection(name){
+    //get all elements with the class
+    var section = document.getElementsByClassName(name);
+     //iterate thrugh the elements 
+     for (var i = 0; i < section.length; i++){
+        //add hide to the class of the element
+        section[i].classList.remove("hide");
+    }
+}

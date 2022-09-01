@@ -503,15 +503,6 @@ function showElements(name, value){
     }
 }
 
-function showSection(name){
-    //get all elements with the class
-    var section = document.getElementsByClassName(name);
-     //iterate thrugh the elements 
-     for (var i = 0; i < section.length; i++){
-        //add hide to the class of the element
-        section[i].classList.remove("hide");
-    }
-}
 
 //shows periods answers for other questions if required
 function showPeriods(){
