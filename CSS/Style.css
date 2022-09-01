@@ -117,3 +117,8 @@ table , td, th{
 .inline {
     display: inline-block;
 }
+
+.starterPage {
+    margin-left: 5%;
+    margin-right: 5%;
+}
