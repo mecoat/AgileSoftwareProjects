@@ -1,5 +1,4 @@
 /* main details */
-
 *{
 	margin:0;
 	padding:0;
@@ -11,10 +10,6 @@ body{
 	margin:1vw;
 	font-family:Arial, calibri, helvetica, "gill sans", "sans-serif";
 }
-
-/* nav{
-    font-size: 0;
-} */
 
 nav ul {
     list-style: none;
@@ -39,7 +34,6 @@ nav ul li a {
     display: flex;
     justify-content: center;
     align-items: center;
-    /* margin-right: -5%; */
 
 }
 

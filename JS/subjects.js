@@ -1,5 +1,4 @@
 //global variables to hold subject data and headers
-// var subjectData = [["De", "German"], ["En", "English"], ["Ma", "Maths"]];
 var subjectData = [];
 //headers
 var subHeaders = ["Subject Code", "Subject Name"];
@@ -7,8 +6,6 @@ var subHeaders = ["Subject Code", "Subject Name"];
 /////////////////
 
 function addSubArray(values){
-    // var subCode = values[0].trim();
-    // var subName = values[1].trim();
 
     values = trimValues(values);
 

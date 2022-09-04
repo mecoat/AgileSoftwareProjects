@@ -1,4 +1,4 @@
-    //draw the template timetable to the screen
+//draw the template timetable to the screen
 function drawTimetable(){
     //get the element we want to make changes to
     var timetable = document.getElementById("templateTimetable");

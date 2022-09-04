@@ -130,7 +130,6 @@ function csvPrepRow (dataToAdd){
 
 //function needs to be asynchronous to load the input file
 async function loadCSV(file, headers, drawFunc, addArrayFunc, required = [0]){
-    // async function loadCSV(file, headers, data, drawFunc, addArrayFunc, required = [0]){
 
     //hide upload error messages if they were showing
     hideError("invalidFile");
