@@ -54,7 +54,7 @@ function drawTimetable(){
     var reg1BreakTime = 0;
     //check if reg1 is adjacent to break, find out if before/after
     if ((reg1Time && reg1Time == break1Time) ||
-     (reg1Time && reg1Time == break1Time)){
+     (reg1Time && reg1Time == break2Time)){
         //get value with function
         reg1BreakTime = getActiveElement("regBreak1"); 
     }
@@ -69,8 +69,8 @@ function drawTimetable(){
 
     var reg2BreakTime = 0;
     //check if reg2 is adjacent to break, find out if before/after
-    if ((reg2Time && reg1Time == break1Time) ||
-     (reg2Time && reg1Time == break2Time)){
+    if ((reg2Time && reg2Time == break1Time) ||
+     (reg2Time && reg2Time == break2Time)){
         //get value with function
         reg2BreakTime = getActiveElement("regBreak2"); 
     }

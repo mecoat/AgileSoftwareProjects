@@ -750,10 +750,10 @@ function addTotalTableEventListener (){
 
 }
 
-// /////////////////
+///////////////////
 
 function addBlockDeleteEventListener (){
-    // //get the item that has "delBlock" as an ID
+    //get the item that has "delBlock" as an ID
     var button = document.getElementById("delBlock");
 
     button.addEventListener("click", delBlock);

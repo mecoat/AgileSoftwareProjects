@@ -247,8 +247,6 @@ function addTemplateEventListener (){
 
 ////////////
 
-////////////////////
-
 function addDeleteEventListener (){
     //get the item that has "delSub" as an ID
     var button = document.getElementById("delTeacher");
@@ -302,7 +300,7 @@ function setDefaults(){
     var defaultPeriods = document.getElementById("defaultPeriods").value;
 
     //if default periods isn't larger than 0, or isn't an integer
-    //(floors of non-integer don't equal the same as the input)...
+    // (floors of non-integer don't equal the same as the input)...
     if (defaultPeriods < 1 || floor(defaultPeriods) != defaultPeriods ){
         //display error
         showError("noPeriods")

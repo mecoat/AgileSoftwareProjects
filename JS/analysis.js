@@ -42,34 +42,6 @@ function analysisStart(){
     //add the event listener for the Save button
     addSaveEventListener (); 
 
-    // //draw the block list to screen
-    // drawBlock (); 
-
-    // //add the event listener for the Band Delete button (within Block)
-    // addBandDeleteEventListener ();
-    // //add the event listener for the Block table
-    // addBlockTableEventListener ();
-
-    // //add the event listener for the Save Block button
-    // addSaveBlockEventListener (); 
-
-    // //draw the total list to screen
-    // drawTotal(); 
-
-    // //add the event listener for the total table
-    // addTotalTableEventListener (); 
-    // //add the event listener for the Band Delete button (within Total)
-    // addBlockDeleteEventListener ();
-    
-
-    // //add the event listener for the Save button
-    // addSaveEventListener ();
-    // //add the event listener for the Template button
-    // addTemplateEventListener ();
-
-    // //add the event listener for the Load button
-    // addLoadEventListener (); 
-
 }
 
 //////////
